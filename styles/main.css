@@ -978,3 +978,9 @@ td {
         background: #f8f0fc;
       }
     
+      .site-header .avatar{
+width:90px;
+height:90px;
+margin-bottom:10px;
+}
+    
