@@ -978,3 +978,40 @@ td {
         background: #f8f0fc;
       }
     
+      .site-header .avatar {
+  margin-bottom: 10px;
+  border-radius: 50%;
+  width: 90px;
+  height: 90px;
+}
+.site-header {
+  padding: 35px 0;
+  text-align: center;
+}
+.site-header .site-title {
+  font-size: 24px;
+  font-weight: bold;
+}
+.site-header .site-description {
+  font-size: 14px;
+  padding: 16px;
+  color: #495057;
+}
+.site-header .menu-container a.menu {
+  font-size: 14px;
+  padding: 7px 17px;
+  flex-shrink: 0;
+  font-weight: 600;
+}
+.post-container .post .post-title {
+  font-size: 20px;
+  text-align: center;
+  padding: 10px 0;
+  font-weight: 900;
+  letter-spacing: 0.02em;
+}
+.site-header .social-container {
+  padding: 8px;
+  font-size: 15px;
+}
+    
