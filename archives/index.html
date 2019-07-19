@@ -4,7 +4,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>Sven&#39;blog</title>
 <meta name="description" content="不在平静中灭亡~" />
-<link rel="shortcut icon" href="http://www.svenbeast.com//favicon.ico?v=1563504067044">
+<link rel="shortcut icon" href="http://www.svenbeast.com//favicon.ico?v=1563512990351">
 <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.10.0/katex.min.css">
 <link rel="stylesheet" href="http://www.svenbeast.com//styles/main.css">
@@ -20,7 +20,7 @@
       <div class="main-content">
         <div class="site-header">
   <a href="http://www.svenbeast.com/">
-  <img class="avatar" src="http://www.svenbeast.com//images/avatar.png?v=1563504067044" alt="">
+  <img class="avatar" src="http://www.svenbeast.com//images/avatar.png?v=1563512990351" alt="">
   </a>
   <h1 class="site-title">
     Sven&#39;blog
@@ -143,7 +143,40 @@
 
     
         <div class="site-footer">
-  Powered by 斯文禽兽 | 
+  Powered by 斯文禽兽
+<script>
+var fnTextPopup = function (arr, options) {
+    // arr参数是必须的
+    if (!arr || !arr.length) {
+        return;    
+    }
+    // 主逻辑
+    var index = 0;
+    document.documentElement.addEventListener('click', function (event) {
+        var x = event.pageX, y = event.pageY;
+        var eleText = document.createElement('span');
+        eleText.className = 'text-popup';
+        this.appendChild(eleText);
+        if (arr[index]) {
+            eleText.innerHTML = arr[index];
+        } else {
+            index = 0;
+            eleText.innerHTML = arr[0];
+        }
+        // 动画结束后删除自己
+        eleText.addEventListener('animationend', function () {
+            eleText.parentNode.removeChild(eleText);
+        });
+        // 位置
+        eleText.style.left = (x - eleText.clientWidth / 2) + 'px';
+        eleText.style.top = (y - eleText.clientHeight) + 'px';
+        // index递增
+        index++;
+    });    
+};
+
+fnTextPopup(['富强', '民主', '文明', '和谐', '自由', '平等', '公正', '法治', '爱国', '敬业', '诚信', '友善']);
+</script> | 
   <a class="rss" href="http://www.svenbeast.com//atom.xml" target="_blank">RSS</a>
 </div>
 
