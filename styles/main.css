@@ -975,7 +975,11 @@ td {
       }
     
       body {
-        background: #f8f0fc;
+        background: #212529;
+      }
+    
+      body {
+        color: #f8f9fa;
       }
     
       .site-header .avatar {
