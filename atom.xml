@@ -2,7 +2,7 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
     <id>http://www.svenbeast.com/</id>
     <title>Sven&apos;blog</title>
-    <updated>2019-07-25T07:10:41.910Z</updated>
+    <updated>2019-07-30T10:47:41.781Z</updated>
     <generator>https://github.com/jpmonette/feed</generator>
     <link rel="alternate" href="http://www.svenbeast.com/"/>
     <link rel="self" href="http://www.svenbeast.com//atom.xml"/>
@@ -10,6 +10,28 @@
     <logo>http://www.svenbeast.com//images/avatar.png</logo>
     <icon>http://www.svenbeast.com//favicon.ico</icon>
     <rights>All rights reserved 2019, Sven&apos;blog</rights>
+    <entry>
+        <title type="html"><![CDATA[FasterXML Jackson远程命令执行漏洞（复现CVE-2019-12384）]]></title>
+        <id>http://www.svenbeast.com//post/fasterxml-jackson-yuan-cheng-ming-ling-zhi-xing-lou-dong-fu-xian-cve-2019-12384</id>
+        <link href="http://www.svenbeast.com//post/fasterxml-jackson-yuan-cheng-ming-ling-zhi-xing-lou-dong-fu-xian-cve-2019-12384">
+        </link>
+        <updated>2019-07-30T10:05:39.000Z</updated>
+        <content type="html"><![CDATA[<h4 id="1首先打开http服务这里用的是python3自带的其他的也可只要可以访问到">1.首先打开http服务，这里用的是python3自带的，其他的也可，只要可以访问到</h4>
+<p>ps:python自带的这个服务从哪个文件夹打开，此文件夹为默认根目录<br>
+<img src="http://www.svenbeast.com//post-images/1564481595025.png" alt=""></p>
+<h4 id="2配置jruby这里因为我之前配置过所以已存在并无影响jruby已打包">2.配置jruby，这里因为我之前配置过，所以已存在，并无影响，jruby已打包</h4>
+<p>ps:ln -s ~/jruby-9.2.7.0/bin/jruby /usr/local/bin/<br>
+<img src="http://www.svenbeast.com//post-images/1564482020021.png" alt=""></p>
+<h4 id="3运行testrb进行命令执行">3.运行test.rb,进行命令执行</h4>
+<p><img src="http://www.svenbeast.com//post-images/1564482687320.png" alt=""></p>
+<h4 id="4这里的injectsql为写命令的文件此文件放在http服务的根目录里jackson要能远程获取到">4.这里的inject.sql，为写命令的文件，此文件放在http服务的根目录里，jackson要能远程获取到</h4>
+<p><img src="http://www.svenbeast.com//post-images/1564483081513.png" alt=""></p>
+<h4 id="5在完成第三步的时候已经命令执行完成在http服务的根目录会生成exploitedtxt文件里面是命令执行后得到的回显">5.在完成第三步的时候，已经命令执行完成，在http服务的根目录会生成exploited.txt文件，里面是命令执行后得到的回显</h4>
+<p><img src="http://www.svenbeast.com//post-images/1564483152187.png" alt=""></p>
+<p>PS：解压密码:svenbeast<br>
+链接: https://pan.baidu.com/s/12C5KD4u3xrR4lOnvIQgSpg 提取码: zgts</p>
+]]></content>
+    </entry>
     <entry>
         <title type="html"><![CDATA[Discuz!ml3.3漏洞复现及分析(附POC)]]></title>
         <id>http://www.svenbeast.com//post/discuzml33-lou-dong-fu-xian-ji-fen-xi-fu-poc</id>
