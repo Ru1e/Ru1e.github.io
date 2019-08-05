@@ -2,7 +2,7 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
     <id>http://www.svenbeast.com/</id>
     <title>Sven&apos;blog</title>
-    <updated>2019-08-05T09:42:23.858Z</updated>
+    <updated>2019-08-05T09:43:34.139Z</updated>
     <generator>https://github.com/jpmonette/feed</generator>
     <link rel="alternate" href="http://www.svenbeast.com/"/>
     <link rel="self" href="http://www.svenbeast.com//atom.xml"/>
@@ -27,7 +27,7 @@
 <li>访问目标站点得到源码(跟着我标记的序号理解源码)</li>
 </ol>
 <p><img src="http://www.svenbeast.com//post-images/1564738502164.png" alt=""><br>
-<strong>源码解析：</strong></p>
+<strong>源码解析（开头序号在底部）：</strong></p>
 <pre><code>&lt;?php 
 highlight_file(__FILE__);
 function check_inner_ip($url)    //7.方法在这里，接收了url参数
