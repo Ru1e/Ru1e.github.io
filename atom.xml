@@ -2,7 +2,7 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
     <id>http://www.svenbeast.com/</id>
     <title>Sven&apos;blog</title>
-    <updated>2019-08-05T09:39:27.626Z</updated>
+    <updated>2019-08-05T09:41:07.504Z</updated>
     <generator>https://github.com/jpmonette/feed</generator>
     <link rel="alternate" href="http://www.svenbeast.com/"/>
     <link rel="self" href="http://www.svenbeast.com//atom.xml"/>
@@ -57,9 +57,9 @@ function check_inner_ip($url)    //7.方法在这里，接收了url参数
     $ip=gethostbyname($hostname);  //24.将域名转换成ip，存入ip里
     $int_ip=ip2long($ip);   //25.对ip进行转换成便于比较的整型存入int_ip
     return ip2long('127.0.0.0')&gt;&gt;24 == $int_ip&gt;&gt;24 || ip2long('10.0.0.0')&gt;&gt;24 == $int_ip&gt;&gt;24 || ip2long('172.16.0.0')&gt;&gt;20 == $int_ip&gt;&gt;20 || ip2long('192.168.0.0')&gt;&gt;16 == $int_ip&gt;&gt;16; 
-		                     //26. ip2long('127.0.0.0')&gt;&gt;24结果是127，就是取的第一段那里 //27.这里是把这4个段和传入的url参数转换成的整型存入的int_ip
-//28.做一个比较，如果咱们输入的是他识别成是这4个段内的，
-//29.他就返回true,反之为false，到此这个方法结束，继续向下执行
+		                     //26. ip2long('127.0.0.0')&gt;&gt;24结果是127，就是取的第一段那里             //27.这里是把这4个段和传入的url参数转换成的整型存入的int_ip
+           //28.做一个比较，如果咱们输入的是他识别成是这4个段内的，
+          //29.他就返回true,反之为false，到此这个方法结束，继续向下执行
 } 
 
 function safe_request_url($url)         //4.方法找到在这里，往下看，接受url参数
