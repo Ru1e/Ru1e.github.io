@@ -1,15 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <feed xmlns="http://www.w3.org/2005/Atom">
     <id>http://www.svenbeast.com/</id>
-    <title>斯文Beast&apos;blog</title>
-    <updated>2019-08-05T10:12:29.952Z</updated>
+    <title>斯文beast&apos;blog</title>
+    <updated>2019-08-05T10:14:10.002Z</updated>
     <generator>https://github.com/jpmonette/feed</generator>
     <link rel="alternate" href="http://www.svenbeast.com/"/>
     <link rel="self" href="http://www.svenbeast.com//atom.xml"/>
     <subtitle>不在平静中灭亡~</subtitle>
     <logo>http://www.svenbeast.com//images/avatar.png</logo>
     <icon>http://www.svenbeast.com//favicon.ico</icon>
-    <rights>All rights reserved 2019, 斯文Beast&apos;blog</rights>
+    <rights>All rights reserved 2019, 斯文beast&apos;blog</rights>
     <entry>
         <title type="html"><![CDATA[一个神秘的入群题解题过程]]></title>
         <id>http://www.svenbeast.com//post/KQ6xR86Hl</id>
