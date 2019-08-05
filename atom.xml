@@ -2,7 +2,7 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
     <id>http://www.svenbeast.com/</id>
     <title>Sven&apos;blog</title>
-    <updated>2019-08-05T08:21:10.108Z</updated>
+    <updated>2019-08-05T09:35:45.949Z</updated>
     <generator>https://github.com/jpmonette/feed</generator>
     <link rel="alternate" href="http://www.svenbeast.com/"/>
     <link rel="self" href="http://www.svenbeast.com//atom.xml"/>
@@ -17,10 +17,9 @@
         </link>
         <updated>2019-08-02T09:17:23.000Z</updated>
         <content type="html"><![CDATA[<h3 id="alert-1-引言">Alert 1 引言</h3>
-<pre><code>群早就加了，但是因为一次稀里糊涂的事情认识一个帅气的师傅，然后稀里糊涂的就是有个朋友也想进群。  
- 然后朋友稀里糊涂的让我帮她做一下入群题，好吧，咳咳，朋友还在成长过程中，我帮一下顺便写下来帮她理解一下，所以我尽量写得清楚明白的令人发指~
-</code></pre>
 <ul>
+<li>群早就加了，但是因为一次稀里糊涂的事情认识一个帅气的师傅，然后稀里糊涂的就是有个朋友也想进群。<br>
+然后朋友稀里糊涂的让我帮她做一下入群题，好吧，咳咳，朋友还在成长过程中，我帮一下顺便写下来帮她理解一下，所以我尽量写得清楚明白的令人发指~</li>
 <li>开始回顾</li>
 </ul>
 <h3 id="alert-2-绕过过滤得到ssrf">Alert 2 绕过过滤得到SSRF</h3>
@@ -37,16 +36,18 @@ function check_inner_ip($url)    //7.方法在这里，接收了url参数
 		   //9.他设定的值，存在返回true真，不存在返回false假
     {            //10.  !代表false,有句话说的是，假真为假，假假为真
         die('url fomat error');  //11.如果序号8那步判断里面不存在设定的值则输
-				
 		//12. 出url fomat error这个来，然后代码停止运行
     }                                   
-    try                  //13.上面的if如果条件不满足(因为die，如果满足后脚本就停止                          //14. 运行了)，那么到了这里继续向下执行
+    try                  //13.上面的if如果条件不满足(因为die，如果满足后脚本就停止 
+                     	//14. 运行了)，那么到了这里继续向下执行
     {                                
         $url_parse=parse_url($url);  //15. 这里对url值进行解析，得到他的组成部分
     }                      //16.比如他的host,port这些 ，存到url_parse里  
 		    //17.https://www.cnblogs.com/gengyi/p/6390084.html,parse_url函数介绍
     catch(Exception $e)
-    {       //18.https://www.w3school.com.cn/php/php_exception.asp,try catch用           //19.法介绍，这里意思是如果try那步的解析出现了异常，catch就会捕捉到             //20.并执行他里面设定的代码
+    {       //18.https://www.w3school.com.cn/php/php_exception.asp,try catch用           
+	          //19.法介绍，这里意思是如果try那步的解析出现了异常，catch就会捕捉到             
+			  //20.并执行他里面设定的代码
         die('url fomat error'); //21. 如果try解析出现异常，就输出url fomat error，
         return false;              //22.并且停止运行脚本
     } 
@@ -57,20 +58,23 @@ function check_inner_ip($url)    //7.方法在这里，接收了url参数
     return ip2long('127.0.0.0')&gt;&gt;24 == $int_ip&gt;&gt;24 || ip2long('10.0.0.0')&gt;&gt;24 == $int_ip&gt;&gt;24 || ip2long('172.16.0.0')&gt;&gt;20 == $int_ip&gt;&gt;20 || ip2long('192.168.0.0')&gt;&gt;16 == $int_ip&gt;&gt;16; 
 		                     //26. ip2long('127.0.0.0')&gt;&gt;24结果是127，就是取的第一段那里
 												 //27.这里是把这4个段和传入的url参数转换成的整型存入的int_ip
-												 //28.做一个比较，如果咱们输入的是他识别成是这4个段内的，                         //29.他就返回true,反之为false，到此这个方法结束，继续向下执行
+												 //28.做一个比较，如果咱们输入的是他识别成是这4个段内的，
+												 //29.他就返回true,反之为false，到此这个方法结束，继续向下执行
 } 
 
 function safe_request_url($url)         //4.方法找到在这里，往下看，接受url参数
 {                                                    
      
     if (check_inner_ip($url))     //5.出现check_inner_ip方法，对url参数处理，我们                                              //6.去上面寻找这个方法
-    {                                        //30.得到了check_inner_ip方法返回的true或false
+    {                              //30.得到了check_inner_ip方法返回的true或false
         echo $url.' is inner ip';   //31.如果是返回true则输出 echo $url.' is inner ip'
     } 
     else                      //32.如果是返回false,继续向下执行，这个才是咱们想要的
     {                //33.也就是我们想办法让check_inner_ip返回false是触发SSRF关键
 		 //34.后面是用php执行的curl操作:https://www.jianshu.com/p/07c4dddae43a
-        $ch = curl_init(); //35.设定ch为句柄，这里的句柄就是谁当了句柄，控制他                                    //36.就能控制 curl操作，就把他当成curl 后面的-O -o这些           //37.命令吧-.-!，他是一个通用概念，不是针对php和curl什么的，百度搜吧 
+        $ch = curl_init(); //35.设定ch为句柄，这里的句柄就是谁当了句柄，控制他                                   
+                 		//36.就能控制 curl操作，就把他当成curl 后面的-O -o这些           
+						//37.命令吧-.-!，他是一个通用概念，不是针对php和curl什么的，百度搜吧 
         curl_setopt($ch, CURLOPT_URL, $url); 
 		 //38.https://www.runoob.com/php/func-curl_setopt.html，curl_setopt详解
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1); 
@@ -78,7 +82,8 @@ function safe_request_url($url)         //4.方法找到在这里，往下看，
 				//39.上面的就把他当成对curl操作的各种设置和咱们传入的url参数
         $output = curl_exec($ch);    //40.执行curl操作，将得到的网页存入output
         $result_info = curl_getinfo($ch); 
-				          //41.将句柄ch的内容编码(content_type)，网络地址(url)，http状态                    //42.码(http_code)等等很多存入result_info
+				          //41.将句柄ch的内容编码(content_type)，网络地址(url)，http状态                   
+						  //42.码(http_code)等等很多存入result_info
         if ($result_info['redirect_url'])  //43.如果里面有redirect_url，向下执行
         { 
             safe_request_url($result_info['redirect_url']);  
@@ -173,8 +178,8 @@ python2编写的：https://github.com/tarunkant/Gopherus</li>
 flag{QAQ_YLG_NO1}<br>
 <img src="http://www.svenbeast.com//post-images/1564991536123.png" alt=""></li>
 </ul>
-<p><strong>文中用到的字典，工具，代码解析附件集合</strong><br>
-<strong>http://129.28.179.23/upload/附件集合.zip</strong></p>
+<p><strong>文中用到的附件集合：</strong><br>
+http://129.28.179.23/upload/入群题.zip</p>
 ]]></content>
     </entry>
     <entry>
