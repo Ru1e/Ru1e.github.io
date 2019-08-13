@@ -2,7 +2,7 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
     <id>http://www.svenbeast.com/</id>
     <title>斯文beast&apos;blog</title>
-    <updated>2019-08-05T10:14:10.002Z</updated>
+    <updated>2019-08-13T07:25:41.471Z</updated>
     <generator>https://github.com/jpmonette/feed</generator>
     <link rel="alternate" href="http://www.svenbeast.com/"/>
     <link rel="self" href="http://www.svenbeast.com//atom.xml"/>
@@ -10,6 +10,18 @@
     <logo>http://www.svenbeast.com//images/avatar.png</logo>
     <icon>http://www.svenbeast.com//favicon.ico</icon>
     <rights>All rights reserved 2019, 斯文beast&apos;blog</rights>
+    <entry>
+        <title type="html"><![CDATA[奇安信内推码]]></title>
+        <id>http://www.svenbeast.com//post/SBIMn8jWq1</id>
+        <link href="http://www.svenbeast.com//post/SBIMn8jWq1">
+        </link>
+        <updated>2019-08-13T06:10:07.000Z</updated>
+        <content type="html"><![CDATA[<p>本人内推码，仅供应届生使用哦：rwCPse69<br>
+有问题的话可以在博客留言，我看到会回复<br>
+奇安信校招报名地址：http://campus.chinahr.com/views/qianxin/seminar.html#<br>
+<img src="http://www.svenbeast.com//post-images/1565676701380.png" alt=""></p>
+]]></content>
+    </entry>
     <entry>
         <title type="html"><![CDATA[一个神秘的入群题解题过程]]></title>
         <id>http://www.svenbeast.com//post/KQ6xR86Hl</id>
