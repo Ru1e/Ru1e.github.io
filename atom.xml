@@ -2,7 +2,7 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
     <id>http://www.svenbeast.com/</id>
     <title>斯文beast&apos;blog</title>
-    <updated>2019-09-12T04:20:29.419Z</updated>
+    <updated>2019-09-14T11:59:20.826Z</updated>
     <generator>https://github.com/jpmonette/feed</generator>
     <link rel="alternate" href="http://www.svenbeast.com/"/>
     <link rel="self" href="http://www.svenbeast.com//atom.xml"/>
@@ -705,8 +705,8 @@ https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/commit/?id=69
         <link href="http://www.svenbeast.com//post/fasterxml-jackson-yuan-cheng-ming-ling-zhi-xing-lou-dong-fu-xian-cve-2019-12384">
         </link>
         <updated>2019-07-30T10:05:39.000Z</updated>
-        <content type="html"><![CDATA[<p>链接: https://pan.baidu.com/s/1yhdmOz3QQ7Nm_Ar6m4-dWg 提取码: avpe 复制这段内容后打开百度网盘手机App，操作更方便哦#### 1.首先打开http服务，这里用的是python3自带的，其他的也可，只要可以访问到<br>
-ps:python自带的这个服务从哪个文件夹打开，此文件夹为默认根目录<br>
+        <content type="html"><![CDATA[<h4 id="1首先打开http服务这里用的是python3自带的其他的也可只要可以访问到">1.首先打开http服务，这里用的是python3自带的，其他的也可，只要可以访问到</h4>
+<p>ps:python自带的这个服务从哪个文件夹打开，此文件夹为默认根目录<br>
 <img src="http://www.svenbeast.com//post-images/1564481595025.png" alt=""></p>
 <h4 id="2配置jruby这里因为我之前配置过所以已存在并无影响jruby已打包">2.配置jruby，这里因为我之前配置过，所以已存在，并无影响，jruby已打包</h4>
 <p>ps:ln -s ~/jruby-9.2.7.0/bin/jruby /usr/local/bin/<br>
