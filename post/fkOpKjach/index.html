@@ -2,121 +2,39 @@
   <head>
     <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>Shiro&lt;=1.2.4反序列化的简单理解及POC | 斯文beast&#39;blog</title>
+<title>斯文beast&#39;blog</title>
 <meta name="description" content="不在平静中灭亡~" />
-<link rel="shortcut icon" href="http://www.svenbeast.com//favicon.ico?v=1568462350570">
-<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
+<link rel="shortcut icon" href="http://www.svenbeast.com//favicon.ico?v=1569208371276">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.10.0/katex.min.css">
-<link rel="stylesheet" href="http://www.svenbeast.com//styles/main.css">
-
-<script src="https://cdn.bootcss.com/highlight.js/9.12.0/highlight.min.js"></script>
+<link href="https://cdn.remixicon.com/releases/v1.3.1/remixicon.css" rel="stylesheet">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Droid+Serif:400,700">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.7.2/animate.min.css">
+
+<link rel="stylesheet" href="http://www.svenbeast.com//styles/main.css">
+<link rel="alternate" type="application/atom+xml" title="斯文beast&#39;blog - Atom Feed" href="http://www.svenbeast.com//atom.xml">
 
 
 
   </head>
   <body>
-    <div class="main">
-      <div class="main-content">
-        <div class="site-header">
-  <a href="http://www.svenbeast.com/">
-  <img class="avatar" src="http://www.svenbeast.com//images/avatar.png?v=1568462350570" alt="">
-  </a>
-  <h1 class="site-title">
-    斯文beast&#39;blog
-  </h1>
-  <p class="site-description">
-    不在平静中灭亡~
-  </p>
-  <div class="menu-container">
-    
-      
-        <a href="/" class="menu">
-          首页
+    <div id="app" class="main px-4 flex flex-col lg:flex-row">
+      <div id="sidebar" class="sidebar-wrapper lg:static lg:w-1/4">
+  <div class="lg:sticky top-0">
+    <div class="sidebar-content">
+      <div class="flex lg:block p-4 lg:px-0 items-center fixed lg:static lg:block top-0 right-0 left-0 bg-white z-50">
+        <i class="remixicon-menu-2-line lg:mt-4 text-2xl cursor-pointer animated fadeIn" onclick="openMenu()"></i>
+        <a href="http://www.svenbeast.com/">
+          <img class="animated fadeInLeft avatar rounded-lg mx-4 lg:mt-32 lg:mx-0 mt-0 lg:w-24 lg:h-24 w-12 w-12" src="http://www.svenbeast.com//images/avatar.png?v=1569208371276" alt="">
         </a>
+        <h1 class="animated fadeInLeft lg:text-4xl font-extrabold lg:mt-8 mt-0 text-xl" style="animation-delay: 0.2s">斯文beast&#39;blog</h1>
+      </div>
       
-    
-      
-        <a href="/archives" class="menu">
-          归档
-        </a>
-      
-    
-      
-        <a href="/tags" class="menu">
-          标签
-        </a>
-      
-    
-      
-        <a href="/post/about" class="menu">
-          关于
-        </a>
-      
-    
-  </div>
-  <div class="social-container">
-    
-      
-        <a href="https://github.com/menghao56392" target="_blank">
-          <i class="fab fa-github"></i>
-        </a>
-      
-    
-      
-    
-      
-        <a href="https://weibo.com/svenbeast" target="_blank">
-          <i class="fab fa-weibo"></i>
-        </a>
-      
-    
-      
-    
-      
-    
-  </div>
-</div>
-
-        <div class="post-detail">
-          <article class="post">
-            <h2 class="post-title">
-              Shiro&lt;=1.2.4反序列化的简单理解及POC
-            </h2>
-            <div class="post-info">
-              <span>
-                2019-09-04
-              </span>
-              <span>
-                1 min read
-              </span>
-              
-            </div>
-            
-              <img class="post-feature-image" src="http://www.svenbeast.com//post-images/fkOpKjach.png" alt="">
-            
-            <div class="post-content-wrapper">
-              <div class="post-content">
-                <h3 id="0x01-缘故">0x01. 缘故</h3>
-<p>甲方曝了一个shiro反序列化，在验证的时候就多了解了一下这个漏洞，测试时也是用了市面上流传的poc验证了一下，不过并不理想，后来实际了解后，发现原因是使用的编码不够多，故继续造轮子，由此出此篇文章，主要目的就是发个轮子（-.-! ，毕竟有点鸽~）。</p>
-<h3 id="0x02简单shiro124文字理解">0x02.简单shiro&lt;=1.2.4文字理解</h3>
-<ul>
-<li>因为shiro对cookie里的rememberme字段进行了反序列化，所以如果知道了shiro的编码方式，然后将恶意命令用它的编码方式进行编码并放在http头的cookie里，在shiro对提交的cookie的rememberme字段进行反序列化时，也就执行了插入的命令，最终造成了命令执行</li>
-<li>我说的比较简单好理解，实际代码流程很多帖子有，不是做代码分析的了解到这里就没问题，造轮子的话够了</li>
-</ul>
-<h3 id="0x03-poc">0x03. POC</h3>
-<ol>
-<li>这个才是发这篇文章的最终原因，毕竟造了轮子不发出来没人分享多没意思，借鉴了weblogicscan的poc框架，表示谢谢</li>
-<li>测试时发现市面上大部分的poc集成的编码和使用的ysoserial里的类只有1-2种，故收集了github上大部分的编码，共18种，其实还有两种不过发现无法使用编在代码中注释掉了，也集成了ysoserial里的7个类，我把这个就称为7个模块拉</li>
-<li>所以这个POC配合dnslog平台验证漏洞是否存在对我来说是个神器，如果当做exp使用虽可以但较为浪费时间，不过我相信对大部分人来说，证明存在漏洞后，进一步利用就更为有动力了，会有干劲去想办法的</li>
-</ol>
-<p>PS:解压密码:svenbeast(有人反应说此poc不宜分享，已取消百度云，如真有需要请自行寻找并添加vx找我要吧)<br>
-链接: https://pan.baidu.com/s/1x776TO4yiNhqSMKnRYpWRw<br>
-提取码: dzeb</p>
-
-              </div>
-              <div class="toc-container">
-                <ul class="markdownIt-TOC">
+        <div class="animated fadeInLeft" style="animation-delay: 0.4s">
+          <p class="my-4 text-gray-600 font-light hidden lg:block">
+            文章目录
+          </p>
+          <div class="toc-container hidden lg:block">
+            <ul class="markdownIt-TOC">
 <li>
 <ul>
 <li>
@@ -130,52 +48,44 @@
 </li>
 </ul>
 
-              </div>
-            </div>
-          </article>
-        </div>
-
-        
-          <div class="next-post">
-            <div class="next">下一篇</div>
-            <a href="http://www.svenbeast.com//post/SBIMn8jWq1">
-              <h3 class="post-title">
-                奇安信内推码
-              </h3>
-            </a>
           </div>
-        
+        </div>
+      
+    </div>
+  </div>
+</div>
 
-        
-          
-            <link rel="stylesheet" href="https://unpkg.com/gitalk/dist/gitalk.css">
-<script src="https://unpkg.com/gitalk/dist/gitalk.min.js"></script>
-
-<div id="gitalk-container"></div>
-
-<script>
-
-  var gitalk = new Gitalk({
-    clientID: 'e2161286d5700e89fddf',
-    clientSecret: '9481468e5e7f8944f425f70a0a51eddfaebbe8d2',
-    repo: 'menghao56392.github.io',
-    owner: 'menghao56392',
-    admin: ['menghao56392'],
-    id: (location.pathname).substring(0, 49),      // Ensure uniqueness and length less than 50
-    distractionFreeMode: false  // Facebook-like distraction free mode
-  })
-
-  gitalk.render('gitalk-container')
-
-</script>
-
-          
-
-          
-        
-
-        <div class="site-footer">
-  Powered by 斯文禽兽
+<div class="menu-container">
+  <i class="remixicon-arrow-left-line text-2xl cursor-pointer animated fadeIn close-menu-btn" onclick="closeMenu()"></i>
+  <div>
+    
+      
+        <a href="/" class="menu" style="animation-delay: 0s">
+          首页
+        </a>
+      
+    
+      
+        <a href="/archives" class="menu" style="animation-delay: 0.2s">
+          归档
+        </a>
+      
+    
+      
+        <a href="/tags" class="menu" style="animation-delay: 0.4s">
+          标签
+        </a>
+      
+    
+      
+        <a href="/post/about" class="menu" style="animation-delay: 0.6000000000000001s">
+          关于
+        </a>
+      
+    
+  </div>
+  <div class="site-footer">
+    <div class="py-4 text-gray-700">Powered by 斯文禽兽
 <script>
 var fnTextPopup = function (arr, options) {
     // arr参数是必须的
@@ -208,53 +118,187 @@ var fnTextPopup = function (arr, options) {
 };
 
 fnTextPopup(['富强', '民主', '文明', '和谐', '自由', '平等', '公正', '法治', '爱国', '敬业', '诚信', '友善']);
-</script> | 
-  <a class="rss" href="http://www.svenbeast.com//atom.xml" target="_blank">RSS</a>
+</script></div>
+    <a class="rss" href="http://www.svenbeast.com//atom.xml" target="_blank">RSS</a>
+  </div>
 </div>
+<div class="mask" onclick="closeMenu()">
+</div>
+      <div class="content-wrapper py-32 lg:p-8 lg:w-3/4 post-detail animated fadeIn">
+        <h1 class="text-3xl font-bold lg:mt-16">Shiro&lt;=1.2.4反序列化的简单理解及POC</h1>
+        <div class="text-sm text-gray-700 lg:my-8">
+          2019-09-04 / 2 min read
+        </div>
+        
+          <img class="post-feature-image rounded-lg mx-auto my-4" src="http://www.svenbeast.com//post-images/fkOpKjach.png" alt="">
+        
+        <div class="post-content yue">
+          <h3 id="0x01-缘故">0x01. 缘故</h3>
+<p>甲方曝了一个shiro反序列化，在验证的时候就多了解了一下这个漏洞，测试时也是用了市面上流传的poc验证了一下，不过并不理想，后来实际了解后，发现原因是使用的编码不够多，故继续造轮子，由此出此篇文章，主要目的就是发个轮子（-.-! ，毕竟有点鸽~）。</p>
+<h3 id="0x02简单shiro124文字理解">0x02.简单shiro&lt;=1.2.4文字理解</h3>
+<ul>
+<li>因为shiro对cookie里的rememberme字段进行了反序列化，所以如果知道了shiro的编码方式，然后将恶意命令用它的编码方式进行编码并放在http头的cookie里，在shiro对提交的cookie的rememberme字段进行反序列化时，也就执行了插入的命令，最终造成了命令执行</li>
+<li>我说的比较简单好理解，实际代码流程很多帖子有，不是做代码分析的了解到这里就没问题，造轮子的话够了</li>
+</ul>
+<h3 id="0x03-poc">0x03. POC</h3>
+<ol>
+<li>这个才是发这篇文章的最终原因，毕竟造了轮子不发出来没人分享多没意思，借鉴了weblogicscan的poc框架，表示谢谢</li>
+<li>测试时发现市面上大部分的poc集成的编码和使用的ysoserial里的类只有1-2种，故收集了github上大部分的编码，共18种，其实还有两种不过发现无法使用编在代码中注释掉了，也集成了ysoserial里的7个类，我把这个就称为7个模块拉</li>
+<li>所以这个POC配合dnslog平台验证漏洞是否存在对我来说是个神器，如果当做exp使用虽可以但较为浪费时间，不过我相信对大部分人来说，证明存在漏洞后，进一步利用就更为有动力了，会有干劲去想办法的</li>
+</ol>
+<p>PS:解压密码:svenbeast(有人反应说此poc不宜分享，已取消百度云，如真有需要请自行寻找并添加vx找我要吧)<br>
+链接: https://pan.baidu.com/s/1x776TO4yiNhqSMKnRYpWRw<br>
+提取码: dzeb</p>
+
+        </div>
+
+        
+
+
+        <div class="flex justify-between py-8">
+          
+
+          
+            <div class="next-post">
+              <a href="http://www.svenbeast.com//post/SBIMn8jWq1">
+                <h3 class="post-title">
+                  奇安信内推码
+                  <i class="remixicon-arrow-right-line"></i>
+                </h3>
+              </a>
+            </div>
+          
+        </div>
+
+        
+          
+            <link rel="stylesheet" href="https://unpkg.com/gitalk/dist/gitalk.css">
+<script src="https://unpkg.com/gitalk/dist/gitalk.min.js"></script>
+
+<div id="gitalk-container"></div>
 
 <script>
-  hljs.initHighlightingOnLoad()
 
-  let mainNavLinks = document.querySelectorAll(".markdownIt-TOC a");
+  var gitalk = new Gitalk({
+    clientID: 'e2161286d5700e89fddf',
+    clientSecret: '9481468e5e7f8944f425f70a0a51eddfaebbe8d2',
+    repo: 'menghao56392.github.io',
+    owner: 'menghao56392',
+    admin: ['menghao56392'],
+    id: (location.pathname).substring(0, 49),      // Ensure uniqueness and length less than 50
+    distractionFreeMode: false  // Facebook-like distraction free mode
+  })
 
-  // This should probably be throttled.
-  // Especially because it triggers during smooth scrolling.
-  // https://lodash.com/docs/4.17.10#throttle
-  // You could do like...
-  // window.addEventListener("scroll", () => {
-  //    _.throttle(doThatStuff, 100);
-  // });
-  // Only not doing it here to keep this Pen dependency-free.
-
-  window.addEventListener("scroll", event => {
-    let fromTop = window.scrollY;
-
-    mainNavLinks.forEach((link, index) => {
-      let section = document.getElementById(decodeURI(link.hash).substring(1));
-      let nextSection = null
-      if (mainNavLinks[index + 1]) {
-        nextSection = document.getElementById(decodeURI(mainNavLinks[index + 1].hash).substring(1));
-      }
-      console.log('section.offsetHeight', section.offsetHeight);
-      if (section.offsetTop <= fromTop) {
-        if (nextSection) {
-          if (nextSection.offsetTop > fromTop) {
-            link.classList.add("current");
-          } else {
-            link.classList.remove("current");    
-          }
-        } else {
-          link.classList.add("current");
-        }
-      } else {
-        link.classList.remove("current");
-      }
-    });
-  });
+  gitalk.render('gitalk-container')
 
 </script>
 
+          
+
+          
+        
+
       </div>
     </div>
+
+    <script src="http://www.svenbeast.com//media/prism.js"></script>  
+<script>
+
+Prism.highlightAll()
+
+let mainNavLinks = document.querySelectorAll(".markdownIt-TOC a");
+
+// This should probably be throttled.
+// Especially because it triggers during smooth scrolling.
+// https://lodash.com/docs/4.17.10#throttle
+// You could do like...
+// window.addEventListener("scroll", () => {
+//    _.throttle(doThatStuff, 100);
+// });
+// Only not doing it here to keep this Pen dependency-free.
+
+window.addEventListener("scroll", event => {
+  let fromTop = window.scrollY;
+
+  mainNavLinks.forEach((link, index) => {
+    let section = document.getElementById(decodeURI(link.hash).substring(1));
+    let nextSection = null
+    if (mainNavLinks[index + 1]) {
+      nextSection = document.getElementById(decodeURI(mainNavLinks[index + 1].hash).substring(1));
+    }
+    if (section.offsetTop <= fromTop) {
+      if (nextSection) {
+        if (nextSection.offsetTop > fromTop) {
+          link.classList.add("current");
+        } else {
+          link.classList.remove("current");    
+        }
+      } else {
+        link.classList.add("current");
+      }
+    } else {
+      link.classList.remove("current");
+    }
+  });
+});
+
+
+document.addEventListener("DOMContentLoaded", function() {
+  var lazyImages = [].slice.call(document.querySelectorAll(".post-feature-image.lazy"));
+
+  if ("IntersectionObserver" in window) {
+    let lazyImageObserver = new IntersectionObserver(function(entries, observer) {
+      entries.forEach(function(entry) {
+        if (entry.isIntersecting) {
+          let lazyImage = entry.target
+          lazyImage.style.backgroundImage = `url(${lazyImage.dataset.bg})`
+          lazyImage.classList.remove("lazy")
+          lazyImageObserver.unobserve(lazyImage)
+        }
+      });
+    });
+
+    lazyImages.forEach(function(lazyImage) {
+      lazyImageObserver.observe(lazyImage)
+    })
+  } else {
+    // Possibly fall back to a more compatible method here
+  }
+});
+
+const menuContainer = document.querySelector('.menu-container')
+const menus = document.querySelectorAll('.menu-container .menu')
+const mask = document.querySelector('.mask')
+const contentWrapper = document.querySelector('.content-wrapper')
+const latestArticle = document.querySelector('.latest-article')
+const readMore = document.querySelector('.read-more')
+const indexPage = document.querySelector('.index-page')
+
+const isHome = location.pathname === '/'
+if (latestArticle) {
+  latestArticle.style.display = isHome ? 'block' : 'none'
+  readMore.style.display = isHome ? 'block' : 'none'
+  indexPage.style.display = isHome ? 'none' : 'block'
+}
+
+const openMenu = () => {
+  menuContainer.classList.add('open')
+  menus.forEach(menu => {
+    menu.classList.add('animated', 'fadeInLeft')
+  })
+  mask.classList.add('open')
+  contentWrapper.classList.add('is-second')
+}
+
+const closeMenu = () => {
+  menuContainer.classList.remove('open')
+  menus.forEach(menu => {
+    menu.classList.remove('animated', 'fadeInLeft')
+  })
+  mask.classList.remove('open')
+  contentWrapper.classList.remove('is-second')
+}
+</script>
+  
   </body>
 </html>

