@@ -1,15 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <feed xmlns="http://www.w3.org/2005/Atom">
     <id>http://www.svenbeast.com/</id>
-    <title>斯文beast&apos;</title>
-    <updated>2019-09-23T03:32:31.694Z</updated>
+    <title>斯文beast</title>
+    <updated>2019-09-23T03:36:02.938Z</updated>
     <generator>https://github.com/jpmonette/feed</generator>
     <link rel="alternate" href="http://www.svenbeast.com/"/>
     <link rel="self" href="http://www.svenbeast.com//atom.xml"/>
-    <subtitle>  不在平静中灭亡~</subtitle>
+    <subtitle>不在平静中灭亡~</subtitle>
     <logo>http://www.svenbeast.com//images/avatar.png</logo>
     <icon>http://www.svenbeast.com//favicon.ico</icon>
-    <rights>All rights reserved 2019, 斯文beast&apos;</rights>
+    <rights>All rights reserved 2019, 斯文beast</rights>
     <entry>
         <title type="html"><![CDATA[Shiro<=1.2.4反序列化的简单理解及POC]]></title>
         <id>http://www.svenbeast.com//post/fkOpKjach</id>
