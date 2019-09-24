@@ -26,7 +26,7 @@
 
   </head>
   <body>
-    <div id="app" class="main px-4 flex flex-col lg:flex-row">
+    <div class="main px-4 flex flex-col lg:flex-row">
       <div id="sidebar" class="sidebar-wrapper lg:static lg:w-1/4">
   <div class="lg:sticky top-0">
     <div class="sidebar-content">
@@ -40,9 +40,29 @@
       
         <div class="animated fadeInLeft" style="animation-delay: 0.4s">
           <p class="my-4 text-gray-600 font-light hidden lg:block">
-            文章目录
+            不在平静中灭亡~
           </p>
-          <div class="toc-container hidden lg:block">
+          <div class="animated fadeInLeft social-container hidden lg:block" style="animation-delay: 0.6s">
+            
+              
+            
+              
+            
+              
+            
+              
+            
+              
+            
+              
+            
+              
+            
+              
+            
+              
+            
+              
             
           </div>
         </div>
@@ -87,74 +107,42 @@
 </div>
 <div class="mask" onclick="closeMenu()">
 </div>
-      <div class="content-wrapper py-32 lg:p-8 lg:w-3/4 post-detail animated fadeIn">
-        <h1 class="text-3xl font-bold lg:mt-16">关于</h1>
-        <div class="text-sm text-gray-700 lg:my-8">
-          2019-01-25 / 1 min read
+      <div class="content-wrapper py-32 lg:p-8 lg:w-3/4">
+        <h2 class="latest-article text-lg text-gray-700 mb-8">
+          <i class="remixicon-article-line"></i>
+          最新文章
+        </h2>
+        
+  <section class="post-item md:flex pb-12 animated fadeIn" :style="{ 'animation-delay': `${0 * 0.2}s` }">
+    
+      <a href="http://www.svenbeast.com//post/hello-gridea" class="feature-image-wrapper bg-gray-100 rounded-lg flex-shrink-0 mr-8 w-full h-56 h-32 md:w-56 md:h-40">
+        <div class="post-feature-image lazy w-full h-56 h-32 md:w-56 md:h-40" data-bg="'http://www.svenbeast.com//post-images/hello-gridea.jpg'">
         </div>
+      </a>
+    
+    <div class="content">
+      <a href="http://www.svenbeast.com//post/hello-gridea">
+        <h2 class="post-title text-xl font-extrabold mt-5 md:mt-0">文件包含漏洞利用集合+简单payload</h2>
+      </a>
+      <div class="post-abstract text-gray-700 font-light my-4">
         
-          <img class="post-feature-image rounded-lg mx-auto my-4" src="http://www.svenbeast.com//post-images/about.jpg" alt="">
-        
-        <div class="post-content yue">
-          <p>😄 svenbeast<br>
-🙃 18年正式进入安全厂商<br>
-🤣 目前在某信做着安服工作，为自己加油~<br>
-🥰 希望通过不断学习和分享让自己变成更优秀的Super Man~</p>
-<blockquote>
-<p>北京的小伙伴有机会可以来面基，vx:meng56392</p>
-</blockquote>
+      </div>
+      <div class="text-gray-400 text-sm font-light">2018-12-12 / 3 min read</div>
+    </div>
+  </section>
 
-        </div>
-
-        
-          <a class="animated fadeInUp p-2 items-center text-sm text-gray-700 border hover:bg-gray-300 leading-none rounded-full flex lg:inline-flex m-4 " href="http://www.svenbeast.com//tag/IVn8EkeWs">
-            <span class="flex-auto">学习</span>
-          </a>
-        
-          <a class="animated fadeInUp p-2 items-center text-sm text-gray-700 border hover:bg-gray-300 leading-none rounded-full flex lg:inline-flex m-4 " href="http://www.svenbeast.com//tag/V9gIO3BPO5">
-            <span class="flex-auto">分享</span>
-          </a>
-        
-          <a class="animated fadeInUp p-2 items-center text-sm text-gray-700 border hover:bg-gray-300 leading-none rounded-full flex lg:inline-flex m-4 " href="http://www.svenbeast.com//tag/P8jNZE_I-">
-            <span class="flex-auto">sven</span>
-          </a>
-        
-
-
-        <div class="flex justify-between py-8">
-          
-
+        <div class="read-more">
           
         </div>
+        <div class="index-page">
+          <div class="pagination-container animated fadeIn">
+  
+    <a href="http://www.svenbeast.com//" class="page-btn"><i class="remixicon-arrow-left-line"></i> 上一页</a>
+  
+  
+</div>
 
-        
-          
-            <link rel="stylesheet" href="https://unpkg.com/gitalk/dist/gitalk.css">
-<script src="https://unpkg.com/gitalk/dist/gitalk.min.js"></script>
-
-<div id="gitalk-container"></div>
-
-<script>
-
-  var gitalk = new Gitalk({
-    clientID: 'e2161286d5700e89fddf',
-    clientSecret: '9481468e5e7f8944f425f70a0a51eddfaebbe8d2',
-    repo: 'menghao56392.github.io',
-    owner: 'menghao56392',
-    admin: ['menghao56392'],
-    id: (location.pathname).substring(0, 49),      // Ensure uniqueness and length less than 50
-    distractionFreeMode: false  // Facebook-like distraction free mode
-  })
-
-  gitalk.render('gitalk-container')
-
-</script>
-
-          
-
-          
-        
-
+        </div>
       </div>
     </div>
 
