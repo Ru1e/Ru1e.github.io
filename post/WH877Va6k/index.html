@@ -40,30 +40,23 @@
       
         <div class="animated fadeInLeft" style="animation-delay: 0.4s">
           <p class="my-4 text-gray-600 font-light hidden lg:block">
-            不在平静中灭亡~
+            文章目录
           </p>
-          <div class="animated fadeInLeft social-container hidden lg:block" style="animation-delay: 0.6s">
-            
-              
-            
-              
-            
-              
-            
-              
-            
-              
-            
-              
-            
-              
-            
-              
-            
-              
-            
-              
-            
+          <div class="toc-container hidden lg:block">
+            <ul class="markdownIt-TOC">
+<li>
+<ul>
+<li>
+<ul>
+<li><a href="#0x01-%E8%83%8C%E6%99%AF">0x01 背景</a></li>
+<li><a href="#0x02-%E6%90%AD%E5%BB%BA%E7%8E%AF%E5%A2%83">0x02 搭建环境</a></li>
+<li><a href="#0x03-getshell">0x03 getshell</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
           </div>
         </div>
       
@@ -107,33 +100,83 @@
 </div>
 <div class="mask" onclick="closeMenu()">
 </div>
-      <div class="content-wrapper py-32 lg:p-8 lg:w-3/4">
-        <h2 class="text-lg text-gray-700 mb-8">
-          <i class="remixicon-bookmark-line"></i> 文件包含
-        </h2>
-        
-  <section class="post-item md:flex pb-12 animated fadeIn" :style="{ 'animation-delay': `${0 * 0.2}s` }">
-    
-      <a href="http://www.svenbeast.com//post/hello-gridea" class="feature-image-wrapper bg-gray-100 rounded-lg flex-shrink-0 mr-8 w-full h-56 h-32 md:w-56 md:h-40">
-        <div class="post-feature-image lazy w-full h-56 h-32 md:w-56 md:h-40" data-bg="'http://www.svenbeast.com//post-images/hello-gridea.jpg'">
+      <div class="content-wrapper py-32 lg:p-8 lg:w-3/4 post-detail animated fadeIn">
+        <h1 class="text-3xl font-bold lg:mt-16">Joomla 3.4.6-RCE漏洞利用</h1>
+        <div class="text-sm text-gray-700 lg:my-8">
+          2019-10-10 / 1 min read
         </div>
-      </a>
-    
-    <div class="content">
-      <a href="http://www.svenbeast.com//post/hello-gridea">
-        <h2 class="post-title text-xl font-extrabold mt-5 md:mt-0">文件包含漏洞利用集合+简单payload</h2>
-      </a>
-      <div class="post-abstract text-gray-700 font-light my-4">
         
-      </div>
-      <div class="text-gray-400 text-sm font-light">2018-12-12 / 3 min read</div>
-    </div>
-  </section>
+        <div class="post-content yue">
+          <h3 id="0x01-背景">0x01 背景</h3>
+<ul>
+<li>Joomla是一套支持多种语言，全球都有名的CMS系统。其实日常也见不到😗</li>
+<li>这次披露的是Joomla 3.4.6版本，最新版本目前是3.9.12</li>
+</ul>
+<h3 id="0x02-搭建环境">0x02 搭建环境</h3>
+<ul>
+<li>下载地址：https://github.com/joomla/joomla-cms/releases/download/3.4.6/Joomla_3.4.6-Stable-Full_Package.zip</li>
+<li>让我们来使用phpstudy_pro来搭建环境吧🙃，这次不会再有后门了吧<br>
+<img src="http://www.svenbeast.com//post-images/1570692151502.png" alt=""><br>
+<img src="http://www.svenbeast.com//post-images/1570692253263.png" alt=""><br>
+<img src="http://www.svenbeast.com//post-images/1570692290692.png" alt=""></li>
+</ul>
+<h3 id="0x03-getshell">0x03 getshell</h3>
+<ul>
+<li>已经有成型exp了，让我们直接上手吧，成功getshell</li>
+<li>它会在configuration.php文件中写入一句话，密码为vchvnalfdvnrrogormraprcrclduahcmjsyclppxegutxrjhog<br>
+<img src="http://www.svenbeast.com//post-images/1570692440276.png" alt=""><br>
+<img src="http://www.svenbeast.com//post-images/1570693086231.png" alt=""><br>
+<img src="http://www.svenbeast.com//post-images/1570693192611.png" alt=""><br>
+<img src="http://www.svenbeast.com//post-images/1570693126424.png" alt=""></li>
+</ul>
 
-        <div class="pagination-container animated fadeIn">
-  
-  
-</div>
+        </div>
+
+        
+
+
+        <div class="flex justify-between py-8">
+          
+
+          
+            <div class="next-post">
+              <a href="http://www.svenbeast.com//post/2OBQlt_Ta">
+                <h3 class="post-title">
+                  phpstudy后门利用方法及getshell
+                  <i class="remixicon-arrow-right-line"></i>
+                </h3>
+              </a>
+            </div>
+          
+        </div>
+
+        
+          
+            <link rel="stylesheet" href="https://unpkg.com/gitalk/dist/gitalk.css">
+<script src="https://unpkg.com/gitalk/dist/gitalk.min.js"></script>
+
+<div id="gitalk-container"></div>
+
+<script>
+
+  var gitalk = new Gitalk({
+    clientID: 'e2161286d5700e89fddf',
+    clientSecret: '9481468e5e7f8944f425f70a0a51eddfaebbe8d2',
+    repo: 'menghao56392.github.io',
+    owner: 'menghao56392',
+    admin: ['menghao56392'],
+    id: (location.pathname).substring(0, 49),      // Ensure uniqueness and length less than 50
+    distractionFreeMode: false  // Facebook-like distraction free mode
+  })
+
+  gitalk.render('gitalk-container')
+
+</script>
+
+          
+
+          
+        
 
       </div>
     </div>

