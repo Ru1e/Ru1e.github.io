@@ -4,7 +4,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>斯文beast</title>
 <meta name="description" content="不在平静中灭亡~" />
-<link rel="shortcut icon" href="http://www.svenbeast.com//favicon.ico?v=1571912006617">
+<link rel="shortcut icon" href="http://www.svenbeast.com//favicon.ico?v=1571912369004">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.10.0/katex.min.css">
 <link href="https://cdn.remixicon.com/releases/v1.3.1/remixicon.css" rel="stylesheet">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Droid+Serif:400,700">
@@ -33,7 +33,7 @@
       <div class="flex lg:block p-4 lg:px-0 items-center fixed lg:static lg:block top-0 right-0 left-0 bg-white z-50">
         <i class="remixicon-menu-2-line lg:mt-4 text-2xl cursor-pointer animated fadeIn" onclick="openMenu()"></i>
         <a href="http://www.svenbeast.com/">
-          <img class="animated fadeInLeft avatar rounded-lg mx-4 lg:mt-32 lg:mx-0 mt-0 lg:w-24 lg:h-24 w-12 w-12" src="http://www.svenbeast.com//images/avatar.png?v=1571912006617" alt="">
+          <img class="animated fadeInLeft avatar rounded-lg mx-4 lg:mt-32 lg:mx-0 mt-0 lg:w-24 lg:h-24 w-12 w-12" src="http://www.svenbeast.com//images/avatar.png?v=1571912369004" alt="">
         </a>
         <h1 class="animated fadeInLeft lg:text-4xl font-extrabold lg:mt-8 mt-0 text-xl" style="animation-delay: 0.2s">斯文beast</h1>
       </div>
@@ -50,6 +50,7 @@
 <ul>
 <li><a href="#0x01-%E8%83%8C%E6%99%AF">0x01 背景</a></li>
 <li><a href="#0x02-%E5%BD%B1%E5%93%8D%E8%8C%83%E5%9B%B4">0x02 影响范围</a></li>
+<li><a href="#0x03-%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA">0x03 环境搭建</a></li>
 <li><a href="#0x04-%E6%BC%8F%E6%B4%9E%E5%88%A9%E7%94%A8">0x04 漏洞利用</a></li>
 <li><a href="#0x05-%E6%BC%8F%E6%B4%9E%E6%88%90%E5%9B%A0">0x05 漏洞成因</a></li>
 </ul>
@@ -133,11 +134,11 @@ Nginx 上 fastcgi_split_path_info 在处理带有 %0a 的请求时，会因为�
 
         fastcgi_pass   php:9000;
 
-        ...
+
   }
 }
 </code></pre>
-<p>0x03 环境搭建</p>
+<h3 id="0x03-环境搭建">0x03 环境搭建</h3>
 <p>靶机：ubuntu， Vulhub，docker</p>
 <pre><code>命令集合
 mkdir CVE-2019-11043
