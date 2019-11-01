@@ -4,7 +4,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>斯文beast</title>
 <meta name="description" content="不在平静中灭亡~" />
-<link rel="shortcut icon" href="http://www.svenbeast.com//favicon.ico?v=1572508483908">
+<link rel="shortcut icon" href="http://www.svenbeast.com//favicon.ico?v=1572574401472">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.10.0/katex.min.css">
 <link href="https://cdn.remixicon.com/releases/v1.3.1/remixicon.css" rel="stylesheet">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Droid+Serif:400,700">
@@ -33,7 +33,7 @@
       <div class="flex lg:block p-4 lg:px-0 items-center fixed lg:static lg:block top-0 right-0 left-0 bg-white z-50">
         <i class="remixicon-menu-2-line lg:mt-4 text-2xl cursor-pointer animated fadeIn" onclick="openMenu()"></i>
         <a href="http://www.svenbeast.com/">
-          <img class="animated fadeInLeft avatar rounded-lg mx-4 lg:mt-32 lg:mx-0 mt-0 lg:w-24 lg:h-24 w-12 w-12" src="http://www.svenbeast.com//images/avatar.png?v=1572508483908" alt="">
+          <img class="animated fadeInLeft avatar rounded-lg mx-4 lg:mt-32 lg:mx-0 mt-0 lg:w-24 lg:h-24 w-12 w-12" src="http://www.svenbeast.com//images/avatar.png?v=1572574401472" alt="">
         </a>
         <h1 class="animated fadeInLeft lg:text-4xl font-extrabold lg:mt-8 mt-0 text-xl" style="animation-delay: 0.2s">斯文beast</h1>
       </div>
@@ -51,7 +51,8 @@
 <li><a href="#0x01-%E6%8F%8F%E8%BF%B0">0x01 描述</a></li>
 <li><a href="#0x02-%E8%8C%83%E5%9B%B4">0x02 范围</a></li>
 <li><a href="#0x03-%E5%A4%8D%E7%8E%B0">0x03 复现</a></li>
-<li><a href="#0x04-%E4%BF%AE%E5%A4%8D">0x04 修复</a></li>
+<li><a href="#0x04-%E5%8F%8D%E5%BC%B9shell">0x04 反弹shell</a></li>
+<li><a href="#0x05-%E4%BF%AE%E5%A4%8D">0x05 修复</a></li>
 </ul>
 </li>
 </ul>
@@ -169,7 +170,16 @@ Content-Length: 263
 
 </code></pre>
 <figure data-type="image" tabindex="2"><img src="http://www.svenbeast.com//post-images/1572507820201.png" alt=""></figure>
-<h3 id="0x04-修复">0x04 修复</h3>
+<h3 id="0x04-反弹shell">0x04 反弹shell</h3>
+<ul>
+<li>1.对bash命令进行runtime编码，在进行url编码，即可成功反弹<br>
+<img src="http://www.svenbeast.com//post-images/1572574188913.png" alt=""><br>
+<img src="http://www.svenbeast.com//post-images/1572574231566.png" alt=""></li>
+<li>2.成功反弹到vbs<br>
+<img src="http://www.svenbeast.com//post-images/1572574310044.png" alt=""><br>
+<img src="http://www.svenbeast.com//post-images/1572574398917.png" alt=""></li>
+</ul>
+<h3 id="0x05-修复">0x05 修复</h3>
 <ul>
 <li>官方暂未发布，可关注官网获取补丁或版本更新：http://lucene.apache.org/solr/</li>
 </ul>

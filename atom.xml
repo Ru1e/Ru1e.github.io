@@ -2,7 +2,7 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
     <id>http://www.svenbeast.com/</id>
     <title>斯文beast</title>
-    <updated>2019-10-31T07:54:47.422Z</updated>
+    <updated>2019-11-01T02:13:25.261Z</updated>
     <generator>https://github.com/jpmonette/feed</generator>
     <link rel="alternate" href="http://www.svenbeast.com/"/>
     <link rel="self" href="http://www.svenbeast.com//atom.xml"/>
@@ -75,7 +75,16 @@ Content-Length: 263
 
 </code></pre>
 <figure data-type="image" tabindex="2"><img src="http://www.svenbeast.com//post-images/1572507820201.png" alt=""></figure>
-<h3 id="0x04-修复">0x04 修复</h3>
+<h3 id="0x04-反弹shell">0x04 反弹shell</h3>
+<ul>
+<li>1.对bash命令进行runtime编码，在进行url编码，即可成功反弹<br>
+<img src="http://www.svenbeast.com//post-images/1572574188913.png" alt=""><br>
+<img src="http://www.svenbeast.com//post-images/1572574231566.png" alt=""></li>
+<li>2.成功反弹到vbs<br>
+<img src="http://www.svenbeast.com//post-images/1572574310044.png" alt=""><br>
+<img src="http://www.svenbeast.com//post-images/1572574398917.png" alt=""></li>
+</ul>
+<h3 id="0x05-修复">0x05 修复</h3>
 <ul>
 <li>官方暂未发布，可关注官网获取补丁或版本更新：http://lucene.apache.org/solr/</li>
 </ul>
