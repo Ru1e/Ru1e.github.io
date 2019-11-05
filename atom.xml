@@ -2,7 +2,7 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
     <id>http://www.svenbeast.com/</id>
     <title>斯文beast</title>
-    <updated>2019-11-05T08:07:02.405Z</updated>
+    <updated>2019-11-05T08:42:05.766Z</updated>
     <generator>https://github.com/jpmonette/feed</generator>
     <link rel="alternate" href="http://www.svenbeast.com/"/>
     <link rel="self" href="http://www.svenbeast.com//atom.xml"/>
@@ -33,7 +33,7 @@
 ]]></content>
     </entry>
     <entry>
-        <title type="html"><![CDATA[Apache Solr Velocity模版远程代码执行漏洞复现]]></title>
+        <title type="html"><![CDATA[Apache Solr Velocity远程代码执行漏洞利用]]></title>
         <id>http://www.svenbeast.com//post/QmuCuXJa9</id>
         <link href="http://www.svenbeast.com//post/QmuCuXJa9">
         </link>
