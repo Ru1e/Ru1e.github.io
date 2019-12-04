@@ -2,7 +2,7 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
     <id>http://www.svenbeast.com/</id>
     <title>斯文beast</title>
-    <updated>2019-11-27T03:07:01.263Z</updated>
+    <updated>2019-12-04T08:39:23.244Z</updated>
     <generator>https://github.com/jpmonette/feed</generator>
     <link rel="alternate" href="http://www.svenbeast.com/"/>
     <link rel="self" href="http://www.svenbeast.com//atom.xml"/>
@@ -67,11 +67,22 @@ exp：https://github.com/Geekby/shiro_rce_exp
 </li>
 </ul>
 <pre><code>需输入3个参数，目标url，正常rememberMe值，payload.class，我跑了应该是20分左右，具体没看
-&gt;python2 shiro_exp.py http://172.20.10.3:8080/shiro-1.4.1/home.jsp rememberMe值 payload.class
+&gt;&gt;python2 shiro_exp.py http://172.20.10.3:8080/shiro-1.4.1/home.jsp rememberMe值 payload.class
 </code></pre>
-<figure data-type="image" tabindex="1"><img src="http://www.svenbeast.com//post-images/1574059907285.png" alt=""></figure>
+<figure data-type="image" tabindex="1"><img src="http://www.svenbeast.com//post-images/1575447759689.png" alt=""></figure>
 <ul>
-<li>6.使用生成的恶意remeberMe值进行访问</li>
+<li>6.使用生成的恶意rememberMe值进行访问</li>
+</ul>
+<pre><code>PS：此处访问需要先退出刚才的登录，在未登录情况下使用恶意remeberMe进行访问，由此才可造成RCE
+同时也可理解为，获得一次任意登录后得remeberMe值后，以后再利用则无需获取新的值
+</code></pre>
+<p><img src="http://www.svenbeast.com//post-images/1575447389761.png" alt=""><br>
+<img src="http://www.svenbeast.com//post-images/1575447533249.png" alt=""></p>
+<h3 id="0x04-坑点">0x04 坑点</h3>
+<ul>
+<li>1.耗费时间</li>
+<li>2.需要注销后进行注入恶意rememberMe访问，差点自闭，毕竟无参考且没人提过，或者我姿势不对？？</li>
+<li>3.友情提示不要用linux虚拟机当做靶机进行遍历，虚拟机会内存红色告急，可以先快照试试，不过不一定管事 （默默超心痛我的kali机，-.-!）</li>
 </ul>
 ]]></content>
     </entry>
