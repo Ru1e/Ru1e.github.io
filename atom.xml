@@ -2,7 +2,7 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
     <id>http://www.svenbeast.com/</id>
     <title>斯文beast</title>
-    <updated>2019-12-04T08:39:23.244Z</updated>
+    <updated>2019-12-04T12:34:13.620Z</updated>
     <generator>https://github.com/jpmonette/feed</generator>
     <link rel="alternate" href="http://www.svenbeast.com/"/>
     <link rel="self" href="http://www.svenbeast.com//atom.xml"/>
@@ -23,7 +23,7 @@
 ]]></content>
     </entry>
     <entry>
-        <title type="html"><![CDATA[Shiro<1.4.1 padding oracle attack导致RCE]]></title>
+        <title type="html"><![CDATA[Shiro<=1.4.1 padding oracle attack导致RCE]]></title>
         <id>http://www.svenbeast.com//post/-leT8b8Kh</id>
         <link href="http://www.svenbeast.com//post/-leT8b8Kh">
         </link>
@@ -32,14 +32,14 @@
 <pre><code>shiro是一个java场景使用较多组件，最近曝出因使用了 AES-128-CBC 模式对cookie进行加密，so可
 以padding oracle攻击构造数据进行反序列化攻击
 
-影响版本： shiro&lt;1.4.1
+影响版本： 1.2.4&lt;shiro&lt;=1.4.1
 </code></pre>
 <h3 id="0x02-环境">0x02 环境</h3>
-<pre><code>靶机：ubuntu + tomcat + shiro1.4.1
-shiro环境：https://pan.baidu.com/s/13Ij53-ETyCAlLxI4tP3jPg 提取码: sven
+<pre><code>靶机：windows10 + tomcat + shiro1.4.1
+shiro环境：https://pan.baidu.com/s/1E72vhls9oOI-ny4luDTi3A 提取码: uakn
 
 攻击机：windows10 + burpsuite + python
-exp：https://github.com/Geekby/shiro_rce_exp
+Exp：https://github.com/wuppp/shiro_rce_exp
 </code></pre>
 <h3 id="0x03-复现">0x03 复现</h3>
 <ul>
@@ -74,7 +74,7 @@ exp：https://github.com/Geekby/shiro_rce_exp
 <li>6.使用生成的恶意rememberMe值进行访问</li>
 </ul>
 <pre><code>PS：此处访问需要先退出刚才的登录，在未登录情况下使用恶意remeberMe进行访问，由此才可造成RCE
-同时也可理解为，获得一次任意登录后得remeberMe值后，以后再利用则无需获取新的值
+同时也可理解为，获得一次任意登录后得remeberMe值后，以后再利用则无需获取新的值,想要执行其他命令，继续使用初始的remeberMe值进行遍历。
 </code></pre>
 <p><img src="http://www.svenbeast.com//post-images/1575447389761.png" alt=""><br>
 <img src="http://www.svenbeast.com//post-images/1575447533249.png" alt=""></p>
