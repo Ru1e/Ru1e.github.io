@@ -2,7 +2,7 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
     <id>http://www.svenbeast.com/</id>
     <title>斯文beast</title>
-    <updated>2019-12-04T12:38:40.881Z</updated>
+    <updated>2019-12-05T06:44:07.154Z</updated>
     <generator>https://github.com/jpmonette/feed</generator>
     <link rel="alternate" href="http://www.svenbeast.com/"/>
     <link rel="self" href="http://www.svenbeast.com//atom.xml"/>
@@ -39,7 +39,7 @@
 shiro环境：https://pan.baidu.com/s/1E72vhls9oOI-ny4luDTi3A 提取码: uakn
 
 攻击机：windows10 + burpsuite + python
-Exp：https://github.com/wuppp/shiro_rce_exp
+Exp：https://xxx.com
 </code></pre>
 <h3 id="0x03-复现">0x03 复现</h3>
 <ul>
