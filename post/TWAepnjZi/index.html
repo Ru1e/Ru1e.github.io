@@ -40,33 +40,9 @@
       
         <div class="animated fadeInLeft" style="animation-delay: 0.4s">
           <p class="my-4 text-gray-600 font-light hidden lg:block">
-            不在平静中灭亡~  
+            文章目录
           </p>
-          <div class="animated fadeInLeft social-container hidden lg:block" style="animation-delay: 0.6s">
-            
-              
-                <a href="https://github.com/sv3nbeast" target="_blank" class="mr-4 text-xl text-gray-400 font-light hover:text-gray-900">
-                  <i class="remixicon-github-line"></i>
-                </a>
-              
-            
-              
-            
-              
-            
-              
-            
-              
-            
-              
-            
-              
-            
-              
-            
-              
-            
-              
+          <div class="toc-container hidden lg:block">
             
           </div>
         </div>
@@ -111,28 +87,67 @@
 </div>
 <div class="mask" onclick="closeMenu()">
 </div>
-      <div class="content-wrapper py-32 lg:p-8 lg:w-3/4">
-        <h2 class="text-lg text-gray-700 mb-8">
-          <i class="remixicon-bookmark-2-line"></i> 标签云
-        </h2>
-        <div class="tags-container">
+      <div class="content-wrapper py-32 lg:p-8 lg:w-3/4 post-detail animated fadeIn">
+        <h1 class="text-3xl font-bold lg:mt-16">java RMI反序列化无含量记录</h1>
+        <div class="text-sm text-gray-700 lg:my-8">
+          2019-12-27 / 1 min read
+        </div>
+        
+        <div class="post-content yue">
+          <ul>
+<li>识别端口类型为java RMI时，尝试利用此漏洞</li>
+<li>参考链接：https://www.freebuf.com/vuls/126499.html</li>
+</ul>
+<figure data-type="image" tabindex="1"><img src="http://www.svenbeast.com//post-images/1577412256632.gif" alt=""></figure>
+
+        </div>
+
+        
+
+
+        <div class="flex justify-between py-8">
           
-            <a class="animated fadeInUp p-2 items-center text-sm text-gray-700 border hover:bg-gray-300 leading-none rounded-full flex lg:inline-flex m-4 " href="http://www.svenbeast.com//tag/wjQYmk5ed" :style="{ 'animation-delay': `${0 * 0.2}s` }">
-              <span class="flex-auto">Discuz!ML</span>
-              <span class="flex rounded-full bg-gray-200 px-2 py-1 text-xs ml-1">1</span>
-            </a>
+
           
-            <a class="animated fadeInUp p-2 items-center text-sm text-gray-700 border hover:bg-gray-300 leading-none rounded-full flex lg:inline-flex m-4 " href="http://www.svenbeast.com//tag/_fczXccA_" :style="{ 'animation-delay': `${1 * 0.2}s` }">
-              <span class="flex-auto">poc</span>
-              <span class="flex rounded-full bg-gray-200 px-2 py-1 text-xs ml-1">2</span>
-            </a>
-          
-            <a class="animated fadeInUp p-2 items-center text-sm text-gray-700 border hover:bg-gray-300 leading-none rounded-full flex lg:inline-flex m-4 " href="http://www.svenbeast.com//tag/De8Gb6fGa" :style="{ 'animation-delay': `${2 * 0.2}s` }">
-              <span class="flex-auto">致远</span>
-              <span class="flex rounded-full bg-gray-200 px-2 py-1 text-xs ml-1">1</span>
-            </a>
+            <div class="next-post">
+              <a href="http://www.svenbeast.com//post/OsMblUp6w">
+                <h3 class="post-title">
+                  windwos提权-CVE-2019-1388
+                  <i class="remixicon-arrow-right-line"></i>
+                </h3>
+              </a>
+            </div>
           
         </div>
+
+        
+          
+            <link rel="stylesheet" href="https://unpkg.com/gitalk/dist/gitalk.css">
+<script src="https://unpkg.com/gitalk/dist/gitalk.min.js"></script>
+
+<div id="gitalk-container"></div>
+
+<script>
+
+  var gitalk = new Gitalk({
+    clientID: 'e2161286d5700e89fddf',
+    clientSecret: '9481468e5e7f8944f425f70a0a51eddfaebbe8d2',
+    repo: 'menghao56392.github.io',
+    owner: 'menghao56392',
+    admin: ['menghao56392'],
+    id: (location.pathname).substring(0, 49),      // Ensure uniqueness and length less than 50
+    distractionFreeMode: false  // Facebook-like distraction free mode
+  })
+
+  gitalk.render('gitalk-container')
+
+</script>
+
+          
+
+          
+        
+
       </div>
     </div>
 

