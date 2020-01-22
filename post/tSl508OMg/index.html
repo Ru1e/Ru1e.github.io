@@ -4,7 +4,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>斯文beast</title>
 <meta name="description" content="不在平静中灭亡~  " />
-<link rel="shortcut icon" href="http://www.svenbeast.com//favicon.ico?v=1579342956251">
+<link rel="shortcut icon" href="http://www.svenbeast.com//favicon.ico?v=1579676865221">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.10.0/katex.min.css">
 <link href="https://cdn.remixicon.com/releases/v1.3.1/remixicon.css" rel="stylesheet">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Droid+Serif:400,700">
@@ -33,7 +33,7 @@
       <div class="flex lg:block p-4 lg:px-0 items-center fixed lg:static lg:block top-0 right-0 left-0 bg-white z-50">
         <i class="remixicon-menu-2-line lg:mt-4 text-2xl cursor-pointer animated fadeIn" onclick="openMenu()"></i>
         <a href="http://www.svenbeast.com/">
-          <img class="animated fadeInLeft avatar rounded-lg mx-4 lg:mt-32 lg:mx-0 mt-0 lg:w-24 lg:h-24 w-12 w-12" src="http://www.svenbeast.com//images/avatar.png?v=1579342956251" alt="">
+          <img class="animated fadeInLeft avatar rounded-lg mx-4 lg:mt-32 lg:mx-0 mt-0 lg:w-24 lg:h-24 w-12 w-12" src="http://www.svenbeast.com//images/avatar.png?v=1579676865221" alt="">
         </a>
         <h1 class="animated fadeInLeft lg:text-4xl font-extrabold lg:mt-8 mt-0 text-xl" style="animation-delay: 0.2s">斯文beast</h1>
       </div>
@@ -43,7 +43,21 @@
             文章目录
           </p>
           <div class="toc-container hidden lg:block">
-            
+            <ul class="markdownIt-TOC">
+<li>
+<ul>
+<li>
+<ul>
+<li><a href="#0x01-%E8%83%8C%E6%99%AF">0x01 背景</a></li>
+<li><a href="#0x01-%E7%8E%AF%E5%A2%83">0x01 环境</a></li>
+<li><a href="#0x02-%E5%A4%A7%E6%A6%82%E8%BF%87%E7%A8%8B">0x02 大概过程</a></li>
+<li><a href="#0x03-%E7%BB%93%E6%9E%9C">0x03 结果</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
           </div>
         </div>
       
@@ -88,13 +102,37 @@
 <div class="mask" onclick="closeMenu()">
 </div>
       <div class="content-wrapper py-32 lg:p-8 lg:w-3/4 post-detail animated fadeIn">
-        <h1 class="text-3xl font-bold lg:mt-16">无</h1>
+        <h1 class="text-3xl font-bold lg:mt-16">记录一次免杀的粗鄙操作(MSF+shellcode_loding+某杀毒)</h1>
         <div class="text-sm text-gray-700 lg:my-8">
           2020-01-17 / 1 min read
         </div>
         
         <div class="post-content yue">
-          <p>无</p>
+          <h3 id="0x01-背景">0x01 背景</h3>
+<pre><code>    ·········                                                                  ·········
+    ·······          做一个记录~                                               ······
+    ····                                                                            ····
+</code></pre>
+<h3 id="0x01-环境">0x01 环境</h3>
+<pre><code>临时公网vbs一个：94.191.125.65
+目标机：Windows2016并安装好360+火绒(截止到2020·1·22病毒库)
+攻击机：windwos10
+语言环境：go
+</code></pre>
+<h3 id="0x02-大概过程">0x02 大概过程</h3>
+<ul>
+<li>1.在VBS上开启frp，使MSF拥有公网ip</li>
+<li></li>
+<li>2.生成shellcode（94.191.125.65，4446）</li>
+<li></li>
+<li>3.shellcode加载器运行收shell</li>
+</ul>
+<h3 id="0x03-结果">0x03 结果</h3>
+<ul>
+<li>1.虽然是老方法，不过胜在比较自由（gif加载中...）<br>
+<img src="http://www.svenbeast.com//post-images/1579676723159.gif" alt=""><br>
+<img src="http://www.svenbeast.com//post-images/1579674799568.png" alt=""></li>
+</ul>
 
         </div>
 
