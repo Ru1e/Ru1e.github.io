@@ -2,7 +2,7 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
     <id>http://www.svenbeast.com/</id>
     <title>斯文beast</title>
-    <updated>2020-02-17T10:17:52.698Z</updated>
+    <updated>2020-02-17T10:23:16.925Z</updated>
     <generator>https://github.com/jpmonette/feed</generator>
     <link rel="alternate" href="http://www.svenbeast.com/"/>
     <link rel="self" href="http://www.svenbeast.com//atom.xml"/>
@@ -20,11 +20,8 @@
 <p>需要一个域名监控工具，本着工具越简单越好的理念，写了一个只能满足我需要的插件，好吧，其实是组装轮子的时候需要这个功能，然后有这功能的工具又都太乱了，我觉得有点冗余 -.-!</p>
 <h3 id="0x02-代码">0x02 代码</h3>
 <ul>
-<li>OneForAll(精灵师傅的子域名工具):https://github.com/shmilylty/OneForAll
-<ul>
-<li>One_Monitor(新增域名监控插件):</li>
-</ul>
-</li>
+<li>OneForAll(精灵师傅的子域名工具):https://github.com/shmilylty/OneForAll</li>
+<li>One_Monitor(新增域名监控插件):https://github.com/sv3nbeast/One_Monitor</li>
 </ul>
 <pre><code># -*- coding:utf-8 -*-
 import re
