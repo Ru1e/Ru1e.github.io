@@ -2,7 +2,7 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
     <id>http://www.svenbeast.com/</id>
     <title>斯文beast</title>
-    <updated>2020-02-21T09:30:21.290Z</updated>
+    <updated>2020-02-21T09:33:36.738Z</updated>
     <generator>https://github.com/jpmonette/feed</generator>
     <link rel="alternate" href="http://www.svenbeast.com/"/>
     <link rel="self" href="http://www.svenbeast.com/atom.xml"/>
@@ -83,7 +83,7 @@
 </code></pre>
 <figure data-type="image" tabindex="3"><img src="http://www.svenbeast.com//post-images/1582276683356.png" alt="" loading="lazy"></figure>
 <ul>
-<li>注意事项：反弹shell用的命令需要进行bash编码</li>
+<li>反弹shell用的命令需要进行bash编码</li>
 <li>在线bash编码：http://www.jackson-t.ca/runtime-exec-payloads.html</li>
 <li>POC下载地址：https://github.com/sv3nbeast/CVE-2020-1938-Tomact-file_include-file_read</li>
 </ul>
