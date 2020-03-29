@@ -4,7 +4,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>斯文beast</title>
 <meta name="description" content="不在平静中灭亡~  " />
-<link rel="shortcut icon" href="http://www.svenbeast.com//favicon.ico?v=1585491262187">
+<link rel="shortcut icon" href="http://www.svenbeast.com//favicon.ico?v=1585491960163">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.10.0/katex.min.css">
 <link href="https://cdn.remixicon.com/releases/v1.3.1/remixicon.css" rel="stylesheet">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Droid+Serif:400,700">
@@ -33,7 +33,7 @@
       <div class="flex lg:block p-4 lg:px-0 items-center fixed lg:static lg:block top-0 right-0 left-0 bg-white z-50">
         <i class="remixicon-menu-2-line lg:mt-4 text-2xl cursor-pointer animated fadeIn" onclick="openMenu()"></i>
         <a href="http://www.svenbeast.com/">
-          <img class="animated fadeInLeft avatar rounded-lg mx-4 lg:mt-32 lg:mx-0 mt-0 lg:w-24 lg:h-24 w-12 w-12" src="http://www.svenbeast.com//images/avatar.png?v=1585491262187" alt="">
+          <img class="animated fadeInLeft avatar rounded-lg mx-4 lg:mt-32 lg:mx-0 mt-0 lg:w-24 lg:h-24 w-12 w-12" src="http://www.svenbeast.com//images/avatar.png?v=1585491960163" alt="">
         </a>
         <h1 class="animated fadeInLeft lg:text-4xl font-extrabold lg:mt-8 mt-0 text-xl" style="animation-delay: 0.2s">斯文beast</h1>
       </div>
@@ -116,7 +116,7 @@
 </code></pre>
 <h3 id="0x02-新增多线程">0x02 新增多线程</h3>
 <ul>
-<li>当然首先要增加速度，使用的是threadpool这个老模块，下方是个别代码，其实插件模块里的插件代码全部都变了，虽模块增加但预计增加速度300%</li>
+<li>当然首先要增加速度，使用的是python的threadpool这个老模块，下方是个别代码，其实插件模块里的插件代码全部都变了，虽模块增加但预计增加速度300%</li>
 <li>为了脚本运行简单，多线程数量不是使用者传参控制，默认20线程，如需改动请到/moule/main.py第20行代码自行修改控制线程的参数</li>
 </ul>
 <pre><code>    def multithreading(self,funcname,url ,command, pools):

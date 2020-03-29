@@ -2,7 +2,7 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
     <id>http://www.svenbeast.com/</id>
     <title>斯文beast</title>
-    <updated>2020-03-29T14:14:25.868Z</updated>
+    <updated>2020-03-29T14:26:03.063Z</updated>
     <generator>https://github.com/jpmonette/feed</generator>
     <link rel="alternate" href="http://www.svenbeast.com/"/>
     <link rel="self" href="http://www.svenbeast.com/atom.xml"/>
@@ -21,7 +21,7 @@
 </code></pre>
 <h3 id="0x02-新增多线程">0x02 新增多线程</h3>
 <ul>
-<li>当然首先要增加速度，使用的是threadpool这个老模块，下方是个别代码，其实插件模块里的插件代码全部都变了，虽模块增加但预计增加速度300%</li>
+<li>当然首先要增加速度，使用的是python的threadpool这个老模块，下方是个别代码，其实插件模块里的插件代码全部都变了，虽模块增加但预计增加速度300%</li>
 <li>为了脚本运行简单，多线程数量不是使用者传参控制，默认20线程，如需改动请到/moule/main.py第20行代码自行修改控制线程的参数</li>
 </ul>
 <pre><code>    def multithreading(self,funcname,url ,command, pools):
