@@ -2,7 +2,7 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
     <id>http://www.svenbeast.com/</id>
     <title>斯文beast</title>
-    <updated>2020-03-29T14:00:08.397Z</updated>
+    <updated>2020-03-29T14:14:25.868Z</updated>
     <generator>https://github.com/jpmonette/feed</generator>
     <link rel="alternate" href="http://www.svenbeast.com/"/>
     <link rel="self" href="http://www.svenbeast.com/atom.xml"/>
@@ -17,7 +17,7 @@
         </link>
         <updated>2020-03-29T12:59:36.000Z</updated>
         <content type="html"><![CDATA[<h3 id="0x01-背景">0x01 背景</h3>
-<pre><code>周六日在家无聊，周六写的某平台自动提交，周日想起了当初因为某些原因写的ShiroScan，既然现在也有很多师傅在用，就准备重新改一下，毕竟当初为了赶速度，代码不能看-.-！
+<pre><code>周六日在家无聊，周六写的某自动提交，周日想起了当初因为某些原因写的ShiroScan，既然现在也有很多师傅在用，就准备重新改一下，毕竟当初为了赶速度，代码不能看-.-！
 </code></pre>
 <h3 id="0x02-新增多线程">0x02 新增多线程</h3>
 <ul>
