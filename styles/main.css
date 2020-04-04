@@ -27697,6 +27697,13 @@ body {
   }
 }
 
-      html{filter:progid:DXImageTransform.Microsoft.BasicImage(grayscale=1);} 
+      
+<style type="text/css">
+            html { 
+            FILTER: gray 
+            } 
+</style> 
+
+
 
     
