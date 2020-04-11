@@ -48,15 +48,11 @@
 <ul>
 <li>
 <ul>
-<li>
-<ul>
-<li><a href="#1%E9%A6%96%E5%85%88%E6%89%93%E5%BC%80http%E6%9C%8D%E5%8A%A1%E8%BF%99%E9%87%8C%E7%94%A8%E7%9A%84%E6%98%AFpython3%E8%87%AA%E5%B8%A6%E7%9A%84%E5%85%B6%E4%BB%96%E7%9A%84%E4%B9%9F%E5%8F%AF%E5%8F%AA%E8%A6%81%E5%8F%AF%E4%BB%A5%E8%AE%BF%E9%97%AE%E5%88%B0">1.首先打开http服务，这里用的是python3自带的，其他的也可，只要可以访问到</a></li>
-<li><a href="#2%E9%85%8D%E7%BD%AEjruby%E8%BF%99%E9%87%8C%E5%9B%A0%E4%B8%BA%E6%88%91%E4%B9%8B%E5%89%8D%E9%85%8D%E7%BD%AE%E8%BF%87%E6%89%80%E4%BB%A5%E5%B7%B2%E5%AD%98%E5%9C%A8%E5%B9%B6%E6%97%A0%E5%BD%B1%E5%93%8Djruby%E5%B7%B2%E6%89%93%E5%8C%85">2.配置jruby，这里因为我之前配置过，所以已存在，并无影响，jruby已打包</a></li>
-<li><a href="#3%E8%BF%90%E8%A1%8Ctestrb%E8%BF%9B%E8%A1%8C%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C">3.运行test.rb,进行命令执行</a></li>
-<li><a href="#4%E8%BF%99%E9%87%8C%E7%9A%84injectsql%E4%B8%BA%E5%86%99%E5%91%BD%E4%BB%A4%E7%9A%84%E6%96%87%E4%BB%B6%E6%AD%A4%E6%96%87%E4%BB%B6%E6%94%BE%E5%9C%A8http%E6%9C%8D%E5%8A%A1%E7%9A%84%E6%A0%B9%E7%9B%AE%E5%BD%95%E9%87%8Cjackson%E8%A6%81%E8%83%BD%E8%BF%9C%E7%A8%8B%E8%8E%B7%E5%8F%96%E5%88%B0">4.这里的inject.sql，为写命令的文件，此文件放在http服务的根目录里，jackson要能远程获取到</a></li>
-<li><a href="#5%E5%9C%A8%E5%AE%8C%E6%88%90%E7%AC%AC%E4%B8%89%E6%AD%A5%E7%9A%84%E6%97%B6%E5%80%99%E5%B7%B2%E7%BB%8F%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C%E5%AE%8C%E6%88%90%E5%9C%A8http%E6%9C%8D%E5%8A%A1%E7%9A%84%E6%A0%B9%E7%9B%AE%E5%BD%95%E4%BC%9A%E7%94%9F%E6%88%90exploitedtxt%E6%96%87%E4%BB%B6%E9%87%8C%E9%9D%A2%E6%98%AF%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C%E5%90%8E%E5%BE%97%E5%88%B0%E7%9A%84%E5%9B%9E%E6%98%BE">5.在完成第三步的时候，已经命令执行完成，在http服务的根目录会生成exploited.txt文件，里面是命令执行后得到的回显</a></li>
-</ul>
-</li>
+<li><a href="#0x01">0x01 ^$&amp;!#@*</a></li>
+<li><a href="#0x02-%E5%87%86%E5%A4%87%E9%9B%B6%E4%BB%B6">0x02 准备零件</a></li>
+<li><a href="#0x03-%E9%85%8D%E7%BD%AE%E8%BF%87%E7%A8%8B">0x03 配置过程</a></li>
+<li><a href="#0x04-fastjson%E8%B5%84%E4%BA%A7%E6%A3%80%E6%B5%8B">0x04 fastjson资产检测</a></li>
+<li><a href="#%E5%90%90%E6%A7%BD">吐槽</a></li>
 </ul>
 </li>
 </ul>
@@ -107,52 +103,178 @@
 <div class="mask" onclick="closeMenu()">
 </div>
       <div class="content-wrapper py-32 lg:p-8 lg:w-3/4 post-detail animated fadeIn">
-        <h1 class="text-3xl font-bold lg:mt-16">FasterXML Jackson远程命令执行漏洞（复现CVE-2019-12384）</h1>
+        <h1 class="text-3xl font-bold lg:mt-16">搭建自己的dnslog平台并以此来发现Fastjson资产</h1>
         <div class="text-sm text-gray-700 lg:my-8">
-          2019-07-30 / 1 min read
+          2020-04-11 / 5 min read
         </div>
-        
-          <img class="post-feature-image rounded-lg mx-auto my-4" src="http://www.svenbeast.com//post-images/fasterxml-jackson-yuan-cheng-ming-ling-zhi-xing-lou-dong-fu-xian-cve-2019-12384.jpg" alt="">
         
         <div class="post-content yue">
-          <h4 id="1首先打开http服务这里用的是python3自带的其他的也可只要可以访问到">1.首先打开http服务，这里用的是python3自带的，其他的也可，只要可以访问到</h4>
-<p>ps:python自带的这个服务从哪个文件夹打开，此文件夹为默认根目录<br>
-<img src="http://www.svenbeast.com//post-images/1564481595025.png" alt="" loading="lazy"></p>
-<h4 id="2配置jruby这里因为我之前配置过所以已存在并无影响jruby已打包">2.配置jruby，这里因为我之前配置过，所以已存在，并无影响，jruby已打包</h4>
-<p>ps:ln -s ~/jruby-9.2.7.0/bin/jruby /usr/local/bin/<br>
-<img src="http://www.svenbeast.com//post-images/1564482020021.png" alt="" loading="lazy"></p>
-<h4 id="3运行testrb进行命令执行">3.运行test.rb,进行命令执行</h4>
-<figure data-type="image" tabindex="1"><img src="http://www.svenbeast.com//post-images/1564482687320.png" alt="" loading="lazy"></figure>
-<h4 id="4这里的injectsql为写命令的文件此文件放在http服务的根目录里jackson要能远程获取到">4.这里的inject.sql，为写命令的文件，此文件放在http服务的根目录里，jackson要能远程获取到</h4>
-<figure data-type="image" tabindex="2"><img src="http://www.svenbeast.com//post-images/1564483081513.png" alt="" loading="lazy"></figure>
-<h4 id="5在完成第三步的时候已经命令执行完成在http服务的根目录会生成exploitedtxt文件里面是命令执行后得到的回显">5.在完成第三步的时候，已经命令执行完成，在http服务的根目录会生成exploited.txt文件，里面是命令执行后得到的回显</h4>
-<figure data-type="image" tabindex="3"><img src="http://www.svenbeast.com//post-images/1564483152187.png" alt="" loading="lazy"></figure>
-<p>PS：解压密码:svenbeast<br>
-链接: https://pan.baidu.com/s/1yhdmOz3QQ7Nm_Ar6m4-dWg<br>
-提取码: avpe</p>
+          <h3 id="0x01">0x01 ^$&amp;!#@*</h3>
+<pre><code>因为ceye总是宕机，dnslog不适合脚本化查询，
+所以就需要用自己的平台了，
+记录借助xray建立dnslog平台并以此来检测fastjson资产的过程（xray官方文档没写全，踩了点小坑）
+</code></pre>
+<h3 id="0x02-准备零件">0x02 准备零件</h3>
+<ul>
+<li>
+<ol>
+<li>一台服务器，最低配置都没事，能运行xray就行（设为我的服务器ip为：123.321.213.2）</li>
+</ol>
+</li>
+<li>
+<ol start="2">
+<li>在阿里云购买域名（dnslog.cool）其他处不行哦，免费域名厂商的应该也可以，因为需要有设定DNS Host的功能</li>
+</ol>
+</li>
+</ul>
+<h3 id="0x03-配置过程">0x03 配置过程</h3>
+<pre><code>https://wanwang.aliyun.com/?spm=5176.12825654.eofdhaal5.9.3dbd2c4apKHcoB&amp;aly_as=TNeZQ8Wpi
+</code></pre>
+<ul>
+<li>
+<ol>
+<li>此处购买域名，任意即可，因本人强迫症，购买dnslog.cool，跟随阿里云的购买流程即可，配置邮箱，配置个人信息等</li>
+</ol>
+</li>
+<li>
+<ol start="2">
+<li>自定义DNS Host：等待实名认证审核完成，一般10到20分钟即可，前往自定义DNS Host功能处创建2个DNS服务器，比如设置sven1.dnslog.cool,sven2.dnslog.cool，IP地址填写服务器ip:123.321.213.2<br>
+<img src="http://www.svenbeast.com//post-images/1586606506182.png" alt="" loading="lazy"></li>
+</ol>
+</li>
+<li>
+<ol start="3">
+<li>DNS修改：前往DNS修改功能，修改dns服务器为sven1.dnslog.cool,sven2.dnslog.cool</li>
+</ol>
+</li>
+<li>
+<ol start="4">
+<li>域名解析：然后点击左边的域名解析功能，填加2条解析记录，主机记录填写sven1，记录类型为A，解析线路为默认，记录值为123.321.213.2(我的服务器ip)，剩下默认即可，第二条解析记录的主机记录填写sven2，其他同上条<br>
+<img src="http://www.svenbeast.com//post-images/1586607388972.png" alt="" loading="lazy"></li>
+</ol>
+</li>
+<li>
+<ol start="5">
+<li>确定域名的实名认证审核完成后，登录服务器（必须拥有独立外网ip的哦），下载xray，先使用命令行xray.exe reverse运行一遍，自动生成config.yaml，然后打开config.yaml，找到配置反连平台得配置（270行上下十来行都是），替换成如下程度，按照自己实际情况更换密码和ip和域名和dns服务器的前缀后运行xray（xray.exe reverse），运行完毕后访问链接：http://123.321.213.2:8001，就是dnslog管理平台了</li>
+</ol>
+</li>
+</ul>
+<pre><code>reverse:
+  db_file_path: &quot;reverse.db&quot;
+  token: &quot;123!@#QWE&quot;           //此处是设置登录反连平台得密码      
+  http:
+    enabled: true
+    listen_ip: 0.0.0.0
+    listen_port: &quot;8001&quot;
+  dns:
+    enabled: true
+    listen_ip: 0.0.0.0
+    domain: &quot;dnslog.cool&quot;
+    is_domain_name_server: false
+    # 静态解析规则
+    resolve:
+    - type: A
+      record: sven1
+      value: 123.321.213.2
+      ttl: 60
+    - type: A
+      record: sven2
+      ttl: 60
+      value: 123.321.213.2
+  rmi:
+    enabled: true
+    listen_ip: 0.0.0.0
+    listen_port: 8088
+    resolve:
+    - type: A # A, AAAA, TXT 三种
+      record: localhost
+      value: 127.0.0.1
+      ttl: 60
+  client:
+    http_base_url: &quot;&quot;
+    dns_server_ip: &quot;123.321.213.2&quot;
+    remote_server: false
+</code></pre>
+<figure data-type="image" tabindex="1"><img src="http://www.svenbeast.com//post-images/1586608033853.png" alt="" loading="lazy"></figure>
+<ul>
+<li>
+<ol start="6">
+<li>生成用来检测的域名：复制好后直接ping xxxxxx.dnslog.cool即可收到请求<br>
+<img src="http://www.svenbeast.com//post-images/1586608380495.png" alt="" loading="lazy"><br>
+<img src="http://www.svenbeast.com//post-images/1586608485494.png" alt="" loading="lazy"></li>
+</ol>
+</li>
+</ul>
+<h3 id="0x04-fastjson资产检测">0x04 fastjson资产检测</h3>
+<p>利用dnslog回显检测后端是否使用fastjson</p>
+<pre><code>Payload之一: 
+{&quot;e&quot;:{&quot;@type&quot;:&quot;java.net.Inet4Address&quot;,&quot;val&quot;:&quot;hbs9jr.dnslog.cn&quot;}}
+
+</code></pre>
+<p><img src="http://www.svenbeast.com//post-images/1586609667744.png" alt="" loading="lazy"><br>
+<img src="http://www.svenbeast.com//post-images/1586609743542.png" alt="" loading="lazy"></p>
+<p>这样我的批量多线程检测脚本也就完成了，当然也只是一种思路，还有其他增加检测率的方法，部分代码如下</p>
+<pre><code>        try:
+
+            randStr = ''.join(random.sample(string.ascii_letters + string.digits, 4))
+            dnslog = '{'+'&quot;e&quot;:'+'{'+'&quot;@type&quot;:&quot;java.net.Inet4Address&quot;,&quot;val&quot;:&quot;p-1111-pgfx.{}.dnslog.cool&quot;'.format(randStr)+'}'+'}'
+            line=line.strip('\n')
+
+            k = requests.get(line,headers=fastjson_header,data=dnslog,allow_redirects=False,verify=False,timeout=10)
+            time.sleep(1)
+            check = 'http://11111111111:8001/_/api/event/list?lastID=&amp;count=5&amp;eventType=dns&amp;action=Next'
+            wb_data = requests.get(check,headers=check_header,timeout=10)
+            req = wb_data.text
+
+            if randStr in req:
+                print(&quot;[+ &quot;+&quot; 存在fastjson: &quot;+&quot;状态码:&quot;+str(k.status_code)+&quot;:&quot;+' url:'+line)
+                f.write(line+&quot;\n&quot;)
+            else:
+                print(&quot;[- &quot;+&quot; 不存在fastjson  &quot;+&quot;状态码:&quot;+str(k.status_code)+&quot;:&quot;+' url:'+line)
+        except Exception as e:
+            print(e)
+            pass
+</code></pre>
+<h3 id="吐槽">吐槽</h3>
+<ul>
+<li>
+<ol>
+<li>xray说明文档未写清需要去域名解析配置dns服务器的解析</li>
+</ol>
+</li>
+<li>
+<ol start="2">
+<li>浪费了一个域名，dnslog.run，在腾讯云买的，没有自定义dnslog服务器功能（谁要我转手...）</li>
+</ol>
+</li>
+<li>
+<ol start="3">
+<li>所以都怪ceye没事宕个机 -.- !</li>
+</ol>
+</li>
+</ul>
 
         </div>
 
+        
+          <a class="animated fadeInUp p-2 items-center text-sm text-gray-700 border hover:bg-gray-300 leading-none rounded-full flex lg:inline-flex m-4 " href="http://www.svenbeast.com/tag/IVn8EkeWs/">
+            <span class="flex-auto">学习</span>
+          </a>
+        
+          <a class="animated fadeInUp p-2 items-center text-sm text-gray-700 border hover:bg-gray-300 leading-none rounded-full flex lg:inline-flex m-4 " href="http://www.svenbeast.com/tag/V9gIO3BPO5/">
+            <span class="flex-auto">分享</span>
+          </a>
         
 
 
         <div class="flex justify-between py-8">
           
-            <div class="prev-post">
-              <a href="http://www.svenbeast.com/post/U4oArG5HS/">
-                <h3 class="post-title">
-                  <i class="remixicon-arrow-left-line"></i>
-                  Linux桌面版本地提权(CVE-2019-13272漏洞复现)
-                </h3>
-              </a>
-            </div>
-          
 
           
             <div class="next-post">
-              <a href="http://www.svenbeast.com/post/discuzml33-lou-dong-fu-xian-ji-fen-xi-fu-poc/">
+              <a href="http://www.svenbeast.com/post/tskRKJIPg/">
                 <h3 class="post-title">
-                  Discuz!ml3.3漏洞复现及分析(附POC)
+                  Shiro反序列化利用工具ShiroScan代码重构，速度增加300%，成功率增加30%
                   <i class="remixicon-arrow-right-line"></i>
                 </h3>
               </a>
