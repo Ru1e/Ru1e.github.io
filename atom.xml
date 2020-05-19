@@ -1,15 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <feed xmlns="http://www.w3.org/2005/Atom">
     <id>http://www.svenbeast.com/</id>
-    <title>斯文beast</title>
-    <updated>2020-05-19T07:53:09.565Z</updated>
+    <title>斯文beast | 世界很大，你我很小</title>
+    <updated>2020-05-19T16:37:11.895Z</updated>
     <generator>https://github.com/jpmonette/feed</generator>
     <link rel="alternate" href="http://www.svenbeast.com/"/>
     <link rel="self" href="http://www.svenbeast.com/atom.xml"/>
-    <subtitle>不在平静中灭亡~  </subtitle>
+    <subtitle>Let&apos;s move in life.  不在平静中灭亡~  </subtitle>
     <logo>http://www.svenbeast.com/images/avatar.png</logo>
     <icon>http://www.svenbeast.com/favicon.ico</icon>
-    <rights>All rights reserved 2020, 斯文beast</rights>
+    <rights>All rights reserved 2020, 斯文beast | 世界很大，你我很小</rights>
     <entry>
         <title type="html"><![CDATA[搭建自己的dnslog平台并以此来发现Fastjson资产]]></title>
         <id>http://www.svenbeast.com/post/16--phe4I/</id>
