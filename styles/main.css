@@ -256,12 +256,12 @@
 }
 .reward .reward-button {
   font-size: 28px;
-  line-height: 58px;
+  line-height: 61px;
   position: relative;
   display: block;
   width: 60px;
   height: 60px;
-  margin: 0 auto;
+  margin: 42 auto;
   padding: 0;
   -webkit-user-select: none;
   text-align: center;
@@ -661,7 +661,7 @@
   list-style: none;
 }
 .post-toc li {
-  padding-left: 16px;
+  padding-left: 0px;
 }
 .post-toc li a {
   padding: 4px;
