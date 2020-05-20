@@ -2,7 +2,7 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
     <id>http://www.svenbeast.com/</id>
     <title>斯文beast | 世界很大，你我很小</title>
-    <updated>2020-05-20T15:54:54.006Z</updated>
+    <updated>2020-05-20T16:07:38.761Z</updated>
     <generator>https://github.com/jpmonette/feed</generator>
     <link rel="alternate" href="http://www.svenbeast.com/"/>
     <link rel="self" href="http://www.svenbeast.com/atom.xml"/>
@@ -26,7 +26,7 @@
 <h3 id="0x02-主题">0x02 主题</h3>
 <ul>
 <li>环境搭建：windows+phpstudy+Discuz!x3.4</li>
-<li>Discuz!x3.4：https://www.github.com</li>
+<li>Discuz!x3.4：https://github.com/sv3nbeast/discuz-x3.4-RCE</li>
 </ul>
 <h3 id="0x03-利用">0x03 利用</h3>
 <ul>
