@@ -2,7 +2,7 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
     <id>http://www.svenbeast.com</id>
     <title>斯文beast | 世界很大，你我很小</title>
-    <updated>2020-07-06T07:03:22.913Z</updated>
+    <updated>2020-07-06T07:22:33.640Z</updated>
     <generator>https://github.com/jpmonette/feed</generator>
     <link rel="alternate" href="http://www.svenbeast.com"/>
     <link rel="self" href="http://www.svenbeast.com/atom.xml"/>
@@ -17,8 +17,7 @@
         </link>
         <updated>2020-07-06T02:58:25.000Z</updated>
         <content type="html"><![CDATA[<h3 id="0x01-背景">0x01 背景</h3>
-<pre><code>最近F5 Networks的网络和安全产品BIG IP应用交付控制器曝出漏洞，昨天晚上10点时有人在推特发布了POC，随即尝试跟进此漏洞。
-</code></pre>
+<p>最近 F5 Networks的网络和安全产品BIG IP应用交付控制器曝出漏洞，昨天晚上10点时有人在推特发布了POC，随即尝试跟进此漏洞并编写EXP。</p>
 <h3 id="0x02-poc">0x02 POC</h3>
 <p>twitter: https://twitter.com/x4ce/status/1279790599793545216</p>
 <figure data-type="image" tabindex="1"><img src="http://www.svenbeast.com/post-images/1594014852693.png" alt="" loading="lazy"></figure>
