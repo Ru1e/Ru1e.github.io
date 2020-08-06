@@ -51,7 +51,7 @@ if(!norunFlag){
 			return renderTip(this, context);
 		};
 		
-		var re = /x/;
+		var re = /123/;
 		/*re.toString = function() {
 			alert('dddd');
 			showMessage('哈哈，你打开了控制台，是想要看看我的秘密吗？', 5000);
