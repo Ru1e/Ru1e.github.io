@@ -2,7 +2,7 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
     <id>https://ru1e.github.io</id>
     <title>斯文beast | 世界很大，你我很小</title>
-    <updated>2020-08-28T07:15:54.289Z</updated>
+    <updated>2020-08-28T07:36:07.199Z</updated>
     <generator>https://github.com/jpmonette/feed</generator>
     <link rel="alternate" href="https://ru1e.github.io"/>
     <link rel="self" href="https://ru1e.github.io/atom.xml"/>
@@ -445,6 +445,8 @@ int main()
 <ul>
 <li><strong>【可改进的地方】: 现在的操作是运行exe后生成控制台然后关闭控制台操作，会有控制台闪一下然后消失的界面，过程虽然很快，但对配置低的机器还是有感的，如果添加运行exe后不出现控制台也就是不出现窗口直接隐藏后台静默执行的代码生成后会被AV检测查杀，希望以后有师傅进行改进吧 0.0 !</strong></li>
 </ul>
+<pre><code>可能会有人感觉写得啰嗦~ 其实是因为本人也是自己学习，都是摸索着来，所以对一些 &quot;坑&quot; 的基础小问题很敏感，因为在完全不会的情况下遇到其实都还蛮懵的，同样问题对不同的人来说难度确实是不一样的，所以，我还是赶紧衮去继续学习吧
+</code></pre>
 ]]></content>
     </entry>
     <entry>
