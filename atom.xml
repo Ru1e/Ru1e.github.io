@@ -2,7 +2,7 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
     <id>https://ru1e.github.io</id>
     <title>斯文beast | 世界很大，你我很小</title>
-    <updated>2020-08-28T07:04:53.422Z</updated>
+    <updated>2020-08-28T07:15:54.289Z</updated>
     <generator>https://github.com/jpmonette/feed</generator>
     <link rel="alternate" href="https://ru1e.github.io"/>
     <link rel="self" href="https://ru1e.github.io/atom.xml"/>
@@ -216,10 +216,7 @@ int main(int argc, char* argv[])
 }
 
 </code></pre>
-<pre><code>5. 将任意.bmp图片文件放入和getImgshellcode.exe同目录并改名为test.bmp,运行到阿里OSS里，点击上传的图片获得访问URL并复制
-</code></pre>
-<figure data-type="image" tabindex="2"><img src="https://ru1e.github.io/post-images/1598580605228.png" alt="" loading="lazy"></figure>
-<pre><code>5. ShellcodeImg.exe 做好生成准备，此exe功能是获得远程图片，执行shellcode
+<pre><code>1. ShellcodeImg.exe 做好生成准备，此exe功能是获得远程图片，执行shellcode
 </code></pre>
 <pre><code>Github：https://github.com/sv3nbeast/ImgLoaderShellCode
 
@@ -425,26 +422,26 @@ int main()
 <img src="https://ru1e.github.io/post-images/1598581705437.png" alt="" loading="lazy"></p>
 <pre><code>2. 上传save.bmp到阿里OSS里，点击上传的图片获得访问URL并复制
 </code></pre>
-<figure data-type="image" tabindex="3"><img src="https://ru1e.github.io/post-images/1598580605228.png" alt="" loading="lazy"></figure>
+<figure data-type="image" tabindex="2"><img src="https://ru1e.github.io/post-images/1598580605228.png" alt="" loading="lazy"></figure>
 <pre><code>3. 生成ShellcodeImg.exe，先修改176行的图片地址为上步骤的URL在生成
 </code></pre>
-<figure data-type="image" tabindex="4"><img src="https://ru1e.github.io/post-images/1598583016304.png" alt="" loading="lazy"></figure>
+<figure data-type="image" tabindex="3"><img src="https://ru1e.github.io/post-images/1598583016304.png" alt="" loading="lazy"></figure>
 <pre><code>4. 在公网vps模拟真实环境运行AV情况下执行ShellcodeImg.exe，并未遭到拦截，且成功执行命令
 </code></pre>
-<figure data-type="image" tabindex="5"><img src="https://ru1e.github.io/post-images/1598596035905.gif" alt="" loading="lazy"></figure>
+<figure data-type="image" tabindex="4"><img src="https://ru1e.github.io/post-images/1598596035905.gif" alt="" loading="lazy"></figure>
 <h3 id="0x05-可能会有用的小知识">0x05 &quot;可能&quot;会有用的小知识</h3>
 <pre><code>1. 如果想要在其他机器运行成功VS生成的exe时，生成时要选择Release，为了兼容性选择x86，然后生成即可
 </code></pre>
-<figure data-type="image" tabindex="6"><img src="https://ru1e.github.io/post-images/1598596419676.png" alt="" loading="lazy"></figure>
+<figure data-type="image" tabindex="5"><img src="https://ru1e.github.io/post-images/1598596419676.png" alt="" loading="lazy"></figure>
 <pre><code>2. VS建造的项目文件夹都会存在.sln文件，双击.sln文件即可自动打开整个项目，还原项目本身
 </code></pre>
-<figure data-type="image" tabindex="7"><img src="https://ru1e.github.io/post-images/1598596650878.png" alt="" loading="lazy"></figure>
+<figure data-type="image" tabindex="6"><img src="https://ru1e.github.io/post-images/1598596650878.png" alt="" loading="lazy"></figure>
 <h3 id="0x06-可能会遇到的问题">0x06 &quot;可能&quot;会遇到的问题</h3>
 <pre><code>1. exe执行后无法正常上线，原因可能是填入图片URL的时候没有加入端口，导致并未成功下载图片解析，如图就是没有写端口导致运行时并未成功获得图片进行解析
    正确：https://code.oss-cn-beijing.aliyuncs.com:80/save.bmp
    错误：https://code.oss-cn-beijing.aliyuncs.com/save.bmp
 </code></pre>
-<figure data-type="image" tabindex="8"><img src="https://ru1e.github.io/post-images/1598597977930.png" alt="" loading="lazy"></figure>
+<figure data-type="image" tabindex="7"><img src="https://ru1e.github.io/post-images/1598597977930.png" alt="" loading="lazy"></figure>
 <ul>
 <li><strong>【可改进的地方】: 现在的操作是运行exe后生成控制台然后关闭控制台操作，会有控制台闪一下然后消失的界面，过程虽然很快，但对配置低的机器还是有感的，如果添加运行exe后不出现控制台也就是不出现窗口直接隐藏后台静默执行的代码生成后会被AV检测查杀，希望以后有师傅进行改进吧 0.0 !</strong></li>
 </ul>
