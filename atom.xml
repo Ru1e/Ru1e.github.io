@@ -2,7 +2,7 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
     <id>https://ru1e.github.io</id>
     <title>斯文beast | 世界很大，你我很小</title>
-    <updated>2020-09-17T17:43:26.206Z</updated>
+    <updated>2020-09-17T23:45:13.000Z</updated>
     <generator>https://github.com/jpmonette/feed</generator>
     <link rel="alternate" href="https://ru1e.github.io"/>
     <link rel="self" href="https://ru1e.github.io/atom.xml"/>
@@ -148,7 +148,7 @@ cd impacket &amp;&amp; pip3 install .
 </li>
 <li>一些脚本是impacket模块里面的py文件</li>
 <li>exp的一些参数，最好搞清楚对应域的那些东西</li>
-<li>图片很多，能挤出时间真不容易。</li>
+<li>图片很多，环境麻烦，能挤出时间真不容易。</li>
 </ul>
 ]]></content>
     </entry>
