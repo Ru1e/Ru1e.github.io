@@ -113,7 +113,7 @@ var _hmt = _hmt || [];
                         <label for="switch_default" class="toggleBtn"></label>
             </div>
 
-            <form id="gridea-search-form" data-update="1604853092949" action="/search/index.html">
+            <form id="gridea-search-form" data-update="1604853567815" action="/search/index.html">
                 <input class="search-input" autocomplete="off" spellcheck="false" name="q" placeholder="🔍Search..." style = "-webkit-border-radius:8px;
 				   -moz-border-radius:8px;
 				   -ms-border-radius:8px;
@@ -141,7 +141,7 @@ var _hmt = _hmt || [];
                         <!--zh-->
                         <a id="mobile-toggle-theme-zh" class="a zh">&nbsp;\u6697\u9ED1</a>
                     </div>
-                    <form id="gridea-search-form" data-update="1604853092949" action="/search/index.html">
+                    <form id="gridea-search-form" data-update="1604853567815" action="/search/index.html">
                         <input class="search-input" autocomplete="off" spellcheck="false" name="q" placeholder="🔍Search..." style = "-webkit-border-radius:8px;
 				   -moz-border-radius:8px;
 				   -ms-border-radius:8px;
@@ -245,8 +245,8 @@ input:focus{
                             <span class="post-time">
                                 Date: <a href="#">2020-11-08</a>
                             </span>
-				<span class="post-readtime">Reading Time:<a href="#">2.4 mins</a></span>
-                                <span class="post-words">words:<a href="#">674</a></span>
+				<span class="post-readtime">Reading Time:<a href="#">2.5 mins</a></span>
+                                <span class="post-words">words:<a href="#">696</a></span>
                             
                             <span class="post-category">
                                 Category:
@@ -278,8 +278,8 @@ input:focus{
 -->
                             </a>
                             <span class="post-time">&#x65E5;&#x671F;: <a href="#">2020-11-08</a></span>
-			    <span class="post-readtime">&#x9605;&#x8BFB;&#x65F6;&#x95F4;:<a href="#">2.4 &#x5206;&#x949F;</a></span>
-                                <span class="post-words">&#x5B57;&#x6570;:<a href="#">674</a></span>
+			    <span class="post-readtime">&#x9605;&#x8BFB;&#x65F6;&#x95F4;:<a href="#">2.5 &#x5206;&#x949F;</a></span>
+                                <span class="post-words">&#x5B57;&#x6570;:<a href="#">696</a></span>
                             
                             <span class="post-category">&#x5206;&#x7C7B;:
                                 
@@ -302,13 +302,13 @@ input:focus{
                     </header>
                     <div class="post-content">
                         <p><strong>DLL劫持可用于<code>权限维持</code>、权限提升、进程注入，属于经久不衰的必备技能</strong></p>
-<h2 id="dll介绍">DLL介绍</h2>
+<h2 id="0x01-dll介绍">0x01 DLL介绍</h2>
 <pre><code>DLL是Dynamic Link Library的缩写，叫做动态链接库
 一个dll文件可以由多个程序同时调用
 dll的使用意义是某个大型程序在启动时和启动后，可以不加载某部分功能代码，只有用户使用时
 再去调用对应功能的dll模块，从而达到减少软件启动速度的目的
 </code></pre>
-<h2 id="dll劫持前置知识点">DLL劫持前置知识点</h2>
+<h2 id="0x02-dll劫持前置知识点">0x02 DLL劫持前置知识点</h2>
 <p>劫持的方法了解到的有两种，在之前要先知道一下exe程序加载dll的知识点</p>
 <p><strong>exe程序在调用dll时，查找dll文件的目录优先级顺序</strong></p>
 <ul>
@@ -324,7 +324,7 @@ input:focus{
 <pre><code>注册表位置：\HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Control\Session Manager\KnownDLLs
 </code></pre>
 <figure data-type="image" tabindex="1"><img src="https://www.svenbeast.com/post-images/1604830855166.png" alt="" loading="lazy"></figure>
-<h2 id="dll劫持">DLL劫持</h2>
+<h2 id="0x03-dll劫持">0x03 DLL劫持</h2>
 <ul>
 <li>
 <ol>
@@ -339,12 +339,14 @@ input:focus{
 </ul>
 <p><strong>使用第一种方法劫持微信</strong></p>
 <ul>
-<li>1.首先要找到wechat.exe发出请求后加载dll的结果为NOT FOUND的，我这里使用辅助工具<code>Process Monitor</code>（一款系统进程监视软件）</li>
+<li>首先要找到wechat.exe发出请求后加载dll的结果为NOT FOUND的，我这里使用辅助工具<code>Process Monitor</code>（一款系统进程监视软件），然后再一一验证可行性</li>
 </ul>
-<pre><code>打开微信
+<pre><code>打开Process Monitor
  ↓
-Process Monitor的过滤器添加wechat.exe进程的PID将显示其他进程过
-滤掉，和其他一些过滤规则(见下图)
+打开微信
+ ↓
+设置Process Monitor的过滤器，添加wechat.exe进程的PID将显示的其他进程过
+滤掉，再添加其他一些过滤规则(见下图)
  ↓
 保存结果为csv文件，目的为了用execl里的筛选，将EXE程序加载的dll单独列出来
  ↓
@@ -368,9 +370,9 @@ Process Monitor的过滤器添加wechat.exe进程的PID将显示其他进程过
                             <ul class="markdownIt-TOC">
 <li>
 <ul>
-<li><a href="#dll%E4%BB%8B%E7%BB%8D">DLL介绍</a></li>
-<li><a href="#dll%E5%8A%AB%E6%8C%81%E5%89%8D%E7%BD%AE%E7%9F%A5%E8%AF%86%E7%82%B9">DLL劫持前置知识点</a></li>
-<li><a href="#dll%E5%8A%AB%E6%8C%81">DLL劫持</a></li>
+<li><a href="#0x01-dll%E4%BB%8B%E7%BB%8D">0x01 DLL介绍</a></li>
+<li><a href="#0x02-dll%E5%8A%AB%E6%8C%81%E5%89%8D%E7%BD%AE%E7%9F%A5%E8%AF%86%E7%82%B9">0x02 DLL劫持前置知识点</a></li>
+<li><a href="#0x03-dll%E5%8A%AB%E6%8C%81">0x03 DLL劫持</a></li>
 </ul>
 </li>
 </ul>

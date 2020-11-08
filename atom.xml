@@ -2,7 +2,7 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
     <id>https://www.svenbeast.com</id>
     <title>攻城肾透shi | sv3nbeast</title>
-    <updated>2020-11-08T16:32:38.715Z</updated>
+    <updated>2020-11-08T16:47:01.586Z</updated>
     <generator>https://github.com/jpmonette/feed</generator>
     <link rel="alternate" href="https://www.svenbeast.com"/>
     <link rel="self" href="https://www.svenbeast.com/atom.xml"/>
@@ -17,13 +17,13 @@
         </link>
         <updated>2020-11-08T09:11:36.000Z</updated>
         <content type="html"><![CDATA[<p><strong>DLL劫持可用于<code>权限维持</code>、权限提升、进程注入，属于经久不衰的必备技能</strong></p>
-<h2 id="dll介绍">DLL介绍</h2>
+<h2 id="0x01-dll介绍">0x01 DLL介绍</h2>
 <pre><code>DLL是Dynamic Link Library的缩写，叫做动态链接库
 一个dll文件可以由多个程序同时调用
 dll的使用意义是某个大型程序在启动时和启动后，可以不加载某部分功能代码，只有用户使用时
 再去调用对应功能的dll模块，从而达到减少软件启动速度的目的
 </code></pre>
-<h2 id="dll劫持前置知识点">DLL劫持前置知识点</h2>
+<h2 id="0x02-dll劫持前置知识点">0x02 DLL劫持前置知识点</h2>
 <p>劫持的方法了解到的有两种，在之前要先知道一下exe程序加载dll的知识点</p>
 <p><strong>exe程序在调用dll时，查找dll文件的目录优先级顺序</strong></p>
 <ul>
@@ -39,7 +39,7 @@
 <pre><code>注册表位置：\HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Control\Session Manager\KnownDLLs
 </code></pre>
 <figure data-type="image" tabindex="1"><img src="https://www.svenbeast.com/post-images/1604830855166.png" alt="" loading="lazy"></figure>
-<h2 id="dll劫持">DLL劫持</h2>
+<h2 id="0x03-dll劫持">0x03 DLL劫持</h2>
 <ul>
 <li>
 <ol>
@@ -54,12 +54,14 @@
 </ul>
 <p><strong>使用第一种方法劫持微信</strong></p>
 <ul>
-<li>1.首先要找到wechat.exe发出请求后加载dll的结果为NOT FOUND的，我这里使用辅助工具<code>Process Monitor</code>（一款系统进程监视软件）</li>
+<li>首先要找到wechat.exe发出请求后加载dll的结果为NOT FOUND的，我这里使用辅助工具<code>Process Monitor</code>（一款系统进程监视软件），然后再一一验证可行性</li>
 </ul>
-<pre><code>打开微信
+<pre><code>打开Process Monitor
  ↓
-Process Monitor的过滤器添加wechat.exe进程的PID将显示其他进程过
-滤掉，和其他一些过滤规则(见下图)
+打开微信
+ ↓
+设置Process Monitor的过滤器，添加wechat.exe进程的PID将显示的其他进程过
+滤掉，再添加其他一些过滤规则(见下图)
  ↓
 保存结果为csv文件，目的为了用execl里的筛选，将EXE程序加载的dll单独列出来
  ↓
