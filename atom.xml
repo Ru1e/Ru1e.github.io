@@ -2,7 +2,7 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
     <id>https://www.svenbeast.com</id>
     <title>攻城肾透shi | sv3nbeast</title>
-    <updated>2020-11-08T16:47:01.586Z</updated>
+    <updated>2020-11-09T10:14:08.562Z</updated>
     <generator>https://github.com/jpmonette/feed</generator>
     <link rel="alternate" href="https://www.svenbeast.com"/>
     <link rel="self" href="https://www.svenbeast.com/atom.xml"/>
@@ -75,10 +75,86 @@
 ↓<br>
 <img src="https://www.svenbeast.com/post-images/1604849478939.png" alt="" loading="lazy"><br>
 ↓<br>
-<img src="https://www.svenbeast.com/post-images/1604852194936.gif" alt="" loading="lazy"><br>
-<code>gif效果图</code></p>
+<code>gif效果图</code><br>
+<img src="https://www.svenbeast.com/post-images/1604852194936.gif" alt="" loading="lazy"></p>
 <p><strong>使用第二种方法劫持QQ</strong></p>
-<p>未完待续...先睡为敬</p>
+<ul>
+<li>首先找到一个EXE程序加载的dll，两个硬性要求（一是exe确实加载了此dll，二是此dll不在KnownDLLs注册表中，不过既然在同目录下找到的加载dll，那肯定不在KnownDLLs里），用来中间人转发他也就是劫持，一般找小点的，小点的需要转发函数的数量会少点，查阅一些文章总算找到一个自动化的工具 <code>dll-hijacking</code> ，这样我就不用手动复制函数了</li>
+</ul>
+<pre><code>在QQ.exe同目录寻找目标dll
+ ↓
+复制目标dll到dll-hijacking工具下进行加工
+ ↓
+处理好的恶意dll改好原本的名字复制到QQ.exe目录下，将刚才复制的此
+目录原本的dll名字改为 原名字_.dll(这样此目录就有    原名字.dll  原名字_.dll)
+ ↓
+启动QQ, over了
+</code></pre>
+<p><img src="https://www.svenbeast.com/post-images/1604915226765.png" alt="" loading="lazy"><br>
+↓<br>
+<img src="https://www.svenbeast.com/post-images/1604915878729.png" alt="" loading="lazy"><br>
+↓<br>
+<img src="https://www.svenbeast.com/post-images/1604916036044.png" alt="" loading="lazy"><br>
+↓<br>
+<code>gif效果图</code><br>
+<img src="https://www.svenbeast.com/post-images/1604916472354.gif" alt="" loading="lazy"></p>
+<ul>
+<li>dllmain.cpp弹框代码</li>
+</ul>
+<pre><code>/*
+https://itm4n.github.io/dll-proxying/
+https://www.codeproject.com/Articles/17863/Using-Pragmas-to-Create-a-Proxy-DLL
+to implement: hooking specific functions
+*/
+
+
+
+#include &quot;definitions.h&quot;
+#include &lt;thread&gt;
+#include &lt;chrono&gt;
+#include &lt;random&gt;
+extern &quot;C&quot;{
+    #include   &lt;stdlib.h&gt;
+    #include   &lt;winsock2.h&gt;
+    #include      &lt;stdio.h&gt;
+    #include     &lt;windows.h&gt;
+    #include      &lt;ws2tcpip.h&gt;
+}
+
+using namespace   std;
+#pragma comment(lib,&quot;Ws2_32.lib&quot;)
+
+BOOL WINAPI DllMain(
+    HINSTANCE hinstDLL,   // handle to DLL module
+    DWORD fdwReason,    // reason for calling function
+    LPVOID lpReserved) // reserved
+{
+    srand(time(NULL));
+    switch (fdwReason)
+    {
+    case  DLL_PROCESS_ATTACH:
+    {
+        MessageBox(NULL, &quot;Success&quot;, &quot;&quot;, MB_OK);
+        break;
+    }
+    case DLL_THREAD_ATTACH:
+        break;
+    case DLL_THREAD_DETACH:
+        break;
+    case DLL_PROCESS_DETACH:
+        break;
+    default:
+        break;
+    }
+
+    return true;
+
+}
+</code></pre>
+<h2 id="0x04-参考链接">0x04 参考链接</h2>
+<pre><code>https://payloads.online/archivers/2018-12-22/1
+https://mp.weixin.qq.com/s?__biz=MzU2NTc2MjAyNg==&amp;mid=2247483851&amp;idx=1&amp;sn=8813719d4d3ac8b20bec495fcd5f2974&amp;chksm=fcb7834ecbc00a58da8a6408abe183e71175b442d0f02016ad3c67c9cf719927881bec14af49#rd
+</code></pre>
 ]]></content>
     </entry>
     <entry>

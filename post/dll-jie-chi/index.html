@@ -113,7 +113,7 @@ var _hmt = _hmt || [];
                         <label for="switch_default" class="toggleBtn"></label>
             </div>
 
-            <form id="gridea-search-form" data-update="1604853567815" action="/search/index.html">
+            <form id="gridea-search-form" data-update="1604916841025" action="/search/index.html">
                 <input class="search-input" autocomplete="off" spellcheck="false" name="q" placeholder="🔍Search..." style = "-webkit-border-radius:8px;
 				   -moz-border-radius:8px;
 				   -ms-border-radius:8px;
@@ -141,7 +141,7 @@ var _hmt = _hmt || [];
                         <!--zh-->
                         <a id="mobile-toggle-theme-zh" class="a zh">&nbsp;\u6697\u9ED1</a>
                     </div>
-                    <form id="gridea-search-form" data-update="1604853567815" action="/search/index.html">
+                    <form id="gridea-search-form" data-update="1604916841025" action="/search/index.html">
                         <input class="search-input" autocomplete="off" spellcheck="false" name="q" placeholder="🔍Search..." style = "-webkit-border-radius:8px;
 				   -moz-border-radius:8px;
 				   -ms-border-radius:8px;
@@ -245,8 +245,8 @@ input:focus{
                             <span class="post-time">
                                 Date: <a href="#">2020-11-08</a>
                             </span>
-				<span class="post-readtime">Reading Time:<a href="#">2.5 mins</a></span>
-                                <span class="post-words">words:<a href="#">696</a></span>
+				<span class="post-readtime">Reading Time:<a href="#">4.3 mins</a></span>
+                                <span class="post-words">words:<a href="#">1073</a></span>
                             
                             <span class="post-category">
                                 Category:
@@ -278,8 +278,8 @@ input:focus{
 -->
                             </a>
                             <span class="post-time">&#x65E5;&#x671F;: <a href="#">2020-11-08</a></span>
-			    <span class="post-readtime">&#x9605;&#x8BFB;&#x65F6;&#x95F4;:<a href="#">2.5 &#x5206;&#x949F;</a></span>
-                                <span class="post-words">&#x5B57;&#x6570;:<a href="#">696</a></span>
+			    <span class="post-readtime">&#x9605;&#x8BFB;&#x65F6;&#x95F4;:<a href="#">4.3 &#x5206;&#x949F;</a></span>
+                                <span class="post-words">&#x5B57;&#x6570;:<a href="#">1073</a></span>
                             
                             <span class="post-category">&#x5206;&#x7C7B;:
                                 
@@ -360,10 +360,86 @@ input:focus{
 ↓<br>
 <img src="https://www.svenbeast.com/post-images/1604849478939.png" alt="" loading="lazy"><br>
 ↓<br>
-<img src="https://www.svenbeast.com/post-images/1604852194936.gif" alt="" loading="lazy"><br>
-<code>gif效果图</code></p>
+<code>gif效果图</code><br>
+<img src="https://www.svenbeast.com/post-images/1604852194936.gif" alt="" loading="lazy"></p>
 <p><strong>使用第二种方法劫持QQ</strong></p>
-<p>未完待续...先睡为敬</p>
+<ul>
+<li>首先找到一个EXE程序加载的dll，两个硬性要求（一是exe确实加载了此dll，二是此dll不在KnownDLLs注册表中，不过既然在同目录下找到的加载dll，那肯定不在KnownDLLs里），用来中间人转发他也就是劫持，一般找小点的，小点的需要转发函数的数量会少点，查阅一些文章总算找到一个自动化的工具 <code>dll-hijacking</code> ，这样我就不用手动复制函数了</li>
+</ul>
+<pre><code>在QQ.exe同目录寻找目标dll
+ ↓
+复制目标dll到dll-hijacking工具下进行加工
+ ↓
+处理好的恶意dll改好原本的名字复制到QQ.exe目录下，将刚才复制的此
+目录原本的dll名字改为 原名字_.dll(这样此目录就有    原名字.dll  原名字_.dll)
+ ↓
+启动QQ, over了
+</code></pre>
+<p><img src="https://www.svenbeast.com/post-images/1604915226765.png" alt="" loading="lazy"><br>
+↓<br>
+<img src="https://www.svenbeast.com/post-images/1604915878729.png" alt="" loading="lazy"><br>
+↓<br>
+<img src="https://www.svenbeast.com/post-images/1604916036044.png" alt="" loading="lazy"><br>
+↓<br>
+<code>gif效果图</code><br>
+<img src="https://www.svenbeast.com/post-images/1604916472354.gif" alt="" loading="lazy"></p>
+<ul>
+<li>dllmain.cpp弹框代码</li>
+</ul>
+<pre><code>/*
+https://itm4n.github.io/dll-proxying/
+https://www.codeproject.com/Articles/17863/Using-Pragmas-to-Create-a-Proxy-DLL
+to implement: hooking specific functions
+*/
+
+
+
+#include &quot;definitions.h&quot;
+#include &lt;thread&gt;
+#include &lt;chrono&gt;
+#include &lt;random&gt;
+extern &quot;C&quot;{
+    #include   &lt;stdlib.h&gt;
+    #include   &lt;winsock2.h&gt;
+    #include      &lt;stdio.h&gt;
+    #include     &lt;windows.h&gt;
+    #include      &lt;ws2tcpip.h&gt;
+}
+
+using namespace   std;
+#pragma comment(lib,&quot;Ws2_32.lib&quot;)
+
+BOOL WINAPI DllMain(
+    HINSTANCE hinstDLL,   // handle to DLL module
+    DWORD fdwReason,    // reason for calling function
+    LPVOID lpReserved) // reserved
+{
+    srand(time(NULL));
+    switch (fdwReason)
+    {
+    case  DLL_PROCESS_ATTACH:
+    {
+        MessageBox(NULL, &quot;Success&quot;, &quot;&quot;, MB_OK);
+        break;
+    }
+    case DLL_THREAD_ATTACH:
+        break;
+    case DLL_THREAD_DETACH:
+        break;
+    case DLL_PROCESS_DETACH:
+        break;
+    default:
+        break;
+    }
+
+    return true;
+
+}
+</code></pre>
+<h2 id="0x04-参考链接">0x04 参考链接</h2>
+<pre><code>https://payloads.online/archivers/2018-12-22/1
+https://mp.weixin.qq.com/s?__biz=MzU2NTc2MjAyNg==&amp;mid=2247483851&amp;idx=1&amp;sn=8813719d4d3ac8b20bec495fcd5f2974&amp;chksm=fcb7834ecbc00a58da8a6408abe183e71175b442d0f02016ad3c67c9cf719927881bec14af49#rd
+</code></pre>
 
                     </div>
                      <div class="post-toc">
@@ -373,6 +449,7 @@ input:focus{
 <li><a href="#0x01-dll%E4%BB%8B%E7%BB%8D">0x01 DLL介绍</a></li>
 <li><a href="#0x02-dll%E5%8A%AB%E6%8C%81%E5%89%8D%E7%BD%AE%E7%9F%A5%E8%AF%86%E7%82%B9">0x02 DLL劫持前置知识点</a></li>
 <li><a href="#0x03-dll%E5%8A%AB%E6%8C%81">0x03 DLL劫持</a></li>
+<li><a href="#0x04-%E5%8F%82%E8%80%83%E9%93%BE%E6%8E%A5">0x04 参考链接</a></li>
 </ul>
 </li>
 </ul>
