@@ -2,7 +2,7 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
     <id>https://www.svenbeast.com</id>
     <title>攻城肾透shi | sv3nbeast</title>
-    <updated>2020-11-16T07:26:45.672Z</updated>
+    <updated>2020-12-16T02:33:58.519Z</updated>
     <generator>https://github.com/jpmonette/feed</generator>
     <link rel="alternate" href="https://www.svenbeast.com"/>
     <link rel="self" href="https://www.svenbeast.com/atom.xml"/>
@@ -10,6 +10,19 @@
     <logo>https://www.svenbeast.com/images/avatar.png</logo>
     <icon>https://www.svenbeast.com/favicon.ico</icon>
     <rights>All rights reserved 2020, 攻城肾透shi | sv3nbeast</rights>
+    <entry>
+        <title type="html"><![CDATA[Windows IDA PRO 7.5 (x86, x64, ARM, ARM64)]]></title>
+        <id>https://www.svenbeast.com/post/windows-ida-pro-75-x86-x64-arm-arm64/</id>
+        <link href="https://www.svenbeast.com/post/windows-ida-pro-75-x86-x64-arm-arm64/">
+        </link>
+        <updated>2020-12-16T02:20:18.000Z</updated>
+        <content type="html"><![CDATA[<p>忽然就整个世界都有了7.5的IDA，可惜没有mac版，o(╥﹏╥)o<br>
+下载备份分享一下<br>
+百度云: https://pan.baidu.com/s/1R61Y9QrVi-gQQEw5kP2O1g  密码: pmd4<br>
+Mega：https://mega.nz/file/mwokCDzQ#TYGiRVS9JZhHJxNOxWmHwzVsBXSCZIfXXXF9TMiPe7o</p>
+<figure data-type="image" tabindex="1"><img src="https://www.svenbeast.com/post-images/1608085613118.png" alt="" loading="lazy"></figure>
+]]></content>
+    </entry>
     <entry>
         <title type="html"><![CDATA[DLL劫持]]></title>
         <id>https://www.svenbeast.com/post/dll-jie-chi/</id>
@@ -1450,86 +1463,6 @@ Content-Length: 133
 <li>这个工具其实就是为了探测是否存在可利用的shiro反序列化漏洞，仅此而已哈，我表示最喜欢的工具类型就是最少的命令实现较多的功能，应该有志同道合的朋友吧~</li>
 <li>其实光检测的话使用URLDNS这个利用链就可以，但是有的时候这个URLDNS成功不代表可以利用，如果继续增加检测率，其实用JRMPClient我觉得更好，但是会增加一些使用者操作，所以就不放出来了，而且会的师傅也并不依赖工具，完全可以自己操作-.- !</li>
 </ul>
-]]></content>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[【无错漏优化版】批量百度权重查询工具]]></title>
-        <id>https://www.svenbeast.com/post/QjiX32_Cm/</id>
-        <link href="https://www.svenbeast.com/post/QjiX32_Cm/">
-        </link>
-        <updated>2020-03-12T09:28:37.000Z</updated>
-        <content type="html"><![CDATA[<h3 id="0x01-原因">0x01 原因</h3>
-<p>造个轮子的原因是因为其他的权重查询用着好像不是太友好，总是有些小毛病，漏一个，少一个，结果不对的一些问题，自己就也弄一个，有个缺点就是慢点，优点就是查的比较稳，很少出现结果是n或者漏几个url的问题</p>
-<h3 id="0x02-代码">0x02 代码</h3>
-<ul>
-<li>主程序代码：</li>
-</ul>
-<pre><code class="language-php"># coding=utf-8
-import requests   #Author:斯文
-import re
-import time
-from threading import Thread
-from selenium import webdriver
-from selenium.webdriver.chrome.options import Options
-
-zhanzhang_headers = {
-    'Host': 'rank.chinaz.com',
-    'Cache-Control': 'max-age=0',
-    'Upgrade-Insecure-Requests': '1',
-    'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/80.0.3987.132 Safari/537.36',
-    'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.9',
-    'Accept-Encoding': 'gzip, deflate',
-    'Accept-Language': 'zh-CN,zh;q=0.9',
-    'Cookie': 'BDTUJIAID=febc82b216a29e116730505bc1e471a9; inputbox_urls=%5b%22passivcashincome.com%22%2c%22feifeizuida.com%22%5d; UM_distinctid=16e63892b4e3b1-031b6053dcfc9f-7711b3e-100200-16e63892b4fa8a; Hm_lvt_aecc9715b0f5d5f7f34fba48a3c511d6=1579746706; CNZZDATA433095=cnzz_eid%3D297046501-1578041490-null%26ntime%3D1583974744; CNZZDATA5082706=cnzz_eid%3D902178444-1578044637-null%26ntime%3D1583975389; qHistory=aHR0cDovL3Rvb2wuY2hpbmF6LmNvbV/nq5nplb/lt6Xlhbd8aHR0cDovL3JhbmsuY2hpbmF6LmNvbV/nmb7luqbmnYPph43mn6Xor6J8aHR0cDovL3Rvb2wuY2hpbmF6LmNvbS90b29scy9lc2NhcGUuYXNweF9Fc2NhcGXliqDlr4Yv6Kej5a+GfGh0dHA6Ly93aG9pcy5jaGluYXouY29tL3JldmVyc2UrV2hvaXPlj43mn6V8aHR0cDovL3dob2lzLmNoaW5hei5jb20vK1dob2lz5p+l6K+i',
-    'Connection': 'close'
-}
-
-def process():
-    print('[+] 正在后台打开谷歌浏览器...')
-    chrome_option = Options()
-    chrome_option.add_argument('blink-settings=imagesEnabled=false') #不加载图片, 提升速度
-    chrome_option.add_argument('--headless') #浏览器不提供可视化页面. linux下如果系统不支持可视化不加这条会启动失败
-    chrome_option.add_experimental_option('excludeSwitches', ['enable-logging'])#关闭控制台日志，看着太乱
-
-    driver=webdriver.Chrome(options=chrome_option)
-    driver.set_page_load_timeout(5000) 
-
-    print('[+] 正在查询中，请稍等 ~')
-    num=0
-    with open(&quot;url.txt&quot;) as f:
-        for line in f:
-            try:
-                quanzhong=line.strip('\n')
-                site=quanzhong.strip('https://') 
-                driver.get('http://rank.chinaz.com/all/{domain}'.format(domain=site)) 
-                baidurank_pattern = re.compile(r'csstools.chinaz.com/tools/images/public/baiduapp/(.*?).gif')
-
-                try:
-                    html_text = driver.page_source.encode('utf-8')
-                    baidurank = re.findall(baidurank_pattern,html_text.decode('utf-8'))[0]
-                except:
-                    time.sleep(2.5)
-                    html_text = driver.page_source.encode('utf-8')
-                    baidurank = re.findall(baidurank_pattern,html_text.decode('utf-8'))[0]
-                num=num+1
-                print(&quot;[+] 正在查询第&quot;+str(num)+&quot;条&quot;+&quot;   百度权重:&quot;+str(baidurank)+&quot;   url: &quot;+site)
-
-                if int(baidurank) &gt; 0:
-                    with open('seo_1.txt','a',encoding='utf-8') as l:
-                        l.write(site+'\n')
-            except Exception as e:
-                pass     
-    driver.close()
-
-</code></pre>
-<h3 id="0x03-运行">0x03 运行</h3>
-<ul>
-<li>1.python3 Baidu_Rank.py 即可</li>
-<li>2.内置读取同目录的url.txt文件</li>
-<li>3.权重大于1的网址存入同目录rank_1.txt文件</li>
-</ul>
-<p>github链接：https://github.com/sv3nbeast/Baidu_Rank</p>
-<figure data-type="image" tabindex="1"><img src="https://www.svenbeast.com/post-images/1584005473122.png" alt="" loading="lazy"></figure>
 ]]></content>
     </entry>
 </feed>
