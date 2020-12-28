@@ -2,7 +2,7 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
     <id>https://www.svenbeast.com</id>
     <title>攻城肾透shi | sv3nbeast</title>
-    <updated>2020-12-28T07:23:01.942Z</updated>
+    <updated>2020-12-28T08:29:51.296Z</updated>
     <generator>https://github.com/jpmonette/feed</generator>
     <link rel="alternate" href="https://www.svenbeast.com"/>
     <link rel="self" href="https://www.svenbeast.com/atom.xml"/>
@@ -125,7 +125,9 @@ public class ReflexDemo {
 }
 </code></pre>
 <figure data-type="image" tabindex="2"><img src="https://www.svenbeast.com/post-images/1609139725146.png" alt="" loading="lazy"></figure>
-<p>本文用到java反射相关的方法</p>
+<ul>
+<li>本文用到java反射相关的方法</li>
+</ul>
 <p><code>getDeclaredFields()</code> :  使用 Class 对象的 getDeclaredFields() 方法则可以获取包括私有属性在内的所有属性</p>
 <p><code>forName()</code> : 获取Class对象，我理解为java在运行的时候将运行的所有xxxx.class文件当做一个class类，然后用这个方法在这个大个的class类中获得需要使用的类的Class对象</p>
 <p><code>setAccessible()</code> : 将目标类里的变量设置为允许修改状态</p>
