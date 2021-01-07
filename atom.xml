@@ -2,14 +2,14 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
     <id>https://www.svenbeast.com</id>
     <title>攻城肾透shi | sv3nbeast</title>
-    <updated>2020-12-28T08:29:51.296Z</updated>
+    <updated>2021-01-07T14:01:36.344Z</updated>
     <generator>https://github.com/jpmonette/feed</generator>
     <link rel="alternate" href="https://www.svenbeast.com"/>
     <link rel="self" href="https://www.svenbeast.com/atom.xml"/>
     <subtitle>Let&apos;s start learning，不在平静中灭亡~  </subtitle>
     <logo>https://www.svenbeast.com/images/avatar.png</logo>
     <icon>https://www.svenbeast.com/favicon.ico</icon>
-    <rights>All rights reserved 2020, 攻城肾透shi | sv3nbeast</rights>
+    <rights>All rights reserved 2021, 攻城肾透shi | sv3nbeast</rights>
     <entry>
         <title type="html"><![CDATA[Java反序列化的URLDNS链分析学习]]></title>
         <id>https://www.svenbeast.com/post/java-fan-xu-lie-hua-de-urldns-lian-fen-xi-xue-xi/</id>
@@ -54,8 +54,8 @@ apple.setPrice(8999);
 <p>而反射则是一开始并不知道我要初始化的类对象是什么，自然也无法使用 new 关键字来创建对象了。</p>
 <blockquote>
 <p>敲黑板了</p>
-<p>[推荐阅读顺序1]https://blog.csdn.net/qq_36226453/article/details/82790375</p>
-<p>[推荐阅读顺序2]https://www.cnblogs.com/chanshuyi/p/head_first_of_reflection.html</p>
+<p>[推荐阅读顺序一]https://blog.csdn.net/qq_36226453/article/details/82790375<br>
+[推荐阅读顺序二]https://www.cnblogs.com/chanshuyi/p/head_first_of_reflection.html</p>
 </blockquote>
 <p><strong>个人理解：</strong></p>
 <p><strong>1.就是java把所有的.class文件当做一个class类，想要用先告诉java你要用哪个class类，然后提供一部分方法实现或者说是细化这个功能</strong></p>
