@@ -113,7 +113,7 @@ var _hmt = _hmt || [];
                         <label for="switch_default" class="toggleBtn"></label>
             </div>
 
-            <form id="gridea-search-form" data-update="1610374556720" action="/search/index.html">
+            <form id="gridea-search-form" data-update="1610421005180" action="/search/index.html">
                 <input class="search-input" autocomplete="off" spellcheck="false" name="q" placeholder="🔍Search..." style = "-webkit-border-radius:8px;
 				   -moz-border-radius:8px;
 				   -ms-border-radius:8px;
@@ -141,7 +141,7 @@ var _hmt = _hmt || [];
                         <!--zh-->
                         <a id="mobile-toggle-theme-zh" class="a zh">&nbsp;\u6697\u9ED1</a>
                     </div>
-                    <form id="gridea-search-form" data-update="1610374556720" action="/search/index.html">
+                    <form id="gridea-search-form" data-update="1610421005180" action="/search/index.html">
                         <input class="search-input" autocomplete="off" spellcheck="false" name="q" placeholder="🔍Search..." style = "-webkit-border-radius:8px;
 				   -moz-border-radius:8px;
 				   -ms-border-radius:8px;
@@ -632,7 +632,7 @@ if __name__ == &quot;__main__&quot;:
 <p>有的网站会自动跳转到某个路径显示首页，所以设置了跟随跳转和不跟随跳转，没图脑补吧，检测思路是这样的，有的站的shiro组件存在检测还要是登录页输入账号密码登录时的那个路径或者和post提交有关，所以可以再加个post方式请求的判断条件，还可以学爬虫自动输入账号密码post提交这种的判断条件，具体代码就得自行发挥啦</p>
 <h3 id="0x05-shiro组件的默认gadget">0x05 shiro组件的默认gadget</h3>
 <p>Shiro是开源的，所以shiro的源码在github上可以找到，而开发在开发项目的时候如果通过pom.xml引入shiro时，会自动引入commons-beanutils库，而这个依赖库正是存在反序列化利用的java依赖库之一，并且一一查看后发现shiro版本对应的commons-beanutils库的版本有些许不同</p>
-<figure data-type="image" tabindex="18"><img src="http://oss.svenbeast.com/img/20210111182218.png" alt="image-20210111182218133" loading="lazy"></figure>
+<figure data-type="image" tabindex="18"><img src="https://typora-1257617803.cos.ap-beijing.myqcloud.com/typora/20210112110742.png" alt="image-20210112110742559" loading="lazy"></figure>
 <p>查看不同版本shiro的pom.xml后总结对应关系为:</p>
 <table>
 <thead>
@@ -661,7 +661,7 @@ if __name__ == &quot;__main__&quot;:
 </tbody>
 </table>
 <p>然后又去查看了Github上commons-beanutils项目的pom.xml，从1.8.3开始看的，里面是内置了commons-collections链</p>
-<figure data-type="image" tabindex="19"><img src="http://oss.svenbeast.com/img/20210111195002.png" alt="image-20210111195002336" loading="lazy"></figure>
+<figure data-type="image" tabindex="19"><img src="https://typora-1257617803.cos.ap-beijing.myqcloud.com/typora/20210112110526.png" alt="image-20210112110526889" loading="lazy"></figure>
 <table>
 <thead>
 <tr>
@@ -687,12 +687,12 @@ if __name__ == &quot;__main__&quot;:
 <p>所以最终shiro使用漏洞版本1.2.4或其他高版本shiro但开发自己在shiro的配置文件中固定key导致存在漏洞，几率较高存在的gadget大概就是这样，在往下细节划分及gatget的原理还需要继续有时间再学习了</p>
 <h3 id="0x06-增加shiro高版本存在漏洞几率-及-增加普通shiro漏洞几率">0x06 增加shiro高版本存在漏洞几率 及 增加普通shiro漏洞几率</h3>
 <p>无意间查了一下shiro的一些教学，发现了一个排名靠前的&quot;靠谱教程&quot;，虽然他帖子写的是shiro的1.5.3版本，但是发现后面的自定义代码中固定了key:2AvVhdsgUs0FSA3SDFAdag== ，虽然没按照这个部署过，漏洞能不能成功易利用，但是还是要得多顶顶这个帖子</p>
-<figure data-type="image" tabindex="20"><img src="https://oss.svenbeast.com/img/20210111204337.png" alt="image-20210111204337337" loading="lazy"></figure>
-<figure data-type="image" tabindex="21"><img src="http://oss.svenbeast.com/img/20210111204854.png" alt="image-20210111204854368" loading="lazy"></figure>
-<figure data-type="image" tabindex="22"><img src="http://oss.svenbeast.com/img/20210111204759.png" alt="image-20210111204759496" loading="lazy"></figure>
+<figure data-type="image" tabindex="20"><img src="https://typora-1257617803.cos.ap-beijing.myqcloud.com/typora/20210112110540.png" alt="image-20210112110540381" loading="lazy"></figure>
+<figure data-type="image" tabindex="21"><img src="https://typora-1257617803.cos.ap-beijing.myqcloud.com/typora/20210112110550.png" alt="image-20210112110550114" loading="lazy"></figure>
+<figure data-type="image" tabindex="22"><img src="https://typora-1257617803.cos.ap-beijing.myqcloud.com/typora/20210112110558.png" alt="image-20210112110558579" loading="lazy"></figure>
 <p>这个帖子越看越好，写的很详细，一定能帮助青涩开发解决使用shiro的难题，然后想了一下&quot;顺便&quot;复制了一下这个帖子，我又发在了简书里<a href="https://www.jianshu.com/p/3a5a56316523">Shiro整合前后端分离项目(在Web项目中使用shiro)</a> (还改了标题，增加关键词搜索几率)</p>
 <p>同时在其中美中不足的地方进行了修改，使整个帖子对开发更加的友好，简单的改了改图片，加了几句话，有条件的师傅也可以再去博客园，CSDN发几篇，让安全从业者多多帮助懵懂的开发使用shiro组件做权限管理制作出更好的java网站，毕竟安全&amp;开发是一家人的呢    （逃</p>
-<figure data-type="image" tabindex="23"><img src="http://oss.svenbeast.com/img/20210111205918.png" alt="image-20210111205918318" loading="lazy"></figure>
+<figure data-type="image" tabindex="23"><img src="https://typora-1257617803.cos.ap-beijing.myqcloud.com/typora/20210112110605.png" alt="image-20210112110605649" loading="lazy"></figure>
 
                     </div>
                      <div class="post-toc">
