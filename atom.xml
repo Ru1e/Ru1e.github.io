@@ -2,7 +2,7 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
     <id>https://www.svenbeast.com</id>
     <title>攻城肾透shi | sv3nbeast</title>
-    <updated>2021-03-06T11:49:21.111Z</updated>
+    <updated>2021-03-07T16:37:08.364Z</updated>
     <generator>https://github.com/jpmonette/feed</generator>
     <link rel="alternate" href="https://www.svenbeast.com"/>
     <link rel="self" href="https://www.svenbeast.com/atom.xml"/>
@@ -10,6 +10,36 @@
     <logo>https://www.svenbeast.com/images/avatar.png</logo>
     <icon>https://www.svenbeast.com/favicon.ico</icon>
     <rights>All rights reserved 2021, 攻城肾透shi | sv3nbeast</rights>
+    <entry>
+        <title type="html"><![CDATA[NAT规则滥用导致的内网代理]]></title>
+        <id>https://www.svenbeast.com/post/6_134ZiaS/</id>
+        <link href="https://www.svenbeast.com/post/6_134ZiaS/">
+        </link>
+        <updated>2021-03-07T16:35:17.000Z</updated>
+        <content type="html"><![CDATA[<h4 id="今日份study-notes">今日份Study notes</h4>
+<ul>
+<li>目标网站时内网DMZ区的某个端口映射到公网服务器某个端口上</li>
+</ul>
+<pre><code>场景:
+1.目标公网服务器111.111.111.111:8080，为内网192.168.0.108:8080映射出来的网站
+2.目标公网服务器的8081端口同样设置了映射到内网的某个端口
+</code></pre>
+<p>很多企业的Web服务使用了NAT端口映射来转发内网的网站，这种情况还会让渗透的时候在获得权限后，发现目标无法出网，无法代理到内网流量，使用reGeorg或者Neo-reGeorg等http代理工具的话速度却无法令人满意</p>
+<p><strong>利用</strong>:</p>
+<p>首先尝试扫描目标端口，以nmap为例，如果目标的某个端口，比如8081，扫描结果显示为close或者open，那么就可以直接使用socks5:111.111.111.111:8081来代理这台机器映射到的内网机器流量</p>
+<ul>
+<li>目标存在着未被使用的端口映射</li>
+<li>获得权限后手动结束占用NAT端口的进程（非必要情况最好不要结束）</li>
+</ul>
+<p><strong>原因</strong></p>
+<p>一般内网服务器映射公网的设置</p>
+<figure data-type="image" tabindex="1"><img src="https://gitee.com/svenbeast/NotePicture/raw/master/img/2021/03/08/82531_image-20210308002551642.png" alt="image-20210308002551642" loading="lazy"></figure>
+<p>利用iptables编写端口转发规则来达到内网服务转发公网的目的，然而有的时候设置的转发规则中的目标内网业务下线了，而NAT规则并没有一起删除，还有其他情况导致的此类NAT规则未删除，运行服务已停止的美妙场景</p>
+<blockquote>
+<p>ps: 拜读倾旋师傅<a href="https://payloads.online/archivers/2020-11-01/1">文章</a>看到的，觉得有必要记小本本，且还未真实尝试，有待实战确认哦</p>
+</blockquote>
+]]></content>
+    </entry>
     <entry>
         <title type="html"><![CDATA[frp改造]]></title>
         <id>https://www.svenbeast.com/post/HUSusAA15/</id>
@@ -1421,122 +1451,6 @@ cd impacket &amp;&amp; pip3 install .
 <li>exp的一些参数，最好搞清楚对应域的那些东西</li>
 <li>图片很多，环境麻烦，能挤出时间真不容易。</li>
 </ul>
-]]></content>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[【研究】从1到针对AV某种场景下的免杀探究过程]]></title>
-        <id>https://www.svenbeast.com/post/yan-jiu-mou-zhong-chang-jing-bypassav/</id>
-        <link href="https://www.svenbeast.com/post/yan-jiu-mou-zhong-chang-jing-bypassav/">
-        </link>
-        <updated>2020-09-02T09:23:40.000Z</updated>
-        <content type="html"><![CDATA[<h3 id="0x01-起因">0x01  起因</h3>
-<p>  现在是信息化爆炸时代，为了能够更全面的吸收(copy)知识的力量，最近搭建了微信公众号的RSS系统，而在调试阶段中看到了这样的一篇文章 <a href="https://mp.weixin.qq.com/s?__biz=MzAwMjc0NTEzMw==&amp;mid=2653570889&amp;idx=1&amp;sn=82f1f6196b781da0378c8cd13e2efb9b&amp;chksm=811b510bb66cd81d67a065d735457b7e270a8b0963ae205860e988fcea4b7411803a12223dd2#rd">printspoofer免杀过360全家桶</a>，很喜欢这种实用文章，安全行业怎么都是需要用或者接触一些免杀的东西，不怕用不上，就怕不知道。</p>
-<p>  现在的文章要不就是没用的水文(比如我)，要不就是看不懂的水文(巨佬)，很赞同klion师傅一篇文章解决一个实际问题的这种风格，也很喜欢酒仙桥发文的排版和文笔，额。闲话到此为止。</p>
-<p><strong>主要内容是记录由moonsec的文章引发对某AV针对这种漏洞利用工具查杀规则的探究过程与利用方法</strong></p>
-<h3 id="0x02-还原文章流程">0x02 还原文章流程</h3>
-<p><strong>PrintSpoofer是一个windows本地提权利用工具</strong><br>
-<strong>本次测试过程中的exe生成全部选择生成x86位程序</strong><br>
-<img src="https://www.svenbeast.com/post-images/1599554980760.png" alt="" loading="lazy"></p>
-<ul>
-<li>
-<p>1.公众号文章中是针对<a href="https://github.com/itm4n/PrintSpoofer">PrintSpoofer</a>分享的免杀方法，那先生成出PrintSpoofer.exe，放入布置在公网装有火绒和360的VPS中(vps的环境感觉更接近真实情况)，意料中的飞速kill，也就是ctrl+v读条刚刚结束的瞬间<br>
-<img src="https://www.svenbeast.com/post-images/1599552417442.png" alt="" loading="lazy"><br>
-<img src="https://www.svenbeast.com/post-images/1599552978648.png" alt="" loading="lazy"></p>
-</li>
-<li>
-<p>2.文中的处理方法，按照这个进行修改，结果没有问题，成功bypassAV(其实主要是过数字AV的主动云查杀，同时云查杀也是数字AV的亮点)</p>
-</li>
-</ul>
-<pre><code>   ·PrintSpoofer 将这个关键词替换成其他字符串 如 moonsec
-   ·PrintSpoofer.cpp PrintSpoofer.h 全部改为 moonsec
-   ·帮助注释全部处理掉
-   ·release x64 重新生成 (截止到文章编辑结束，目前如果生成x64位的会被查杀，x86位没有问题)
-</code></pre>
-<p><img src="https://www.svenbeast.com/post-images/1599553570677.png" alt="" loading="lazy"><br>
-<img src="https://www.svenbeast.com/post-images/1599553799847.png" alt="" loading="lazy"></p>
-<h3 id="0x03-思考">0x03 思考</h3>
-<ul>
-<li>1.为什么修改关键词可以过掉主动查杀，修改哪个关键词命中规则，还是修改关键词导致改变了什么呢，开始尝试缩减关键词范围</li>
-</ul>
-<pre><code>    只进行 PrintSpoofer 将这个关键词替换成其他字符串 如 moonsec
-</code></pre>
-<figure data-type="image" tabindex="1"><img src="https://www.svenbeast.com/post-images/1599554444596.png" alt="" loading="lazy"></figure>
-<pre><code>发现同样未被查杀，没有问题，看来可以继续追一下
-</code></pre>
-<figure data-type="image" tabindex="2"><img src="https://www.svenbeast.com/post-images/1599554795149.png" alt="" loading="lazy"></figure>
-<ul>
-<li>2.上次修改了5处PrintSpoofer字符串，那么这次选择只修改include这一处是否可以呢<br>
-<img src="https://www.svenbeast.com/post-images/1599555928746.png" alt="" loading="lazy"></li>
-</ul>
-<pre><code>发现被查杀 kill，看来include这里不是关键点
-</code></pre>
-<figure data-type="image" tabindex="3"><img src="https://www.svenbeast.com/post-images/1599558103039.png" alt="" loading="lazy"></figure>
-<ul>
-<li>3.上次修改了include这一处，本质上没有改变源代码的逻辑，那么是否改变逻辑才是关键点呢</li>
-</ul>
-<pre><code>    修改代码中的源代码，从逻辑上进行修改，此次在任意位置添加一句输出，这是最简单的办法
-</code></pre>
-<figure data-type="image" tabindex="4"><img src="https://www.svenbeast.com/post-images/1599559995471.png" alt="" loading="lazy"></figure>
-<pre><code>    从结果来看，是没有被查杀的
-</code></pre>
-<figure data-type="image" tabindex="5"><img src="https://www.svenbeast.com/post-images/1599705913632.png" alt="" loading="lazy"></figure>
-<h3 id="0x04-延伸">0x04 延伸</h3>
-<ul>
-<li>那么既然改变逻辑是一个小关键点（开始以为是exe的md5是唯一的，不过发现每次生成的exe的md5都是不一样的，这些东西算是知识盲区哈，我就理解为相同代码生成的exe有一个唯一标识，改个逻辑就可以改了唯一标识这样子，懂得师傅请别在意哈0.0），那么针对其他CVE提权工具是否有效呢</li>
-</ul>
-<pre><code>    CVE-2020-0796：https://github.com/danigargu/CVE-2020-0796
-    目前Github的star数上千 ，理论上是一个流行且影响广泛的windows本地提权的漏洞      
-
-    · 我生成了一个原版exe，一个update版exe，结果是全部被淘汰，但是细心的我发现了一点不同。。此处上gif来体现
-</code></pre>
-<figure data-type="image" tabindex="6"><img src="https://www.svenbeast.com/post-images/1599723056962.gif" alt="" loading="lazy"></figure>
-<pre><code>    又经过了几次尝试，可以确定原版基本是秒杀，偶尔才是AV会宕机一会后查杀，而修改版是经过几十秒到几分钟不等后才会被查杀，且查杀后重复此过程的话修改版也会被秒杀  「划重点：中途可成功运行exe」
-</code></pre>
-<figure data-type="image" tabindex="7"><img src="https://www.svenbeast.com/post-images/1599729008146.gif" alt="" loading="lazy"></figure>
-<h3 id="0x05-结论">0x05 结论</h3>
-<pre><code>1.数字AV应该是对这些漏洞利用工具为了查杀效率，占用cpu大小或者其他目的来使用不同的查杀规则对待
-
-2.比如一般的就是唯一标识查杀，本地查杀库存在就直接查杀，在流行的就是唯一标识加沙箱或者其他深度
-唯一标识查杀等等，本地查杀库没有的上传云数据库或者沙箱来得出结论进行查杀
-
-3.而无论是沙箱或者深度唯一标识查杀，都是需要计算资源来支持，存在的过程推断大概为：上传-&gt;云资源
-计算(云查杀库或者沙箱什么的)-&gt;得出结果并返回
-
-4.那么数字AV的用户何其庞大，可能按亿计算，猜测每时每秒接受的可疑文件上传数量数字是很大的，再加
-上查询或者检测时间，整体占用的资源听起来就是买不起的样子，而一个公司基于成本，产出，收益是不可能
-配备完全可以达到实时检测的这种计算资源的，所以对于本地无法查杀的exe在上传到云的这段时间是必须存
-在的，而这段时间对于这种漏洞利用工具是很友好的。
-
-5.正常来说，这算是钻空子？貌似不太好解决的空子，这种增加计算资源，造成成本增加的东西应该不太好
-申请下来，毕竟收益只是查杀速度快一点。
-</code></pre>
-<p>PS：当然也可能误打误撞得出这么一个结论，毕竟是好奇猜出来的 -.- !</p>
-<p><strong>利用场景：目标机存在防护，上传提权脚本或其他程序被直接查杀，此时使用此方法争一个时间差获得一个system权限cmd完全没有问题，时间很充裕，理论上这个方法通杀。。</strong></p>
-<h3 id="0x06-无源码时如何修改">0x06 无源码时如何修改</h3>
-<ul>
-<li>直接使用IDA修改exe就可以的，为了真实一些就尝试修改一个以前发在t00ls的<a href="https://www.t00ls.net/viewthread.php?tid=56199&amp;highlight=%E5%9C%9F%E8%B1%86">烂土豆</a></li>
-</ul>
-<pre><code>  下载下来，文件是正常运行的，当然现在肯定在查杀库里，直接秒杀，这是我又恢复出来后运行的
-</code></pre>
-<figure data-type="image" tabindex="8"><img src="https://www.svenbeast.com/post-images/1599727404151.png" alt="" loading="lazy"></figure>
-<pre><code>    打开后直接就看到了一些输出的字符串，这个中文蛮明显的。 我规矩点，还是搜字符串来找修改点
-</code></pre>
-<figure data-type="image" tabindex="9"><img src="https://www.svenbeast.com/post-images/1599727900556.png" alt="" loading="lazy"></figure>
-<pre><code>    点击 View -&gt; Open subviews -&gt; Strings    或者shift+f12    会出现IDA收集的这个exe的一些字符串片段
-</code></pre>
-<figure data-type="image" tabindex="10"><img src="https://www.svenbeast.com/post-images/1599728312616.png" alt="" loading="lazy"></figure>
-<pre><code>    根据exe运行过程中输出的一些提示语，找到后进去，这个大部分都是，双击一个中文进入Hex View，如下界面
-</code></pre>
-<figure data-type="image" tabindex="11"><img src="https://www.svenbeast.com/post-images/1599728495066.png" alt="" loading="lazy"></figure>
-<pre><code>    然后右键edit ，随便输入一些东西
-</code></pre>
-<figure data-type="image" tabindex="12"><img src="https://www.svenbeast.com/post-images/1599728706406.png" alt="" loading="lazy"></figure>
-<pre><code>    右键Apply changes   然后点击   Edit -&gt; Patch program -&gt; Apply patches to input file...  -&gt;  出现的界面点ok
-</code></pre>
-<figure data-type="image" tabindex="13"><img src="https://www.svenbeast.com/post-images/1599728848560.png" alt="" loading="lazy"></figure>
-<pre><code>    结果没有问题，可以运行
-</code></pre>
-<figure data-type="image" tabindex="14"><img src="https://www.svenbeast.com/post-images/1599730169362.gif" alt="" loading="lazy"></figure>
 ]]></content>
     </entry>
 </feed>
